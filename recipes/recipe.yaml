@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
+
+name: "grand-os"
+description: "A desktop Linux image based for Fedora Kinoite and customized for personal use."
+
+base-image: "ghcr.io/ublue-os/kinoite-main"
+image-version: "41"
+
+modules:
+  - type: "files"
+    files:
+      - source: "system"
+        destination: "/"
+
+  - type: "signing"
