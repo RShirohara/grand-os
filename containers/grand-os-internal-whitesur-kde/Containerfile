@@ -1,0 +1,24 @@
+ARG BUILDER_VERSION
+ARG REPOSITORY_VERSION
+
+# stage 1: build theme.
+FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} as builder
+ARG REPOSITORY_VERSION
+
+RUN dnf install --assumeyes git
+
+RUN git clone https://github.com/vinceliuice/WhiteSur-kde \
+    --branch="${REPOSITORY_VERSION}" \
+    --depth=1
+
+RUN /WhiteSur-kde/install.sh
+
+# stage 2: copy theme files.
+FROM scratch
+
+COPY --from=builder /usr/share/aurorae/themes /usr/share/aurorae/themes
+COPY --from=builder /usr/share/color-schemes /usr/share/color-schemes
+COPY --from=builder /usr/share/plasma/desktoptheme /usr/share/plasma/desktoptheme
+COPY --from=builder /usr/share/plasma/look-and-feel /usr/share/plasma/look-and-feel
+COPY --from=builder /usr/share/Kvantum /usr/share/Kvantum
+COPY --from=builder /usr/share/wallpapers /usr/share/wallpapers
