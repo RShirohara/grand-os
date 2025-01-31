@@ -5,11 +5,12 @@ ARG REPOSITORY_VERSION
 FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} as builder
 ARG REPOSITORY_VERSION
 
-RUN dnf install --assumeyes git
+RUN dnf install --assumeyes \
+        git
 
 RUN git clone https://github.com/vinceliuice/WhiteSur-kde \
-    --branch="${REPOSITORY_VERSION}" \
-    --depth=1
+        --branch="${REPOSITORY_VERSION}" \
+        --depth=1
 
 RUN /WhiteSur-kde/install.sh
 
