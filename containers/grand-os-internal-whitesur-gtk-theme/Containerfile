@@ -22,4 +22,6 @@ RUN /WhiteSur-gtk-theme/install.sh \
 # stage 2: copy theme files.
 FROM scratch
 
-COPY --from=builder /usr/share/themes /usr/share/themes
+COPY --from=builder \
+    /usr/share/themes \
+    /usr/share/themes

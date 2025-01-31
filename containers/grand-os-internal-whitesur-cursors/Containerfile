@@ -19,4 +19,6 @@ RUN /WhiteSur-cursors/install.sh
 # stage 2: copy theme files.
 FROM scratch
 
-COPY --from=builder /usr/share/icons /usr/share/icons
+COPY --from=builder \
+    /usr/share/icons \
+    /usr/share/icons

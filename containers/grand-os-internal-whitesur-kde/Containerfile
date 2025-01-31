@@ -17,9 +17,21 @@ RUN /WhiteSur-kde/install.sh
 # stage 2: copy theme files.
 FROM scratch
 
-COPY --from=builder /usr/share/aurorae/themes /usr/share/aurorae/themes
-COPY --from=builder /usr/share/color-schemes /usr/share/color-schemes
-COPY --from=builder /usr/share/plasma/desktoptheme /usr/share/plasma/desktoptheme
-COPY --from=builder /usr/share/plasma/look-and-feel /usr/share/plasma/look-and-feel
-COPY --from=builder /usr/share/Kvantum /usr/share/Kvantum
-COPY --from=builder /usr/share/wallpapers /usr/share/wallpapers
+COPY --from=builder \
+    /usr/share/aurorae/themes \
+    /usr/share/aurorae/themes
+COPY --from=builder \
+    /usr/share/color-schemes \
+    /usr/share/color-schemes
+COPY --from=builder \
+    /usr/share/plasma/desktoptheme \
+    /usr/share/plasma/desktoptheme
+COPY --from=builder \
+    /usr/share/plasma/look-and-feel \
+    /usr/share/plasma/look-and-feel
+COPY --from=builder \
+    /usr/share/Kvantum \
+    /usr/share/Kvantum
+COPY --from=builder \
+    /usr/share/wallpapers \
+    /usr/share/wallpapers
