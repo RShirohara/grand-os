@@ -1,0 +1,52 @@
+ARG BUILDER_VERSION
+ARG REPOSITORY_VERSION
+ARG KWIN_VERSION
+
+# stage 1: build theme.
+FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} as builder
+ARG BUILDER_VERSION
+ARG REPOSITORY_VERSION
+ARG KWIN_VERSION
+
+RUN dnf install --assumeyes \
+        git \
+        cmake \
+        gcc-c++ \
+        extra-cmake-modules \
+        kwin-devel-${KWIN_VERSION}-1.fc${BUILDER_VERSION} \
+        kf6-kconfigwidgets-devel \
+        libepoxy-devel \
+        kf6-kcmutils-devel \
+        kf6-ki18n-devel \
+        qt6-qtbase-private-devel \
+        wayland-devel
+
+RUN git clone https://github.com/matinlotfali/KDE-Rounded-Corners \
+        --branch="${REPOSITORY_VERSION}" \
+        --depth=1
+
+RUN cd /KDE-Rounded-Corners \
+    && mkdir build \
+    && cd build \
+    && cmake .. \
+    && cmake --build . -j \
+    && make install
+
+# stage 2: copy theme files.
+FROM scratch
+
+COPY --from=builder \
+    /usr/lib64/qt6/plugins/kwin/effects/plugins/kwin4_effect_shapecorners.so \
+    /usr/lib64/qt6/plugins/kwin/effects/plugins/kwin4_effect_shapecorners.so
+COPY --from=builder \
+    /usr/lib64/qt6/plugins/kwin/effects/configs/kwin_shapecorners_config.so \
+    /usr/lib64/qt6/plugins/kwin/effects/configs/kwin_shapecorners_config.so
+COPY --from=builder \
+    /usr/share/kwin/shaders/shapecorners.frag \
+    /usr/share/kwin/shaders/shapecorners.frag
+COPY --from=builder \
+    /usr/share/kwin/shaders/shapecorners_core.frag \
+    /usr/share/kwin/shaders/shapecorners_core.frag
+COPY --from=builder \
+    /usr/share/locale/ru/LC_MESSAGES/kcmcorners.mo \
+    /usr/share/locale/ru/LC_MESSAGES/kcmcorners.mo
