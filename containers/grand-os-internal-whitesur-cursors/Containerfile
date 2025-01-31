@@ -1,0 +1,22 @@
+ARG BUILDER_VERSION
+ARG REPOSITORY_COMMIT_HASH
+
+# stage 1: build theme.
+FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} as builder
+ARG REPOSITORY_COMMIT_HASH
+
+RUN dnf install --assumeyes \
+        git
+
+WORKDIR /WhiteSur-cursors
+RUN git init \
+    && git remote add origin https://github.com/vinceliuice/WhiteSur-cursors \
+    && git fetch origin "${REPOSITORY_COMMIT_HASH}" --depth=1 \
+    && git checkout FETCH_HEAD
+
+RUN /WhiteSur-cursors/install.sh
+
+# stage 2: copy theme files.
+FROM scratch
+
+COPY --from=builder /usr/share/icons /usr/share/icons
