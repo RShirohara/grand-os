@@ -1,0 +1,17 @@
+version: 2
+
+updates:
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      time: "03:00"
+      timezone: "Asia/Tokyo"
+    labels:
+      - "Type: CI"
+      - "Type: Dependencies"
+    assignees:
+      - "RShirohara"
+    reviewers:
+      - "RShirohara"
