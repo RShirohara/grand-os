@@ -12,6 +12,7 @@ on:
     branches:
       - "main"
     paths:
+      - ".github/workflows/build-internal-package.yaml"
       - "containers/**/*"
 
 jobs:
@@ -108,7 +109,7 @@ jobs:
           DOCKER_METADATA_SHORT_SHA_LENGTH: 8
         with:
           images: |
-            ${{ github.repository_owner }}/${{ matrix.package }}
+            ghcr.io/${{ github.repository_owner }}/${{ matrix.package }}
           tags: |
             type=sha,prefix=${{ steps.get_metadata.outputs.tag-prefix }}
           labels: |
