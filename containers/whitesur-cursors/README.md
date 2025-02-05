@@ -1,4 +1,4 @@
-# `grand-os-internal-whitesur-cursors`
+# `grand-os/internal/whitesur-cursors`
 
 Internal container image to provide
 [github.com/vinceliuice/WhiteSur-cursors](https://github.com/vinceliuice/WhiteSur-cursors)
