@@ -60,6 +60,10 @@ jobs:
     needs: "get_target"
     runs-on: "${{ matrix.runner }}"
 
+    permissions:
+      attestations: write
+      packages: write
+
     strategy:
       fail-fast: false
       matrix:
