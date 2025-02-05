@@ -1,4 +1,4 @@
-# `grand-os-internal-whitesur-kde`
+# `grand-os/internal/whitesur-kde`
 
 Internal container image to provide
 [github.com/vinceliuice/WhiteSur-kde](https://github.com/vinceliuice/WhiteSur-kde)

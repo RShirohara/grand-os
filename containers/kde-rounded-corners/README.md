@@ -1,4 +1,4 @@
-# `grand-os-internal-kde-rounded-corners`
+# `grand-os/internal/kde-rounded-corners`
 
 Internal container image to provide
 [github.com/matinlotfali/KDE-Rounded-Corners](https://github.com/matinlotfali/KDE-Rounded-Corners)

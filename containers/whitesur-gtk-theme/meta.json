@@ -1,0 +1,9 @@
+{
+  "org.opencontainers.image.authors": "Ray Shirohara <RShirohara@proton.me>",
+  "org.opencontainers.image.url": "https://github.com/RShirohara/grand-os/blob/main/containers/grand-os/internal/whitesur-gtk-theme",
+  "org.opencontainers.image.documentation": "https://github.com/RShirohara/grand-os/blob/main/containers/grand-os/internal/whitesur-gtk-theme/README.md",
+  "org.opencontainers.image.source": "https://github.com/RShirohara/grand-os/blob/main/containers/grand-os/internal/whitesur-gtk-theme/Containerfile",
+  "org.opencontainers.image.licenses": "MIT",
+  "org.opencontainers.image.title": "grand-os/internal/whitesur-gtk-theme",
+  "org.opencontainers.image.description": "Internal container image to provide github.com/vinceliuice/WhiteSur-gtk-theme into grand-os."
+}

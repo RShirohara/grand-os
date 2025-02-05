@@ -1,4 +1,4 @@
-# `grand-os-internal-whitesur-gtk-theme`
+# `grand-os/internal/whitesur-gtk-theme`
 
 Internal container image to provide
 [github.com/vinceliuice/WhiteSur-gtk-theme](https://github.com/vinceliuice/WhiteSur-gtk-theme)
