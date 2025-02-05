@@ -1,9 +1,11 @@
 # `grand-os-internal-kde-rounded-corners`
 
-Internal container image for using [matinlotfali/KDE-Rounded-Corners](https://github.com/matinlotfali/KDE-Rounded-Corners) on grand-os.
+Internal container image to provide
+[github.com/matinlotfali/KDE-Rounded-Corners](https://github.com/matinlotfali/KDE-Rounded-Corners)
+into grand-os.
 
 ## Build
 
 ```shell
-podman build --build-arg-file=./meta.env .
+podman build --build-arg-file=./build.env .
 ```
