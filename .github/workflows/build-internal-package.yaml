@@ -12,6 +12,7 @@ on:
     branches:
       - "main"
     paths:
+      - ".github/workflows/build-internal-package.yaml"
       - "containers/**/*"
 
 jobs:
