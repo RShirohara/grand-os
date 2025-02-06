@@ -61,8 +61,9 @@ jobs:
     runs-on: "${{ matrix.runner }}"
 
     permissions:
-      attestations: write
-      packages: write
+      attestations: "write"
+      id-token: "write"
+      packages: "write"
 
     strategy:
       fail-fast: false
@@ -116,6 +117,7 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/${{ fromJson(steps.get_metadata.outputs.image-metadata)['org.opencontainers.image.title'] }}
           tags: |
             type=sha,prefix=${{ steps.get_metadata.outputs.tag-prefix }}
+            type=raw,value=latest,enable={{is_default_branch}}
           labels: |
             org.opencontainers.image.authors=${{ fromJson(steps.get_metadata.outputs.image-metadata)['org.opencontainers.image.authors'] }}
             org.opencontainers.image.url=${{ fromJson(steps.get_metadata.outputs.image-metadata)['org.opencontainers.image.url'] }}
@@ -142,6 +144,7 @@ jobs:
           password: "${{ secrets.GITHUB_TOKEN }}"
 
       - name: "Build package (and publish on main branch)"
+        id: "build_package"
         uses: "docker/build-push-action@v6.13.0"
         with:
           annotations: ${{ steps.build_metadata.outputs.annotations }}
@@ -154,3 +157,11 @@ jobs:
           platforms: "${{ matrix.platform }}"
           push: ${{ github.event_name == 'push' }}
           tags: ${{ steps.build_metadata.outputs.tags }}
+
+      - name: "Attest package"
+        if: ${{ github.event_name == 'push' }}
+        uses: "actions/attest-build-provenance@v2.2.0"
+        with:
+          subject-name: "ghcr.io/${{ github.repository_owner }}/${{ fromJson(steps.get_metadata.outputs.image-metadata)['org.opencontainers.image.title'] }}"
+          subject-digest: "${{ steps.build_package.outputs.digest }}"
+          push-to-registry: true
