@@ -144,7 +144,7 @@ jobs:
           password: "${{ secrets.GITHUB_TOKEN }}"
 
       - name: "Build package (and publish on main branch)"
-        id: build_package
+        id: "build_package"
         uses: "docker/build-push-action@v6.13.0"
         with:
           annotations: ${{ steps.build_metadata.outputs.annotations }}
