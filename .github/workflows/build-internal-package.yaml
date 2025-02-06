@@ -117,6 +117,7 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/${{ fromJson(steps.get_metadata.outputs.image-metadata)['org.opencontainers.image.title'] }}
           tags: |
             type=sha,prefix=${{ steps.get_metadata.outputs.tag-prefix }}
+            type=raw,value=latest,enable={{is_default_branch}}
           labels: |
             org.opencontainers.image.authors=${{ fromJson(steps.get_metadata.outputs.image-metadata)['org.opencontainers.image.authors'] }}
             org.opencontainers.image.url=${{ fromJson(steps.get_metadata.outputs.image-metadata)['org.opencontainers.image.url'] }}
