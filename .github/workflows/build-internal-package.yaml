@@ -61,9 +61,9 @@ jobs:
     runs-on: "${{ matrix.runner }}"
 
     permissions:
-      attestations: write
-      id-token: write
-      packages: write
+      attestations: "write"
+      id-token: "write"
+      packages: "write"
 
     strategy:
       fail-fast: false
