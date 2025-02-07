@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
 
-name: "grand-os"
+name: "grand-os/main"
 description: "A desktop Linux image based for Fedora Kinoite and customized for personal use."
 
 base-image: "ghcr.io/ublue-os/kinoite-main"
