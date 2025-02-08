@@ -187,7 +187,6 @@ jobs:
           COSIGN_PASSWORD: ""
           COSIGN_PRIVATE_KEY: "${{ secrets.SIGNING_SECRET }}"
           COSIGN_YES: "true"
-          GITHUB_TOKEN_ISSUER_URL: "https://token.actions.githubusercontent.com"
         run: |
           set -eu
 
