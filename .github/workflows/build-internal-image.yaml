@@ -1,0 +1,202 @@
+name: Build (Internal image)
+
+on:
+  pull_request:
+    types:
+      - "ready_for_review"
+      - "review_requested"
+    paths:
+      - ".github/workflows/build-internal-image.yaml"
+      - "containers/**/*"
+  push:
+    branches:
+      - "main"
+    paths:
+      - ".github/workflows/build-internal-image.yaml"
+      - "containers/**/*"
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref || github.run_id }}"
+
+jobs:
+  get_target:
+    name: "Get build target"
+    runs-on: "ubuntu-latest"
+
+    outputs:
+      images: "${{ steps.get_images.outputs.images }}"
+
+    steps:
+      - name: "Checkout repository"
+        uses: "actions/checkout@v4.2.2"
+        with:
+          fetch-depth: 0
+
+      - name: "Get changed images"
+        id: "get_images"
+        run: |
+          set -eu
+
+          # get diff target
+          DIFF_TARGET="origin/main"
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            DIFF_TARGET="HEAD~1"
+          fi
+
+          # get image lists
+          TARGETS=$(
+            git diff --name-only ${DIFF_TARGET} HEAD \
+            | grep "containers/*" \
+            | cut -d"/" -f"2" \
+            | uniq \
+            | jq -cnR "[inputs]"
+          )
+          IMAGES=$(
+            find containers -mindepth 1 -maxdepth 1 -type d \
+            | cut -d"/" -f"2" \
+            | jq -cnR "[inputs]"
+          )
+          echo "images=${TARGETS/[]/${IMAGES}}" | tee -a ${GITHUB_OUTPUT}
+
+  build:
+    name: "Build (${{ matrix.image }}, ${{ matrix.platform }})"
+    needs: "get_target"
+    runs-on: "${{ matrix.runner }}"
+
+    permissions:
+      attestations: "write"
+      id-token: "write"
+      packages: "write"
+
+    strategy:
+      fail-fast: false
+      matrix:
+        image: ${{ fromJson(needs.get_target.outputs.images) }}
+        include:
+          - platform: "linux/amd64"
+            runner: "ubuntu-latest"
+
+    steps:
+      - name: "Checkout repository"
+        uses: "actions/checkout@v4.2.2"
+
+      - name: "Setup Docker Buildx"
+        uses: "docker/setup-buildx-action@v3.8.0"
+
+      - name: "Setup cosign cli"
+        uses: "sigstore/cosign-installer@v3.8.0"
+        with:
+          install-dir: "/usr/bin"
+          use-sudo: true
+
+      - name: "Check cosign key-pair"
+        env:
+          COSIGN_PASSWORD: ""
+          COSIGN_PRIVATE_KEY: "${{ secrets.SIGNING_SECRET }}"
+          COSIGN_YES: "true"
+        run: |
+          set -eu
+
+          cosign public-key --key="env://COSIGN_PRIVATE_KEY" > cosign.pub
+          if [[ $(git diff --name-only | grep "cosign.pub") > 0 ]]; then
+            echo "::error title=Invalid cosign key::Failed to validate cosign key pair."
+            exit 1
+          fi
+
+      - name: "Get image metadata"
+        id: "get_metadata"
+        run: |
+          set -eu
+          cd ./containers/${{ matrix.image }}
+
+          # build args
+          ## GitHub Actions が `KEY=VALUE` 形式の複数行文字列を `${GITHUB_OUTPUT}` で受けると解釈に失敗するため、
+          ## 単一要素を持つ JSON Array にしたうえで出力し、値を使用する側で `fromJson()[0]` で受けるようにする。
+          BUILD_ARGS="[\"$(
+            cat ./build.env \
+            | grep "^BUILD_*" \
+            | sed -z "s/\\n/\\\\n/g"
+          )\"]"
+          echo "build_args=${BUILD_ARGS}" | tee -a ${GITHUB_OUTPUT}
+
+          ## tag prefix
+          source ./build.env
+          echo "tag_prefix=${IMAGE_TAG_PREFIX}" | tee -a ${GITHUB_OUTPUT}
+
+          ## image metadata
+          IMAGE_METADATA=$(
+            cat ./meta.json \
+            | jq -cr
+          )
+          echo "image_metadata=${IMAGE_METADATA}" | tee -a ${GITHUB_OUTPUT}
+
+      - name: "Build metadata"
+        id: "build_metadata"
+        uses: "docker/metadata-action@v5.6.1"
+        env:
+          DOCKER_METADATA_SHORT_SHA_LENGTH: 8
+        with:
+          images: |
+            ghcr.io/${{ github.repository_owner }}/${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.title'] }}
+          tags: |
+            type=sha,prefix=${{ steps.get_metadata.outputs.tag_prefix }}
+            type=raw,value=latest,enable={{is_default_branch}}
+          labels: |
+            org.opencontainers.'image'.authors=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.authors'] }}
+            org.opencontainers.image.url=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.url'] }}
+            org.opencontainers.image.documentation=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.documentation'] }}
+            org.opencontainers.image.source=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.source'] }}
+            org.opencontainers.image.licenses=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.licenses'] }}
+            org.opencontainers.image.title=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.title'] }}
+            org.opencontainers.image.description=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.description'] }}
+          annotations: |
+            org.opencontainers.image.authors=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.authors'] }}
+            org.opencontainers.image.url=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.url'] }}
+            org.opencontainers.image.documentation=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.documentation'] }}
+            org.opencontainers.image.source=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.source'] }}
+            org.opencontainers.image.licenses=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.licenses'] }}
+            org.opencontainers.image.title=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.title'] }}
+            org.opencontainers.image.description=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.description'] }}
+
+      - name: "Login to GitHub Container Registry"
+        if: ${{ github.event_name == 'push' }}
+        uses: "docker/login-action@v3.3.0"
+        with:
+          registry: "ghcr.io"
+          username: "${{ github.repository_owner }}"
+          password: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: "Build image (and publish on main branch)"
+        id: "build_image"
+        uses: "docker/build-push-action@v6.13.0"
+        with:
+          annotations: ${{ steps.build_metadata.outputs.annotations }}
+          build-args: ${{ fromJson(steps.get_metadata.outputs.build_args)[0] }}
+          cache-from: "type=gha"
+          cache-to: "type=gha,mode=max"
+          context: "."
+          file: "./containers/${{ matrix.image }}/Containerfile"
+          labels: ${{ steps.build_metadata.outputs.labels }}
+          platforms: "${{ matrix.platform }}"
+          push: ${{ github.event_name == 'push' }}
+          tags: ${{ steps.build_metadata.outputs.tags }}
+
+      - name: "Signing image"
+        if: ${{ github.event_name == 'push' }}
+        env:
+          COSIGN_PASSWORD: ""
+          COSIGN_PRIVATE_KEY: "${{ secrets.SIGNING_SECRET }}"
+          COSIGN_YES: "true"
+        run: |
+          set -eu
+
+          cosign sign \
+            --key="env://COSIGN_PRIVATE_KEY" \
+            "${{ steps.build_metadata.outputs.tags[0] }}"
+
+      - name: "Attest build provenance for image"
+        if: ${{ github.event_name == 'push' }}
+        uses: "actions/attest-build-provenance@v2.2.0"
+        with:
+          subject-name: "ghcr.io/${{ github.repository_owner }}/${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.title'] }}"
+          subject-digest: "${{ steps.build_image.outputs.digest }}"
