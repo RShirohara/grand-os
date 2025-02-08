@@ -192,7 +192,7 @@ jobs:
 
           cosign sign \
             --key="env://COSIGN_PRIVATE_KEY" \
-            "${{ steps.build_metadata.outputs.tags[0] }}"
+            "${{ fromJson(steps.build_metadata.outputs.json).tags[0] }}"
 
       - name: "Attest build provenance for image"
         if: ${{ github.event_name == 'push' }}
