@@ -91,12 +91,6 @@ jobs:
       - name: "Expose GitHub Runtime"
         uses: "crazy-max/ghaction-github-runtime@v3.0.0"
 
-      - name: "Add alt-tags to recipe"
-        if: ${{ github.event_name == 'release' }}
-        run: |
-          yq e ".alt-tags += '${{ github.event.release.tag_name }}'" \
-            -i ./recipes/${{ matrix.recipe }}.yaml
-
       - name: "Build image"
         env:
           COSIGN_PRIVATE_KEY: "${{ secrets.SIGNING_SECRET }}"
