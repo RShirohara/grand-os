@@ -140,8 +140,9 @@ jobs:
           echo "subject_name=${NAME}" | tee -a ${GITHUB_OUTPUT}
 
           # get subject digest
+          docker pull "${NAME}:latest"
           DIGEST=$(
-            docker images --filter="reference=${NAME}" --format="{{ json . }}" \
+            docker images --filter="reference=${NAME}:latest" --format="{{ json . }}" \
             | head -n1 \
             | jq -r ".Digest"
           )
@@ -153,4 +154,3 @@ jobs:
         with:
           subject-name: "${{ steps.get_attest_subject.outputs.subject_name }}"
           subject-digest: "${{ steps.get_attest_subject.outputs.subject_digest }}"
-          push-to-registry: true
