@@ -122,9 +122,9 @@ jobs:
 
       - name: "Get attest subject"
         id: "get_attest_subject"
-        if: ${{ github.event_name == 'release' }}
+        # if: ${{ github.event_name == 'release' }}
         run: |
-          set -eu
+          set -eux
 
           # get subject name
           USER="${{ github.repository_owner }}"
