@@ -15,6 +15,9 @@ on:
       - ".github/workflows/build-internal-image.yaml"
       - "containers/**/*"
 
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref || github.run_id }}"
+
 jobs:
   get_target:
     name: "Get build target"
