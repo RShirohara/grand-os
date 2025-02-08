@@ -1,0 +1,145 @@
+name: Build (OS image)
+
+on:
+  pull_request:
+    types:
+      - "ready_for_review"
+      - "review_requested"
+    paths:
+      - ".github/workflows/build-image.yaml"
+      - "files/**/*"
+      - "modules/**/*"
+      - "recipes/**/*"
+  release:
+    types: "released"
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref || github.run_id }}"
+
+jobs:
+  get_target:
+    name: "Get build target"
+    runs-on: "ubuntu-latest"
+
+    outputs:
+      recipes: "${{ steps.get_recipes.outputs.recipes }}"
+
+    steps:
+      - name: "Checkout repository"
+        uses: "actions/checkout@v4.2.2"
+
+      - name: "Get recipes"
+        id: "get_recipes"
+        run: |
+          set -eu
+
+          # get recipes list
+          RECIPES=$(
+            find recipes -mindepth 1 -maxdepth 1 -type f -name "*.yaml" \
+            | xargs -I@ basename -- "@" ".yaml" \
+            | jq -cnR "[inputs]"
+          )
+          echo "recipes=${RECIPES}" | tee -a ${GITHUB_OUTPUT}
+
+  build:
+    name: "Build (${{ matrix.recipe }}, ${{ matrix.platform }})"
+    needs: "get_target"
+    runs-on: "${{ matrix.runner }}"
+
+    permissions:
+      attestations: "write"
+      id-token: "write"
+      packages: "write"
+
+    strategy:
+      fail-fast: false
+      matrix:
+        recipe: ${{ fromJson(needs.get_target.outputs.recipes) }}
+        include:
+          - platform: "linux/amd64"
+            runner: "ubuntu-latest"
+
+    steps:
+      - name: "Checkout repository"
+        uses: "actions/checkout@v4.2.2"
+
+      - name: "Setup Docker Buildx"
+        uses: "docker/setup-buildx-action@v3.8.0"
+        with:
+          install: true
+
+      - name: "Setup BlueBuild cli"
+        env:
+          CLI_VERSION: "latest"
+        run: |
+          set -eu
+
+          sudo docker create \
+            --name "blue-build-installer" \
+            ghcr.io/blue-build/cli:${CLI_VERSION}-installer
+          sudo docker cp blue-build-installer:/out/bluebuild /usr/bin/bluebuild
+          sudo docker rm blue-build-installer
+
+          bluebuild --version
+
+      - name: "Setup cosign cli"
+        uses: "sigstore/cosign-installer@v3.8.0"
+        with:
+          install-dir: "/usr/bin"
+          use-sudo: true
+
+      - name: "Build image"
+        env:
+          COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_SECRET }}
+          GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          BB_REGISTRY: "ghcr.io"
+          BB_REGISTRY_NAMESPACE: "${{ github.repository_owner }}"
+          BB_USERNAME: "${{ github.repository_owner }}"
+          BB_PASSWORD: "${{ secrets.GITHUB_TOKEN }}"
+          BB_BUILDKIT_CACHE_GHA: "true"
+          RECIPE_PATH: "./recipes/${{ matrix.recipe }}.yaml"
+          RUST_LOG_STYLE: "always"
+          CLICOLOR_FORCE: "1"
+        run: |
+          set -eu
+
+          # build options
+          OPTS=""
+          ## push image only on release
+          if [[ "${{ github.event_name }}" == "release" ]]; then
+            OPTS="--push"
+          fi
+
+          # build image
+          bluebuild build --verbose \
+            --platform "${{ matrix.platform }}" \
+            ${OPTS} \
+            ${RECIPE_PATH}
+
+      - name: "Get attest subject"
+        id: "get_attest_subject"
+        if: ${{ github.event_name == 'release' }}
+        run: |
+          set -eu
+
+          # get subject name
+          NAME="ghcr.io/${{ github.repository_owner }}/$(
+            yq -r '.name' ./recipes/${{ matrix.recipe }}.yaml
+          )"
+          echo "subject_name=${NAME}" | tee -a ${GITHUB_OUTPUT}
+
+          # get subject digest
+          DIGEST=$(
+            docker images --filter="${NAME}" --format="{{ json . }}" \
+            | head -n1 \
+            | jq -r ".Digest"
+          )
+          echo "subject_digest=${DIGEST}" | tee -a ${GITHUB_OUTPUT}
+
+      - name: "Attest image"
+        if: ${{ github.event_name == 'release' }}
+        uses: "actions/attest-build-provenance@v2.2.0"
+        with:
+          subject-name: "${{ steps.get_attest_subject.outputs.subject_name }}"
+          subject-digest: "${{ steps.get_attest_subject.outputs.subject_digest }}"
+          push-to-registry: true
