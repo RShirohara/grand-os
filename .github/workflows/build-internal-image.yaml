@@ -164,4 +164,3 @@ jobs:
         with:
           subject-name: "ghcr.io/${{ github.repository_owner }}/${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.title'] }}"
           subject-digest: "${{ steps.build_image.outputs.digest }}"
-          push-to-registry: true
