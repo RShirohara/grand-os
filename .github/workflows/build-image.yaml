@@ -124,7 +124,8 @@ jobs:
           set -eu
 
           # get subject name
-          NAME="ghcr.io/${{ github.repository_owner }}/$(
+          USER="${{ github.repository_owner }}"
+          NAME="ghcr.io/${USER,,}/$(
             yq -r '.name' ./recipes/${{ matrix.recipe }}.yaml
           )"
           echo "subject_name=${NAME}" | tee -a ${GITHUB_OUTPUT}
