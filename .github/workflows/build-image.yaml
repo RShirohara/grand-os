@@ -132,7 +132,7 @@ jobs:
 
           # get subject digest
           DIGEST=$(
-            docker images --filter="${NAME}" --format="{{ json . }}" \
+            docker images --filter="reference=${NAME}" --format="{{ json . }}" \
             | head -n1 \
             | jq -r ".Digest"
           )
