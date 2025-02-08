@@ -91,6 +91,7 @@ jobs:
       - name: "Build image"
         env:
           COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_SECRET }}
+          GH_PR_EVENT_NUMBER: "${{ github.event.number }}"
           GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           BB_REGISTRY: "ghcr.io"
           BB_REGISTRY_NAMESPACE: "${{ github.repository_owner }}"
