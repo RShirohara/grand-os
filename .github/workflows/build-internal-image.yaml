@@ -187,12 +187,19 @@ jobs:
           COSIGN_PASSWORD: ""
           COSIGN_PRIVATE_KEY: "${{ secrets.SIGNING_SECRET }}"
           COSIGN_YES: "true"
+          GITHUB_TOKEN_ISSUER_URL: "https://token.actions.githubusercontent.com"
         run: |
           set -eu
 
+          IMAGE_NAME=$(
+            echo "${{ fromJson(steps.build_metadata.outputs.json).tags[0] }}" \
+            | cut -d":" -f"1"
+          )
+          IMAGE_DIGEST="${{ steps.build_image.outputs.digest }}"
+
           cosign sign \
             --key="env://COSIGN_PRIVATE_KEY" \
-            "${{ fromJson(steps.build_metadata.outputs.json).tags[0] }}"
+            "${IMAGE_NAME}@${IMAGE_DIGEST}"
 
       - name: "Attest build provenance for image"
         if: ${{ github.event_name == 'push' }}
