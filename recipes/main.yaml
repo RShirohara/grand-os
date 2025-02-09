@@ -7,6 +7,10 @@ base-image: "ghcr.io/ublue-os/kinoite-main"
 image-version: "41"
 
 modules:
+  - type: "rpm-ostree"
+    install:
+      - "kvantum"
+
   - type: "files"
     files:
       - source: "system"
