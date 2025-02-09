@@ -43,7 +43,7 @@ jobs:
             | cut --fields="1"
           )
 
-          echo "Deleting cache..."
+          echo "Deleting $(echo ${CACHE_KEYS} | wc -w) cache..."
           for key in ${CACHE_KEYS}; do
             gh actions-cache delete "${key}" \
               --repo "${REPOSITORY}" \
