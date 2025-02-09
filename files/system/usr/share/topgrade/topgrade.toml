@@ -1,0 +1,8 @@
+[misc]
+no_self_update = true
+disable = ["self_update", "helix"]
+assume_yes = true
+no_retry = false
+
+[linux]
+rpm_ostree = true
