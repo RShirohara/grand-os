@@ -39,6 +39,7 @@ jobs:
             gh actions-cache list \
               --repo "${REPOSITORY}" \
               --branch "${BRANCH}" \
+              --limit 100 \
             | cut --fields="1"
           )
 
