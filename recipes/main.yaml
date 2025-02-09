@@ -9,6 +9,13 @@ image-version: "41"
 modules:
   - type: "rpm-ostree"
     install:
+      - "fcitx5-autostart"
+      - "fcitx5-configtool"
+      - "fcitx5-gtk"
+      - "fcitx5-mozc"
+      - "fcitx5-qt"
+      - "fcitx5"
+      - "kcm-fcitx5"
       - "kvantum"
 
   - type: "files"
