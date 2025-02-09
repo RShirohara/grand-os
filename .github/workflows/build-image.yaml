@@ -88,63 +88,103 @@ jobs:
           install-dir: "/usr/bin"
           use-sudo: true
 
-      - name: "Expose GitHub Runtime"
-        uses: "crazy-max/ghaction-github-runtime@v3.0.0"
-
-      - name: "Build image"
+      - name: "Check cosign key-pair"
         env:
+          COSIGN_PASSWORD: ""
           COSIGN_PRIVATE_KEY: "${{ secrets.SIGNING_SECRET }}"
-          GH_PR_EVENT_NUMBER: "${{ github.event.number }}"
-          GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          BB_REGISTRY: "ghcr.io"
-          BB_REGISTRY_NAMESPACE: "${{ github.repository_owner }}"
-          BB_USERNAME: "${{ github.repository_owner }}"
-          BB_PASSWORD: "${{ secrets.GITHUB_TOKEN }}"
-          BB_BUILDKIT_CACHE_GHA: "true"
+          COSIGN_YES: "true"
+        run: |
+          set -eu
+
+          cosign public-key --key="env://COSIGN_PRIVATE_KEY" > cosign.pub
+          if [[ $(git diff --name-only | grep "cosign.pub") > 0 ]]; then
+            echo "::error title=Invalid cosign key::Failed to validate cosign key pair."
+            exit 1
+          fi
+
+      - name: "Get image metadata"
+        id: "get_metadata"
+        run: |
+          set -eu
+
+          # image name
+          IMAGE_NAME=$(yq -r ".name" ./recipes/${{ matrix.recipe }}.yaml)
+          echo "image_name=${IMAGE_NAME}" | tee -a ${GITHUB_OUTPUT}
+
+          # base image version
+          IMAGE_VERSION=$(yq -r ".image-version" ./recipes/${{ matrix.recipe }}.yaml)
+          echo "image_version=${IMAGE_VERSION}" | tee -a ${GITHUB_OUTPUT}
+
+      - name: "Build metadata"
+        id: "build_metadata"
+        uses: "docker/metadata-action/@v5.6.1"
+        env:
+          DOCKER_METADATA_SHORT_SHA_LENGTH: 8
+        with:
+          images: |
+            ghcr.io/${{ github.repository_owner }}/${{ steps.get_metadata.outputs.image_name }}
+          tags: |
+            type=raw,value=latest,enable=${{ github.event_name == 'release' }}
+            type=semver,pattern={{version}},suffix=-${{ steps.get_metadata.outputs.image_version }},enable=${{ github.event_name == 'release' }}
+            type=sha,suffix=-${{ steps.get_metadata.outputs.image_version }}
+
+      - name: "Login to GitHub Container Registry"
+        uses: "docker/login-action@v3.3.0"
+        with:
+          registry: "ghcr.io"
+          username: "${{ github.repository_owner }}"
+          password: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: "Generate Containerfile"
+        env:
           RECIPE_PATH: "./recipes/${{ matrix.recipe }}.yaml"
           RUST_LOG_STYLE: "always"
           CLICOLOR_FORCE: "1"
         run: |
           set -eu
 
-          # build options
-          OPTS=""
-          ## push image only on release
-          if [[ "${{ github.event_name }}" == "release" ]]; then
-            OPTS="--push"
-          fi
-
-          # build image
-          bluebuild build --verbose \
+          bluebuild generate \
+            --output ./Containerfile \
             --platform "${{ matrix.platform }}" \
-            ${OPTS} \
+            --verbose \
             ${RECIPE_PATH}
 
-      - name: "Get attest subject"
-        id: "get_attest_subject"
+      - name: "Build image (and publish on release)"
+        id: "build_image"
+        uses: "docker/build-push-action@v6.13.0"
+        with:
+          annotations: "${{ steps.build_metadata.outputs.annotations }}"
+          cache-from: "type=gha"
+          cache-to: "type=gha,mode=max"
+          context: "."
+          file: "./Containerfile"
+          labels: "${{ steps.build_metadata.outputs.labels }}"
+          platforms: "${{ matrix.platform }}"
+          push: ${{ github.event_name == 'release' }}
+          tags: "${{ steps.build_metadata.outputs.tags }}"
+
+      - name: "Signing image"
         if: ${{ github.event_name == 'release' }}
+        env:
+          COSIGN_PASSWORD: ""
+          COSIGN_PRIVATE_KEY: "${{ secrets.SIGNING_SECRET }}"
+          COSIGN_YES: "true"
         run: |
           set -eu
 
-          # get subject name
-          USER="${{ github.repository_owner }}"
-          NAME="ghcr.io/${USER,,}/$(
-            yq -r '.name' ./recipes/${{ matrix.recipe }}.yaml
-          )"
-          echo "subject_name=${NAME}" | tee -a ${GITHUB_OUTPUT}
-
-          # get subject digest
-          docker pull "${NAME}:latest"
-          DIGEST=$(
-            docker images --filter="reference=${NAME}:latest" --format="{{ json . }}" \
-            | head -n1 \
-            | jq -r ".Digest"
+          IMAGE_NAME=$(
+            echo "${{ fromJson(steps.build_metadata.outputs.json).tags[0] }}" \
+            | cut -d":" -f"1"
           )
-          echo "subject_digest=${DIGEST}" | tee -a ${GITHUB_OUTPUT}
+          IMAGE_DIGEST="${{ steps.build_image.outputs.digest }}"
 
-      - name: "Attest image"
+          cosign sign \
+            --key="env://COSIGN_PRIVATE_KEY" \
+            "${IMAGE_NAME}@${IMAGE_DIGEST}"
+
+      - name: "Attest build provenance for image"
         if: ${{ github.event_name == 'release' }}
         uses: "actions/attest-build-provenance@v2.2.0"
         with:
-          subject-name: "${{ steps.get_attest_subject.outputs.subject_name }}"
-          subject-digest: "${{ steps.get_attest_subject.outputs.subject_digest }}"
+          subject-name: "ghcr.io/${{ github.repository_owner }}/${{ steps.get_metadata.outputs.image_name }}"
+          subject-digest: "${{ steps.build_image.outputs.digest }}"
