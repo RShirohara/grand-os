@@ -21,7 +21,7 @@ jobs:
         env:
           GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         run: |
-          set -ex
+          set -eu
 
           gh extension install actions/gh-actions-cache
 
@@ -32,7 +32,7 @@ jobs:
           REPOSITORY: "${{ github.repository }}"
           BRANCH: "refs/pull/${{ github.event.pull_request.number }}/merge"
         run: |
-          set -ex
+          set -eu
 
           echo "Fetching cache list..."
           CACHE_KEYS=$(
