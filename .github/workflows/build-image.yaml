@@ -108,12 +108,16 @@ jobs:
           set -eu
 
           # image name
-          IMAGE_NAME=$(yq -r ".name" ./recipes/${{ matrix.recipe }}.yaml)
+          IMAGE_NAME=$(yq ".name" ./recipes/${{ matrix.recipe }}.yaml)
           echo "image_name=${IMAGE_NAME}" | tee -a ${GITHUB_OUTPUT}
 
           # base image version
-          IMAGE_VERSION=$(yq -r ".image-version" ./recipes/${{ matrix.recipe }}.yaml)
+          IMAGE_VERSION=$(yq ".image-version" ./recipes/${{ matrix.recipe }}.yaml)
           echo "image_version=${IMAGE_VERSION}" | tee -a ${GITHUB_OUTPUT}
+
+          # author name
+          IMAGE_AUTHORS=$(yq ".authors" ./recipes/${{ matrix.recipe }})
+          echo "image_authors=${IMAGE_AUTHORS}" | tee -a ${GITHUB_OUTPUT}
 
       - name: "Build metadata"
         id: "build_metadata"
@@ -128,12 +132,12 @@ jobs:
             type=semver,pattern={{version}},suffix=-${{ steps.get_metadata.outputs.image_version }},enable=${{ github.event_name == 'release' }}
             type=sha,prefix=,suffix=-${{ steps.get_metadata.outputs.image_version }}
           labels: |
-            org.opencontainers.image.authors=${{ github.event.repository.owner.name }}
+            org.opencontainers.image.authors=${{ steps.get_metadata.outputs.image_authors }}
             org.opencontainers.image.documentation=https://github.com/${{ github.repository }}/blob/main/README.md
             org.opencontainers.image.source=https://github.com/${{ github.repository }}/blob/main/recipes/${{ matrix.recipe }}.yaml
             org.opencontainers.image.title=${{ steps.get_metadata.outputs.image_name }}
           annotations: |
-            org.opencontainers.image.authors=${{ github.event.repository.owner.name }}
+            org.opencontainers.image.authors=${{ steps.get_metadata.outputs.image_authors }}
             org.opencontainers.image.documentation=https://github.com/${{ github.repository }}/blob/main/README.md
             org.opencontainers.image.source=https://github.com/${{ github.repository }}/blob/main/recipes/${{ matrix.recipe }}.yaml
             org.opencontainers.image.title=${{ steps.get_metadata.outputs.image_name }}
