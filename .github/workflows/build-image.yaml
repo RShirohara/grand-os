@@ -127,6 +127,16 @@ jobs:
             type=raw,value=latest,enable=${{ github.event_name == 'release' }}
             type=semver,pattern={{version}},suffix=-${{ steps.get_metadata.outputs.image_version }},enable=${{ github.event_name == 'release' }}
             type=sha,prefix=,suffix=-${{ steps.get_metadata.outputs.image_version }}
+          labels: |
+            org.opencontainers.image.authors=${{ github.event.repository.owner.name }}
+            org.opencontainers.image.documentation=https://github.com/${{ github.repository }}/blob/main/README.md
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}/blob/main/recipes/${{ matrix.recipe }}.yaml
+            org.opencontainers.image.title=${{ steps.get_metadata.outputs.image_name }}
+          annotations: |
+            org.opencontainers.image.authors=${{ github.event.repository.owner.name }}
+            org.opencontainers.image.documentation=https://github.com/${{ github.repository }}/blob/main/README.md
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}/blob/main/recipes/${{ matrix.recipe }}.yaml
+            org.opencontainers.image.title=${{ steps.get_metadata.outputs.image_name }}
 
       - name: "Login to GitHub Container Registry"
         uses: "docker/login-action@v3.3.0"
