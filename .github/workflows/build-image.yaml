@@ -126,7 +126,7 @@ jobs:
           tags: |
             type=raw,value=latest,enable=${{ github.event_name == 'release' }}
             type=semver,pattern={{version}},suffix=-${{ steps.get_metadata.outputs.image_version }},enable=${{ github.event_name == 'release' }}
-            type=sha,suffix=-${{ steps.get_metadata.outputs.image_version }}
+            type=sha,prefix=,suffix=-${{ steps.get_metadata.outputs.image_version }}
 
       - name: "Login to GitHub Container Registry"
         uses: "docker/login-action@v3.3.0"
