@@ -21,6 +21,8 @@ jobs:
         env:
           GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         run: |
+          set -ex
+
           gh extension install actions/gh-actions-cache
 
       - name: "Cleanup cache"
@@ -30,20 +32,21 @@ jobs:
           REPOSITORY: "${{ github.repository }}"
           BRANCH: "refs/pull/${{ github.event.pull_request.number }}/merge"
         run: |
+          set -ex
+
           echo "Fetching cache list..."
           CACHE_KEYS=$(
             gh actions-cache list \
-              -R "${REPOSITORY}" \
-              -B "${BRANCH}" \
-            | cut -f 1
+              --repo "${REPOSITORY}" \
+              --branch "${BRANCH}" \
+            | cut --fields="1"
           )
 
-          set -e
           echo "Deleting cache..."
           for key in ${CACHE_KEYS}; do
             gh actions-cache delete "${key}" \
-              -R "${REPOSITORY}" \
-              -B "${BRANCH}" \
+              --repo "${REPOSITORY}" \
+              --branch "${BRANCH}" \
               --confirm
           done
           echo "Done"
