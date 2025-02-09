@@ -82,6 +82,8 @@ jobs:
 
       - name: "Setup Docker Buildx"
         uses: "docker/setup-buildx-action@v3.8.0"
+        with:
+          install: true
 
       - name: "Setup cosign cli"
         uses: "sigstore/cosign-installer@v3.8.0"
@@ -170,16 +172,20 @@ jobs:
         id: "build_image"
         uses: "docker/build-push-action@v6.13.0"
         with:
-          annotations: ${{ steps.build_metadata.outputs.annotations }}
-          build-args: ${{ fromJson(steps.get_metadata.outputs.build_args)[0] }}
+          annotations: |
+            ${{ steps.build_metadata.outputs.annotations }}
+          build-args: |
+            ${{ fromJson(steps.get_metadata.outputs.build_args)[0] }}
           cache-from: "type=gha"
           cache-to: "type=gha,mode=max"
           context: "."
           file: "./containers/${{ matrix.image }}/Containerfile"
-          labels: ${{ steps.build_metadata.outputs.labels }}
+          labels: |
+            ${{ steps.build_metadata.outputs.labels }}
           platforms: "${{ matrix.platform }}"
           push: ${{ github.event_name == 'push' }}
-          tags: ${{ steps.build_metadata.outputs.tags }}
+          tags: |
+            ${{ steps.build_metadata.outputs.tags }}
 
       - name: "Signing image"
         if: ${{ github.event_name == 'push' }}
