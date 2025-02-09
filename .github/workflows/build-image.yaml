@@ -116,7 +116,7 @@ jobs:
           echo "image_version=${IMAGE_VERSION}" | tee -a ${GITHUB_OUTPUT}
 
           # author name
-          IMAGE_AUTHORS=$(yq ".authors" ./recipes/${{ matrix.recipe }}.yaml)
+          IMAGE_AUTHORS=$(jq -r '.["org.opencontainers.image.authors"]' ./recipes/meta.json)
           echo "image_authors=${IMAGE_AUTHORS}" | tee -a ${GITHUB_OUTPUT}
 
       - name: "Build metadata"
