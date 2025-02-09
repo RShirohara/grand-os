@@ -6,9 +6,6 @@ description: "A desktop Linux image based for Fedora Kinoite and customized for 
 base-image: "ghcr.io/ublue-os/kinoite-main"
 image-version: "41"
 
-alt-tags:
-  - "latest"
-
 modules:
   - type: "files"
     files:
