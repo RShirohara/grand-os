@@ -142,7 +142,7 @@ jobs:
             type=sha,prefix=${{ steps.get_metadata.outputs.tag_prefix }}
             type=raw,value=latest,enable={{is_default_branch}}
           labels: |
-            org.opencontainers.'image'.authors=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.authors'] }}
+            org.opencontainers.image.authors=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.authors'] }}
             org.opencontainers.image.url=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.url'] }}
             org.opencontainers.image.documentation=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.documentation'] }}
             org.opencontainers.image.source=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.source'] }}
