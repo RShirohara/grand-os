@@ -1,9 +1,9 @@
-ARG BUILD_BUILDER_VERSION=latest
-ARG BUILD_REPOSITORY_COMMIT_HASH
+ARG BUILDER_VERSION=latest
+ARG REPOSITORY_COMMIT_HASH
 
 # stage 1: build theme.
-FROM registry.fedoraproject.org/fedora-minimal:${BUILD_BUILDER_VERSION} AS builder
-ARG BUILD_REPOSITORY_COMMIT_HASH
+FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS builder
+ARG REPOSITORY_COMMIT_HASH
 
 RUN dnf install --assumeyes \
         git
@@ -11,7 +11,7 @@ RUN dnf install --assumeyes \
 WORKDIR /WhiteSur-cursors
 RUN git init \
     && git remote add origin https://github.com/vinceliuice/WhiteSur-cursors \
-    && git fetch origin "${BUILD_REPOSITORY_COMMIT_HASH}" --depth=1 \
+    && git fetch origin "${REPOSITORY_COMMIT_HASH}" --depth=1 \
     && git checkout FETCH_HEAD
 
 RUN /WhiteSur-cursors/install.sh

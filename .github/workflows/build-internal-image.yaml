@@ -105,6 +105,13 @@ jobs:
             exit 1
           fi
 
+      - name: "Login to GitHub Container Registry"
+        uses: "docker/login-action@v3.3.0"
+        with:
+          registry: "ghcr.io"
+          username: "${{ github.repository_owner }}"
+          password: "${{ secrets.GITHUB_TOKEN }}"
+
       - name: "Get image metadata"
         id: "get_metadata"
         run: |
@@ -113,24 +120,54 @@ jobs:
 
           # build args
           ## GitHub Actions が `KEY=VALUE` 形式の複数行文字列を `${GITHUB_OUTPUT}` で受けると解釈に失敗するため、
-          ## 単一要素を持つ JSON Array にしたうえで出力し、値を使用する側で `fromJson()[0]` で受けるようにする。
-          BUILD_ARGS="[\"$(
+          ## 単一要素を持つ JSON String にしたうえで出力し、値を使用する側で `fromJson()` で受けるようにする。
+          BUILD_ARGS=$(
             cat ./build.env \
-            | grep "^BUILD_*" \
-            | sed -z "s/\\n/\\\\n/g"
-          )\"]"
+            | jq -Rs "."
+          )
           echo "build_args=${BUILD_ARGS}" | tee -a ${GITHUB_OUTPUT}
 
-          ## tag prefix
-          source ./build.env
-          echo "tag_prefix=${IMAGE_TAG_PREFIX}" | tee -a ${GITHUB_OUTPUT}
-
-          ## image metadata
+          # image metadata
           IMAGE_METADATA=$(
             cat ./meta.json \
             | jq -cr
           )
           echo "image_metadata=${IMAGE_METADATA}" | tee -a ${GITHUB_OUTPUT}
+
+          # image version
+          ## major version
+          _IMAGE_MAJOR_VERSION=$(
+            cat ./build.env \
+            | grep "^BUILDER_VERSION" \
+            | sed -e "s/^.*=//g"
+          )
+          ## minor version
+          _IMAGE_MINOR_VERSION=$(
+            date "+%Y%m%d"
+          )
+          ## patch version
+          _REPOSITORY_OWNER="${{ github.repository_owner }}"
+          _IMAGE_NAME=$(
+            cat ./meta.json \
+            | jq -r '.["org.opencontainers.image.title"]'
+          )
+          _IMAGE_URL="ghcr.io/${_REPOSITORY_OWNER,,}/${_IMAGE_NAME}"
+          set +o errexit
+          _IMAGE_PATCH_VERSION=$(
+            _PREFIX=$(
+              skopeo list-tags docker://${_IMAGE_URL} \
+              | jq -r ".Tags[]" \
+              | grep "^${_IMAGE_MAJOR_VERSION}.${_IMAGE_MINOR_VERSION}." \
+              | sort -r \
+              | head -n1 \
+              | cut -d"." -f"3" \
+              | xargs -I@ expr @ + 1
+            )
+            echo ${_PREFIX:-0}
+          )
+          set -o errexit
+          IMAGE_VERSION="${_IMAGE_MAJOR_VERSION}.${_IMAGE_MINOR_VERSION}.${_IMAGE_PATCH_VERSION}"
+          echo "image_version=${IMAGE_VERSION}" | tee -a ${GITHUB_OUTPUT}
 
       - name: "Build metadata"
         id: "build_metadata"
@@ -141,7 +178,7 @@ jobs:
           images: |
             ghcr.io/${{ github.repository_owner }}/${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.title'] }}
           tags: |
-            type=sha,prefix=${{ steps.get_metadata.outputs.tag_prefix }}
+            type=raw,value=${{ steps.get_metadata.outputs.image_version }}
             type=raw,value=latest,enable={{is_default_branch}}
           labels: |
             org.opencontainers.image.authors=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.authors'] }}
@@ -160,14 +197,6 @@ jobs:
             org.opencontainers.image.title=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.title'] }}
             org.opencontainers.image.description=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.description'] }}
 
-      - name: "Login to GitHub Container Registry"
-        if: ${{ github.event_name == 'push' }}
-        uses: "docker/login-action@v3.3.0"
-        with:
-          registry: "ghcr.io"
-          username: "${{ github.repository_owner }}"
-          password: "${{ secrets.GITHUB_TOKEN }}"
-
       - name: "Build image (and publish on main branch)"
         id: "build_image"
         uses: "docker/build-push-action@v6.13.0"
@@ -175,7 +204,7 @@ jobs:
           annotations: |
             ${{ steps.build_metadata.outputs.annotations }}
           build-args: |
-            ${{ fromJson(steps.get_metadata.outputs.build_args)[0] }}
+            ${{ fromJson(steps.get_metadata.outputs.build_args) }}
           cache-from: "type=gha"
           cache-to: "type=gha,mode=max"
           context: "."
