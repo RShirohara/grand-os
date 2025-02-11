@@ -113,19 +113,14 @@ jobs:
 
           # build args
           ## GitHub Actions が `KEY=VALUE` 形式の複数行文字列を `${GITHUB_OUTPUT}` で受けると解釈に失敗するため、
-          ## 単一要素を持つ JSON Array にしたうえで出力し、値を使用する側で `fromJson()[0]` で受けるようにする。
-          BUILD_ARGS="[\"$(
+          ## 単一要素を持つ JSON String にしたうえで出力し、値を使用する側で `fromJson()` で受けるようにする。
+          BUILD_ARGS=$(
             cat ./build.env \
-            | grep "^BUILD_*" \
-            | sed -z "s/\\n/\\\\n/g"
-          )\"]"
+            | jq -Rs "."
+          )
           echo "build_args=${BUILD_ARGS}" | tee -a ${GITHUB_OUTPUT}
 
-          ## tag prefix
-          source ./build.env
-          echo "tag_prefix=${IMAGE_TAG_PREFIX}" | tee -a ${GITHUB_OUTPUT}
-
-          ## image metadata
+          # image metadata
           IMAGE_METADATA=$(
             cat ./meta.json \
             | jq -cr
@@ -175,7 +170,7 @@ jobs:
           annotations: |
             ${{ steps.build_metadata.outputs.annotations }}
           build-args: |
-            ${{ fromJson(steps.get_metadata.outputs.build_args)[0] }}
+            ${{ fromJson(steps.get_metadata.outputs.build_args) }}
           cache-from: "type=gha"
           cache-to: "type=gha,mode=max"
           context: "."
