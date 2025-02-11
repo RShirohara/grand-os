@@ -8,6 +8,7 @@ image-version: "41"
 
 modules:
   - from-file: "./modules/rpm-ostree.yaml"
+  - from-file: "./modules/default-flatpaks.yaml"
 
   - type: "files"
     files:

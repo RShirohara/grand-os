@@ -1,0 +1,16 @@
+type: "default-flatpaks"
+system:
+  repo-url: "https://dl.flathub.org/repo/flathub.flatpakrepo"
+  repo-name: "flathub"
+  repo-title: "Flathub"
+  install:
+    - "com.github.tchx84.Flatseal"
+    - "io.missioncenter.MissionCenter"
+    - "org.fedoraproject.MediaWriter"
+    - "org.kde.gwenview"
+    - "org.kde.kcalc"
+    - "org.kde.kclock"
+    - "org.kde.kwrite"
+    - "org.kde.okular"
+    - "org.mozilla.firefox"
+    - "org.videolan.VLC"
