@@ -39,8 +39,6 @@ remove:
   - "kate-krunner-plugin"
   - "kate-plugins"
   - "kate"
-  - "keditbookmarks-libs"
-  - "keditbookmarks"
   - "ksshaskpass"
   - "git-core"
   - "git-core-doc"
