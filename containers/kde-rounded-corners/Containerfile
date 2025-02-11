@@ -1,19 +1,19 @@
-ARG BUILD_BUILDER_VERSION=latest
-ARG BUILD_REPOSITORY_VERSION
-ARG BUILD_KWIN_VERSION
+ARG BUILDER_VERSION=latest
+ARG REPOSITORY_VERSION
+ARG KWIN_VERSION
 
 # stage 1: build theme.
-FROM registry.fedoraproject.org/fedora-minimal:${BUILD_BUILDER_VERSION} AS builder
-ARG BUILD_BUILDER_VERSION
-ARG BUILD_REPOSITORY_VERSION
-ARG BUILD_KWIN_VERSION
+FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS builder
+ARG BUILDER_VERSION
+ARG REPOSITORY_VERSION
+ARG KWIN_VERSION
 
 RUN dnf install --assumeyes \
         git \
         cmake \
         gcc-c++ \
         extra-cmake-modules \
-        kwin-devel-${BUILD_KWIN_VERSION}-1.fc${BUILD_BUILDER_VERSION} \
+        kwin-devel-${KWIN_VERSION}-1.fc${BUILDER_VERSION} \
         kf6-kconfigwidgets-devel \
         libepoxy-devel \
         kf6-kcmutils-devel \
@@ -22,7 +22,7 @@ RUN dnf install --assumeyes \
         wayland-devel
 
 RUN git clone https://github.com/matinlotfali/KDE-Rounded-Corners \
-        --branch="${BUILD_REPOSITORY_VERSION}" \
+        --branch="${REPOSITORY_VERSION}" \
         --depth=1
 
 RUN cd /KDE-Rounded-Corners \

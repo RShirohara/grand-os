@@ -1,16 +1,16 @@
-ARG BUILD_BUILDER_VERSION=latest
-ARG BUILD_REPOSITORY_VERSION
+ARG BUILDER_VERSION=latest
+ARG REPOSITORY_VERSION
 
 # stage 1: build theme.
-FROM registry.fedoraproject.org/fedora-minimal:${BUILD_BUILDER_VERSION} AS builder
-ARG BUILD_REPOSITORY_VERSION
+FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS builder
+ARG REPOSITORY_VERSION
 
 RUN dnf install --assumeyes \
         git \
         gtk-update-icon-cache
 
 RUN git clone https://github.com/vinceliuice/WhiteSur-icon-theme \
-        --branch="${BUILD_REPOSITORY_VERSION}" \
+        --branch="${REPOSITORY_VERSION}" \
         --depth=1
 
 RUN /WhiteSur-icon-theme/install.sh \
