@@ -1,3 +1,5 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/modules/brew-v1.json
+
 type: "brew"
 brew-analytics: false
 auto-update: false
