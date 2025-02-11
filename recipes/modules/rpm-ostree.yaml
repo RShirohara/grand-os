@@ -27,7 +27,6 @@ remove:
   - "ibus-gtk4"
   - "ibus-hangul"
   - "ibus-libpinyin"
-  - "ibus-libs"
   - "ibus-m17n"
   - "ibus-panel"
   - "ibus-setup"
