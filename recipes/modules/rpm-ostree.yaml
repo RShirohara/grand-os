@@ -39,5 +39,3 @@ remove:
   - "kate-plugins"
   - "kate"
   - "ksshaskpass"
-  - "git-core"
-  - "git-core-doc"
