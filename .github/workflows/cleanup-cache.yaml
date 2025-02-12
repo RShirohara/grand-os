@@ -18,6 +18,8 @@ jobs:
         uses: "actions/checkout@v4.2.2"
 
       - name: "Setup gh extenson `actions/gh-actions-cache`"
+        env:
+          GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         run: |
           set -o "errexit" -o "nounset"
 
@@ -26,6 +28,7 @@ jobs:
       - name: "Cleanup cache"
         continue-on-error: true
         env:
+          GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           REPOSITORY: "${{ github.repository }}"
           BRANCH: "refs/pull/${{ github.event.pull_request.number }}/merge"
         run: |
