@@ -1,4 +1,4 @@
-name: "Cleanup cache for closed branch"
+name: "Cleanup cache"
 
 on:
   pull_request:
@@ -17,37 +17,35 @@ jobs:
       - name: "Checkout repository"
         uses: "actions/checkout@v4.2.2"
 
-      - name: "Setup gh extension `actions/gh-actions-cache`"
-        env:
-          GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - name: "Setup gh extenson `actions/gh-actions-cache`"
         run: |
-          set -eu
+          set -o "errexit" -o "nounset"
 
-          gh extension install actions/gh-actions-cache
+          gh extension install "actions/gh-actions-cache"
 
       - name: "Cleanup cache"
         continue-on-error: true
         env:
-          GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           REPOSITORY: "${{ github.repository }}"
           BRANCH: "refs/pull/${{ github.event.pull_request.number }}/merge"
         run: |
-          set -eu
+          set -o "errexit" -o "nounset"
 
           echo "Fetching cache list..."
           CACHE_KEYS=$(
             gh actions-cache list \
-              --repo "${REPOSITORY}" \
-              --branch "${BRANCH}" \
-              --limit 100 \
+              --repo="${REPOSITORY}" \
+              --branch="${BRANCH}" \
+              --limit=100 \
             | cut --fields="1"
           )
+          CACHE_SIZE=$(echo "${CACHE_KEYS}" | wc --words)
 
-          echo "Deleting $(echo ${CACHE_KEYS} | wc -w) cache..."
+          echo "Deleting ${CACHE_SIZE} cache..."
           for key in ${CACHE_KEYS}; do
             gh actions-cache delete "${key}" \
-              --repo "${REPOSITORY}" \
-              --branch "${BRANCH}" \
+              --repo="${REPOSITORY}" \
+              --branch="${BRANCH}" \
               --confirm
           done
           echo "Done"
