@@ -1,4 +1,4 @@
-name: Build (Internal image)
+name: "Build (Internal image)"
 
 on:
   pull_request:
@@ -17,6 +17,7 @@ on:
 
 concurrency:
   group: "${{ github.workflow }}-${{ github.ref || github.run_id }}"
+  cancel-in-progress: true
 
 jobs:
   get_target:
@@ -32,31 +33,31 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: "Get changed images"
+      - name: "Get modified images"
         id: "get_images"
         run: |
-          set -eu
+          set -o "errexit" -o "nounset"
 
-          # get diff target
-          DIFF_TARGET="origin/main"
+          # get compare target
+          COMPARE_TARGET="origin/main"
           if [[ "${{ github.event_name }}" == "push" ]]; then
-            DIFF_TARGET="HEAD~1"
+            COMPARE_TARGET="HEAD~1"
           fi
 
-          # get image lists
-          TARGETS=$(
-            git diff --name-only ${DIFF_TARGET} HEAD \
+          # get modified images list
+          MODIFIED_IMAGES=$(
+            git diff --name-only "${COMPARE_TARGET}" "HEAD" \
             | grep "containers/*" \
-            | cut -d"/" -f"2" \
+            | cut --delimiter="/" --fields="2" \
             | uniq \
-            | jq -cnR "[inputs]"
+            | jq --null-input --raw-input --compact-output "[inputs]"
           )
           IMAGES=$(
-            find containers -mindepth 1 -maxdepth 1 -type d \
-            | cut -d"/" -f"2" \
-            | jq -cnR "[inputs]"
+            find containers -mindepth 1 -maxdepth 1 -type "d" \
+            | cut --delimiter="/" --fields="2" \
+            | jq --null-input --raw-input --compact-output "[inputs]"
           )
-          echo "images=${TARGETS/[]/${IMAGES}}" | tee -a ${GITHUB_OUTPUT}
+          echo "images=${MODIFIED_IMAGES/[]/${IMAGES}}" | tee --append "${GITHUB_OUTPUT}"
 
   build:
     name: "Build (${{ matrix.image }}, ${{ matrix.platform }})"
@@ -91,16 +92,16 @@ jobs:
           install-dir: "/usr/bin"
           use-sudo: true
 
-      - name: "Check cosign key-pair"
+      - name: "Validate cosign key-pair"
         env:
-          COSIGN_PASSWORD: ""
-          COSIGN_PRIVATE_KEY: "${{ secrets.SIGNING_SECRET }}"
+          COSIGN_PASSWORD: "${{ secrets.COSIGN_PASSWORD }}"
+          COSIGN_PRIVATE_KEY: "${{ secrets.COSIGN_PRIVATE_KEY }}"
           COSIGN_YES: "true"
         run: |
-          set -eu
+          set -o "errexit" -o "nounset"
 
           cosign public-key --key="env://COSIGN_PRIVATE_KEY" > cosign.pub
-          if [[ $(git diff --name-only | grep "cosign.pub") > 0 ]]; then
+          if [[ $(git diff --name-only | grep "cosign.pub") -gt 0 ]]; then
             echo "::error title=Invalid cosign key::Failed to validate cosign key pair."
             exit 1
           fi
@@ -115,31 +116,24 @@ jobs:
       - name: "Get image metadata"
         id: "get_metadata"
         run: |
-          set -eu
+          set -o "errexit" -o "nounset"
           cd ./containers/${{ matrix.image }}
 
           # build args
           ## GitHub Actions が `KEY=VALUE` 形式の複数行文字列を `${GITHUB_OUTPUT}` で受けると解釈に失敗するため、
           ## 単一要素を持つ JSON String にしたうえで出力し、値を使用する側で `fromJson()` で受けるようにする。
-          BUILD_ARGS=$(
-            cat ./build.env \
-            | jq -Rs "."
-          )
-          echo "build_args=${BUILD_ARGS}" | tee -a ${GITHUB_OUTPUT}
+          BUILD_ARGS=$(jq --raw-input --slurp "." ./build.env)
+          echo "build_args=${BUILD_ARGS}" | tee --append "${GITHUB_OUTPUT}"
 
           # image metadata
-          IMAGE_METADATA=$(
-            cat ./meta.json \
-            | jq -cr
-          )
-          echo "image_metadata=${IMAGE_METADATA}" | tee -a ${GITHUB_OUTPUT}
+          IMAGE_METADATA=$(jq --compact-output --raw-output ./meta.json)
+          echo "image_metadata=${IMAGE_METADATA}" | tee --append "${GITHUB_OUTPUT}"
 
           # image version
           ## major version
           _IMAGE_MAJOR_VERSION=$(
-            cat ./build.env \
-            | grep "^BUILDER_VERSION" \
-            | sed -e "s/^.*=//g"
+            grep "^BUILDER_VERSION" ./build.env \
+            | sed --expression="s/^.*=//g"
           )
           ## minor version
           _IMAGE_MINOR_VERSION=$(
@@ -147,33 +141,28 @@ jobs:
           )
           ## patch version
           _REPOSITORY_OWNER="${{ github.repository_owner }}"
-          _IMAGE_NAME=$(
-            cat ./meta.json \
-            | jq -r '.["org.opencontainers.image.title"]'
-          )
+          _IMAGE_NAME=$(jq --raw-output '.["org.opencontainers.image.title"]' ./meta.json)
           _IMAGE_URL="ghcr.io/${_REPOSITORY_OWNER,,}/${_IMAGE_NAME}"
-          set +o errexit
+          set +o "errexit"
           _IMAGE_PATCH_VERSION=$(
             _PREFIX=$(
-              skopeo list-tags docker://${_IMAGE_URL} \
-              | jq -r ".Tags[]" \
+              skopeo list-tags "docker://${_IMAGE_URL}" \
+              | jq --raw-output ".Tags[]" \
               | grep "^${_IMAGE_MAJOR_VERSION}.${_IMAGE_MINOR_VERSION}." \
-              | sort -r \
-              | head -n1 \
-              | cut -d"." -f"3" \
-              | xargs -I@ expr @ + 1
+              | sort --reverse \
+              | head --lines="1" \
+              | cut --delimiter="." --fields="3" \
+              | xargs --replace="@" expr @ + 1
             )
-            echo ${_PREFIX:-0}
+            echo "${_PREFIX:-0}"
           )
-          set -o errexit
+          set -o "errexit"
           IMAGE_VERSION="${_IMAGE_MAJOR_VERSION}.${_IMAGE_MINOR_VERSION}.${_IMAGE_PATCH_VERSION}"
-          echo "image_version=${IMAGE_VERSION}" | tee -a ${GITHUB_OUTPUT}
+          echo "image_version=${IMAGE_VERSION}" | tee --append "${GITHUB_OUTPUT}"
 
       - name: "Build metadata"
         id: "build_metadata"
         uses: "docker/metadata-action@v5.6.1"
-        env:
-          DOCKER_METADATA_SHORT_SHA_LENGTH: 8
         with:
           images: |
             ghcr.io/${{ github.repository_owner }}/${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.title'] }}
@@ -219,18 +208,17 @@ jobs:
       - name: "Signing image"
         if: ${{ github.event_name == 'push' }}
         env:
-          COSIGN_PASSWORD: ""
-          COSIGN_PRIVATE_KEY: "${{ secrets.SIGNING_SECRET }}"
+          COSIGN_PASSWORD: "${{ secrets.COSIGN_PASSWORD }}"
+          COSIGN_PRIVATE_KEY: "${{ secrets.COSIGN_PRIVATE_KEY }}"
           COSIGN_YES: "true"
         run: |
-          set -eu
+          set -o "errexit" -o "nounset"
 
           IMAGE_NAME=$(
             echo "${{ fromJson(steps.build_metadata.outputs.json).tags[0] }}" \
-            | cut -d":" -f"1"
+            | cut --delimiter=":" --fields="1"
           )
           IMAGE_DIGEST="${{ steps.build_image.outputs.digest }}"
-
           cosign sign \
             --key="env://COSIGN_PRIVATE_KEY" \
             "${IMAGE_NAME}@${IMAGE_DIGEST}"
