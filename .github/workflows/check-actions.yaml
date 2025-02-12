@@ -34,7 +34,7 @@ jobs:
           set -eu
 
           mkdir --parents "${ACTIONLINT_INSTALL_DIR}"
-          echo "${ACTIONLINT_INSTALL_DIR}" | tee --append ${GITHUB_PATH}
+          echo "${ACTIONLINT_INSTALL_DIR}" | tee --append "${GITHUB_PATH}"
 
           wget --output-document="-" \
             "${ACTIONLINT_INSTALL_SCRIPT}" \
