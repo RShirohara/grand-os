@@ -126,7 +126,7 @@ jobs:
           echo "build_args=${BUILD_ARGS}" | tee --append "${GITHUB_OUTPUT}"
 
           # image metadata
-          IMAGE_METADATA=$(jq --compact-output --raw-output ./meta.json)
+          IMAGE_METADATA=$(jq --compact-output --raw-output "." ./meta.json)
           echo "image_metadata=${IMAGE_METADATA}" | tee --append "${GITHUB_OUTPUT}"
 
           # image version
