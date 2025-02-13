@@ -130,7 +130,7 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/${{ steps.get_metadata.outputs.image_name }}
           tags: |
             type=raw,value={{date 'YYYYMMDD'}},prefix=${{ steps.get_metadata.outputs.image_version }}.,suffix=.0,enable=${{ github.event_name == 'pull_request' }}
-            type=match,pattern=v(\d.\d),group=1,prefix=${{ steps.get_metadata.outputs.image_version }}.,enable=${{ github.event_name == 'release' }}
+            type=match,pattern=v(\d{8,}\.\d{1,}),group=1,prefix=${{ steps.get_metadata.outputs.image_version }}.,enable=${{ github.event_name == 'release' }}
             type=raw,value=latest,enable=${{ github.event_name == 'release' }}
           labels: |
             org.opencontainers.image.authors=${{ steps.get_metadata.outputs.image_authors }}
