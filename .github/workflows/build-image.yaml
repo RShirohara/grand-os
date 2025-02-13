@@ -75,15 +75,16 @@ jobs:
         run: |
           set -o "errexit" -o "nounset"
 
+          mkdir --parents "${BLUEBUILD_INSTALL_DIR}"
+          echo "${BLUEBUILD_INSTALL_DIR}" | tee --append "${GITHUB_PATH}"
+
           docker create \
             --name="blue-build-installer" \
             "ghcr.io/blue-build/cli:${CLI_VERSION}-installer"
           docker cp blue-build-installer:/out/bluebuild "${BLUEBUILD_INSTALL_DIR}/bluebuild"
           docker rm blue-build-installer
 
-          echo "${BLUEBUILD_INSTALL_DIR}" | tee --append "${GITHUB_PATH}"
-
-          bluebuild --version
+          "${BLUEBUILD_INSTALL_DIR}/bluebuild" --version
 
       - name: "Setup cosign cli"
         uses: "sigstore/cosign-installer@v3.8.0"
