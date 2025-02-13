@@ -89,8 +89,7 @@ jobs:
       - name: "Setup cosign cli"
         uses: "sigstore/cosign-installer@v3.8.0"
         with:
-          install-dir: "/usr/bin"
-          use-sudo: true
+          install-dir: "${{ runner.temp }}/cosign/bin"
 
       - name: "Validate cosign key-pair"
         env:
@@ -219,6 +218,7 @@ jobs:
             | cut --delimiter=":" --fields="1"
           )
           IMAGE_DIGEST="${{ steps.build_image.outputs.digest }}"
+
           cosign sign \
             --key="env://COSIGN_PRIVATE_KEY" \
             "${IMAGE_NAME}@${IMAGE_DIGEST}"
