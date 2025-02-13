@@ -90,8 +90,8 @@ jobs:
 
       - name: "Check cosign key-pair"
         env:
-          COSIGN_PASSWORD: ""
-          COSIGN_PRIVATE_KEY: "${{ secrets.SIGNING_SECRET }}"
+          COSIGN_PASSWORD: "${{ secrets.COSIGN_PASSWORD }}"
+          COSIGN_PRIVATE_KEY: "${{ secrets.COSIGN_PRIVATE_KEY }}"
           COSIGN_YES: "true"
         run: |
           set -eu
@@ -183,8 +183,8 @@ jobs:
       - name: "Signing image"
         if: ${{ github.event_name == 'release' }}
         env:
-          COSIGN_PASSWORD: ""
-          COSIGN_PRIVATE_KEY: "${{ secrets.SIGNING_SECRET }}"
+          COSIGN_PASSWORD: "${{ secrets.COSIGN_PASSWORD }}"
+          COSIGN_PRIVATE_KEY: "${{ secrets.COSIGN_PRIVATE_KEY }}"
           COSIGN_YES: "true"
         run: |
           set -eu
