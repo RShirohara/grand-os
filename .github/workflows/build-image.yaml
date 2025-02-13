@@ -1,4 +1,4 @@
-name: Build (OS image)
+name: "Build (OS image)"
 
 on:
   pull_request:
@@ -31,15 +31,15 @@ jobs:
       - name: "Get recipes"
         id: "get_recipes"
         run: |
-          set -eu
+          set -o "errexit" -o "nounset"
 
           # get recipes list
           RECIPES=$(
-            find recipes -mindepth 1 -maxdepth 1 -type f -name "*.yaml" \
-            | xargs -I@ basename -- "@" ".yaml" \
-            | jq -cnR "[inputs]"
+            find recipes -mindepth 1 -maxdepth 1 -type "f" -name "*.yaml" -print0 \
+            | xargs --null --replace="@" basename -- "@" ".yaml" \
+            | jq --null-input --raw-input --compact-output "[inputs]"
           )
-          echo "recipes=${RECIPES}" | tee -a ${GITHUB_OUTPUT}
+          echo "recipes=${RECIPES}" | tee --append "${GITHUB_OUTPUT}"
 
   build:
     name: "Build (${{ matrix.recipe }}, ${{ matrix.platform }})"
@@ -70,34 +70,36 @@ jobs:
 
       - name: "Setup BlueBuild cli"
         env:
+          BLUEBUILD_INSTALL_DIR: "${{ runner.temp }}/bluebuild/bin"
           CLI_VERSION: "latest"
         run: |
-          set -eu
+          set -o "errexit" -o "nounset"
 
-          sudo docker create \
-            --name "blue-build-installer" \
-            ghcr.io/blue-build/cli:${CLI_VERSION}-installer
-          sudo docker cp blue-build-installer:/out/bluebuild /usr/bin/bluebuild
-          sudo docker rm blue-build-installer
+          docker create \
+            --name="blue-build-installer" \
+            "ghcr.io/blue-build/cli:${CLI_VERSION}-installer"
+          docker cp blue-build-installer:/out/bluebuild "${BLUEBUILD_INSTALL_DIR}/bluebuild"
+          docker rm blue-build-installer
+
+          echo "${BLUEBUILD_INSTALL_DIR}" | tee --append "${GITHUB_PATH}"
 
           bluebuild --version
 
       - name: "Setup cosign cli"
         uses: "sigstore/cosign-installer@v3.8.0"
         with:
-          install-dir: "/usr/bin"
-          use-sudo: true
+          install-dir: "${{ runner.temp }}/cosign/bin"
 
-      - name: "Check cosign key-pair"
+      - name: "Validate cosign key-pair"
         env:
           COSIGN_PASSWORD: "${{ secrets.COSIGN_PASSWORD }}"
           COSIGN_PRIVATE_KEY: "${{ secrets.COSIGN_PRIVATE_KEY }}"
           COSIGN_YES: "true"
         run: |
-          set -eu
+          set -o "errexit" -o "nounset"
 
           cosign public-key --key="env://COSIGN_PRIVATE_KEY" > cosign.pub
-          if [[ $(git diff --name-only | grep "cosign.pub") > 0 ]]; then
+          if [[ $(git diff --name-only | grep "cosign.pub") -gt 0 ]]; then
             echo "::error title=Invalid cosign key::Failed to validate cosign key pair."
             exit 1
           fi
@@ -105,25 +107,23 @@ jobs:
       - name: "Get image metadata"
         id: "get_metadata"
         run: |
-          set -eu
+          set -o "errexit" -o "nounset"
 
           # image name
           IMAGE_NAME=$(yq ".name" ./recipes/${{ matrix.recipe }}.yaml)
-          echo "image_name=${IMAGE_NAME}" | tee -a ${GITHUB_OUTPUT}
+          echo "image_name=${IMAGE_NAME}" | tee --append "${GITHUB_OUTPUT}"
 
           # base image version
           IMAGE_VERSION=$(yq ".image-version" ./recipes/${{ matrix.recipe }}.yaml)
-          echo "image_version=${IMAGE_VERSION}" | tee -a ${GITHUB_OUTPUT}
+          echo "image_version=${IMAGE_VERSION}" | tee --append "${GITHUB_OUTPUT}"
 
           # author name
-          IMAGE_AUTHORS=$(jq -r '.["org.opencontainers.image.authors"]' ./recipes/meta.json)
-          echo "image_authors=${IMAGE_AUTHORS}" | tee -a ${GITHUB_OUTPUT}
+          IMAGE_AUTHORS=$(jq --raw-output '.["org.opencontainers.image.authors"]' ./recipes/meta.json)
+          echo "image_authors=${IMAGE_AUTHORS}" | tee --append "${GITHUB_OUTPUT}"
 
       - name: "Build metadata"
         id: "build_metadata"
         uses: "docker/metadata-action/@v5.6.1"
-        env:
-          DOCKER_METADATA_SHORT_SHA_LENGTH: 8
         with:
           images: |
             ghcr.io/${{ github.repository_owner }}/${{ steps.get_metadata.outputs.image_name }}
@@ -155,13 +155,13 @@ jobs:
           RUST_LOG_STYLE: "always"
           CLICOLOR_FORCE: "1"
         run: |
-          set -eu
+          set -o "errexit" -o "nounset"
 
           bluebuild generate \
-            --output ./Containerfile \
-            --platform "${{ matrix.platform }}" \
+            --output="./Containerfile" \
+            --platform="${{ matrix.platform }}" \
             --verbose \
-            ${RECIPE_PATH}
+            "${RECIPE_PATH}"
 
       - name: "Build image (and publish on release)"
         id: "build_image"
@@ -187,11 +187,11 @@ jobs:
           COSIGN_PRIVATE_KEY: "${{ secrets.COSIGN_PRIVATE_KEY }}"
           COSIGN_YES: "true"
         run: |
-          set -eu
+          set -o "errexit" -o "nounset"
 
           IMAGE_NAME=$(
             echo "${{ fromJson(steps.build_metadata.outputs.json).tags[0] }}" \
-            | cut -d":" -f"1"
+            | cut --delimiter=":" --fields="1"
           )
           IMAGE_DIGEST="${{ steps.build_image.outputs.digest }}"
 
