@@ -170,8 +170,6 @@ jobs:
         with:
           annotations: |
             ${{ steps.build_metadata.outputs.annotations }}
-          cache-from: "type=gha"
-          cache-to: "type=gha,mode=max"
           context: "."
           file: "./Containerfile"
           labels: |
