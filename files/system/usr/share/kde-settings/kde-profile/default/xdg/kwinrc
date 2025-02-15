@@ -15,3 +15,10 @@ InactiveOutlineUsePalette=true
 
 [Script-kzones]
 layoutsJson=[{"name":"Default","padding":0,"zones":[{"x":0,"y":0,"height":100,"width":50},{"x":50,"y":0,"height":100,"width":50}]}]
+
+[org.kde.kdecoration2]
+BorderSize=None
+BorderSizeAuto=false
+ButtonsOnLeft=XIA
+ButtonsOnRight=
+theme=__aurorae__svg__WhiteSur-dark
