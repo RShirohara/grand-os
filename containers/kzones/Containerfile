@@ -1,0 +1,26 @@
+ARG BUILDER_VERSION=latest
+ARG REPOSITORY_VERSION
+
+# stage 1: build theme.
+FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS builder
+ARG BUILDER_VERSION
+ARG REPOSITORY_VERSION
+
+RUN dnf install --assumeyes \
+        git \
+        make \
+        zip
+
+RUN git clone https://github.com/gerritdevriese/kzones \
+        --branch="${REPOSITORY_VERSION}" \
+        --depth=1
+
+RUN cd /kzones \
+    && make build
+
+# stage 2: copy theme files.
+FROM scratch
+
+COPY --from=builder \
+    /kzones/pkg \
+    /usr/share/kwin/scripts/kzones
