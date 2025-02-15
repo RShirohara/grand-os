@@ -13,6 +13,8 @@ RUN git clone https://github.com/vinceliuice/WhiteSur-kde \
         --depth=1
 
 RUN /WhiteSur-kde/install.sh
+RUN mkdir --parents /usr/share/sddm/themes \
+    && /WhiteSur-kde/sddm/install.sh
 
 # stage 2: copy theme files.
 FROM scratch
@@ -35,3 +37,6 @@ COPY --from=builder \
 COPY --from=builder \
     /usr/share/wallpapers \
     /usr/share/wallpapers
+COPY --from=builder \
+    /usr/share/sddm/themes \
+    /usr/share/sddm/themes

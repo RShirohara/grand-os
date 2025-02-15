@@ -1,0 +1,9 @@
+[kwin]
+KZones: Move active window down=Meta+Down,none,KZones: Move active window down
+KZones: Move active window to next zone=Meta+Right,none,KZones: Move active window to next zone
+KZones: Move active window to previous zone=Meta+Left,none,KZones: Move active window to previous zone
+KZones: Move active window up=Meta+Up,none,KZones: Move active window up
+Window Quick Tile Bottom=none,Meta+Down,Quick Tile Window to the Bottom
+Window Quick Tile Left=none,Meta+Left,Quick Tile Window to the Left
+Window Quick Tile Right=none,Meta+Right,Quick Tile Window to the Right
+Window Quick Tile Top=none,Meta+Up,Quick Tile Window to the Top
