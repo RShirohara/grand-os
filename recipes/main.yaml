@@ -13,5 +13,6 @@ modules:
   - from-file: "./modules/copy/hackgen.yaml"
   - from-file: "./modules/copy/kde-rounded-corners.yaml"
   - from-file: "./modules/copy/kzones.yaml"
+  - from-file: "./modules/copy/whitesur-cursors.yaml"
   - from-file: "./modules/files.yaml"
   - type: "signing"
