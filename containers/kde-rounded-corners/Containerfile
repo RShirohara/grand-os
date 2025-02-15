@@ -13,7 +13,7 @@ RUN dnf install --assumeyes \
         cmake \
         gcc-c++ \
         extra-cmake-modules \
-        kwin-devel-${KWIN_VERSION}-1.fc${BUILDER_VERSION} \
+        kwin-devel-${KWIN_VERSION}-*.fc${BUILDER_VERSION} \
         kf6-kconfigwidgets-devel \
         libepoxy-devel \
         kf6-kcmutils-devel \
