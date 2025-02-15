@@ -23,6 +23,7 @@ remove:
   - "distrobox"
   - "firefox-langpacks"
   - "firefox"
+  - "fuse-overlayfs"
   - "ibus-anthy-python"
   - "ibus-anthy"
   - "ibus-chewing"
