@@ -1,0 +1,30 @@
+ARG BUILDER_VERSION=latest
+ARG REPOSITORY_VERSION
+
+# stage 1: build fonts.
+FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS builder
+ARG BUILDER_VERSION
+ARG REPOSITORY_VERSION
+
+RUN dnf install --assumeyes \
+        zip
+
+WORKDIR /hackgen
+RUN curl --location --output "./hackgen.zip" \
+        "https://github.com/yuru7/Hackgen/releases/download/${REPOSITORY_VERSION}/HackGen_${REPOSITORY_VERSION}.zip" \
+    && curl --location --output "./hackgen_nf.zip" \
+        "https://github.com/yuru7/Hackgen/releases/download/${REPOSITORY_VERSION}/HackGen_NF_${REPOSITORY_VERSION}.zip"
+
+RUN unzip hackgen.zip \
+    && unzip hackgen_nf.zip
+
+# stage 2: copy font files.
+FROM scratch
+ARG REPOSITORY_VERSION
+
+COPY --from=builder \
+    /hackgen/HackGen_${REPOSITORY_VERSION} \
+    /usr/share/fonts/hackgen
+COPY --from=builder \
+    /hackgen/HackGen_NF_${REPOSITORY_VERSION} \
+    /usr/share/fonts/hackgen
