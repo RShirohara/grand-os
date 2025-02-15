@@ -1,7 +1,7 @@
 ARG BUILDER_VERSION=latest
 ARG REPOSITORY_VERSION
 
-# stage 1: build theme.
+# stage 1: build fonts.
 FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS builder
 ARG BUILDER_VERSION
 ARG REPOSITORY_VERSION
@@ -18,7 +18,7 @@ RUN curl --location --output "./hackgen.zip" \
 RUN unzip hackgen.zip \
     && unzip hackgen_nf.zip
 
-# stage 2: copy theme files.
+# stage 2: copy font files.
 FROM scratch
 ARG REPOSITORY_VERSION
 
