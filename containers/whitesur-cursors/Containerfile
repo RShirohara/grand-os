@@ -1,7 +1,7 @@
 ARG BUILDER_VERSION=latest
 ARG REPOSITORY_COMMIT_HASH
 
-# stage 1: build theme.
+# stage 1: build icons.
 FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS builder
 ARG REPOSITORY_COMMIT_HASH
 
@@ -16,7 +16,7 @@ RUN git init \
 
 RUN /WhiteSur-cursors/install.sh
 
-# stage 2: copy theme files.
+# stage 2: copy icon files.
 FROM scratch
 
 COPY --from=builder \

@@ -2,7 +2,7 @@ ARG BUILDER_VERSION=latest
 ARG REPOSITORY_VERSION
 ARG KWIN_VERSION
 
-# stage 1: build theme.
+# stage 1: build effect.
 FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS builder
 ARG BUILDER_VERSION
 ARG REPOSITORY_VERSION
@@ -32,7 +32,7 @@ RUN cd /KDE-Rounded-Corners \
     && cmake --build . -j \
     && make install
 
-# stage 2: copy theme files.
+# stage 2: copy effect files.
 FROM scratch
 
 COPY --from=builder \
