@@ -1,0 +1,12 @@
+[Plugins]
+kwin4_effect_shapecornersEnabled=true
+
+[Round-Corners]
+ActiveOutlinePalette=4
+ActiveOutlineUseCustom=false
+ActiveOutlineUsePalette=true
+DisableOutlineTile=false
+DisableRoundTile=false
+InactiveOutlinePalette=4
+InactiveOutlineUseCustom=false
+InactiveOutlineUsePalette=true
