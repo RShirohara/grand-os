@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=System Update
-Comment=Update grand-os, Flatpaks, Homebrew formulas, and more.
+Comment=Update GrandOS, Flatpaks, Homebrew formulas, and more.
 Icon=update
 Categories=ConsoleOnly;System;
 Terminal=true

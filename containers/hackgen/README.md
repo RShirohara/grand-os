@@ -2,7 +2,7 @@
 
 Internal container image to provide
 [github.com/yuru7/HackGen](https://github.com/yuru7/HackGen)
-into grand-os.
+into GrandOS.
 
 ## Build
 

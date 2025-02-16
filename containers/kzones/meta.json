@@ -5,5 +5,5 @@
   "org.opencontainers.image.source": "https://github.com/RShirohara/grand-os/blob/main/containers/kzones/Containerfile",
   "org.opencontainers.image.licenses": "GPL-3.0-only",
   "org.opencontainers.image.title": "grand-os/internal/kzones",
-  "org.opencontainers.image.description": "Internal container image to provide github.com/gerritdevriese/kzones into grand-os."
+  "org.opencontainers.image.description": "Internal container image to provide github.com/gerritdevriese/kzones into GrandOS."
 }
