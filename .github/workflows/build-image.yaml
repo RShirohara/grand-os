@@ -71,7 +71,7 @@ jobs:
       - name: "Setup BlueBuild cli"
         env:
           BLUEBUILD_INSTALL_DIR: "${{ runner.temp }}/bluebuild/bin"
-          CLI_VERSION: "latest"
+          BLUEBUILD_INSTALL_VERSION: "latest"
         run: |
           set -o "errexit" -o "nounset"
 
@@ -80,7 +80,7 @@ jobs:
 
           docker create \
             --name="blue-build-installer" \
-            "ghcr.io/blue-build/cli:${CLI_VERSION}-installer"
+            "ghcr.io/blue-build/cli:${BLUEBUILD_INSTALL_VERSION}-installer"
           docker cp blue-build-installer:/out/bluebuild "${BLUEBUILD_INSTALL_DIR}/bluebuild"
           docker rm blue-build-installer
 
