@@ -45,16 +45,19 @@ jobs:
           # Trigger が `push` の場合、紐づく PullRequest の Label に
           # `Type: Release` が含まれている場合のみ実行可能
           if [[ "${{ github.event_name }}" == "push" ]]; then
+            set +o "errexit"
             PR_NUMBER=$(
               git log --format="%s" --max-count=1 \
               | grep --perl-regexp --only-matching "(?<=\(#)\d+(?=\)$)"
             )
+            set -o "errexit"
             if [[ -z "${PR_NUMBER}" ]]; then
               IS_RUNNABLE="false"
               echo "is_runnable=${IS_RUNNABLE}" | tee --append "${GITHUB_OUTPUT}"
               exit 0
             fi
 
+            set +o "errexit"
             MATCHED_PR_LABEL=$(
               gh pr view "${PR_NUMBER}" \
                 --repo="${REPOSITORY}" \
@@ -62,6 +65,8 @@ jobs:
                 --jq=".labels // empty | .[].name" \
               | grep "${RELEASE_TAG_NAME}"
             )
+            set -o "errexit"
+
             if [[ "${MATCHED_PR_LABEL}" == "${RELEASE_TAG_NAME}" ]]; then
               IS_RUNNABLE="true"
               echo "is_runnable=${IS_RUNNABLE}" | tee --append "${GITHUB_OUTPUT}"
@@ -99,6 +104,7 @@ jobs:
           )"
           echo "current_version=${CURRENT_VERSION}" | tee --append "${GITHUB_OUTPUT}"
 
+          set +o "errexit"
           MATCHED_EXIST_VERSION=$(
             gh release list \
               --repo="${REPOSITORY}" \
@@ -106,6 +112,7 @@ jobs:
               --jq=".[].tagName" \
             | grep "${CURRENT_VERSION}"
           )
+          set -o "errexit"
 
           if [[ "${MATCHED_EXIST_VERSION}" == "${CURRENT_VERSION}" ]]; then
             echo "::error title=Invalid image version::Version ${CURRENT_VERSION} is already released."
