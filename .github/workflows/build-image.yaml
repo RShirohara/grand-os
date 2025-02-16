@@ -115,8 +115,12 @@ jobs:
           echo "image_name=${IMAGE_NAME}" | tee --append "${GITHUB_OUTPUT}"
 
           # base image version
-          IMAGE_VERSION=$(yq ".image-version" ./recipes/${{ matrix.recipe }}.yaml)
-          echo "image_version=${IMAGE_VERSION}" | tee --append "${GITHUB_OUTPUT}"
+          VERSION_ID=$(yq ".image-version" ./recipes/${{ matrix.recipe }}.yaml)
+          RELEASE_VERSION=$(
+            grep "^RELEASE_VERSION" ./files/scripts/os-release.sh \
+            | sed --expression="s/^.*=//g" --expression="s/\"//g"
+          )
+          echo "image_version=${VERSION_ID}.${RELEASE_VERSION}" | tee --append "${GITHUB_OUTPUT}"
 
           # author name
           IMAGE_AUTHORS=$(jq --raw-output '.["org.opencontainers.image.authors"]' ./recipes/meta.json)
@@ -129,8 +133,7 @@ jobs:
           images: |
             ghcr.io/${{ github.repository_owner }}/${{ steps.get_metadata.outputs.image_name }}
           tags: |
-            type=raw,value={{date 'YYYYMMDD'}},prefix=${{ steps.get_metadata.outputs.image_version }}.,suffix=.0,enable=${{ github.event_name == 'pull_request' }}
-            type=pep440,pattern={{version}},prefix=${{ steps.get_metadata.outputs.image_version }}.,enable=${{ github.event_name == 'release' }}
+            type=raw,value=${{ steps.get_metadata.outputs.image_version }}
             type=raw,value=latest,enable=${{ github.event_name == 'release' }}
           labels: |
             org.opencontainers.image.authors=${{ steps.get_metadata.outputs.image_authors }}
