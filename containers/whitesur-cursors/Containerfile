@@ -5,8 +5,10 @@ ARG REPOSITORY_COMMIT_HASH
 FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS builder
 ARG REPOSITORY_COMMIT_HASH
 
+# hadolint ignore=DL3041
 RUN dnf install --assumeyes \
-        git
+        git \
+    && dnf clean all
 
 WORKDIR /WhiteSur-cursors
 RUN git init \

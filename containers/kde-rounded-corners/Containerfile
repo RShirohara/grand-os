@@ -8,6 +8,7 @@ ARG BUILDER_VERSION
 ARG REPOSITORY_VERSION
 ARG KWIN_VERSION
 
+# hadolint ignore=DL3041
 RUN dnf install --assumeyes \
         git \
         cmake \
@@ -19,34 +20,21 @@ RUN dnf install --assumeyes \
         kf6-kcmutils-devel \
         kf6-ki18n-devel \
         qt6-qtbase-private-devel \
-        wayland-devel
+        wayland-devel \
+    && dnf clean all
 
 RUN git clone https://github.com/matinlotfali/KDE-Rounded-Corners \
         --branch="${REPOSITORY_VERSION}" \
         --depth=1
 
-RUN cd /KDE-Rounded-Corners \
-    && mkdir build \
-    && cd build \
-    && cmake .. \
-    && cmake --build . -j \
-    && make install
+WORKDIR /KDE-Rounded-Corners
+RUN cmake -B build \
+    && cmake --build build -j \
+    && DESTDIR="./dist" cmake --install build
 
 # stage 2: copy effect files.
 FROM scratch
 
 COPY --from=builder \
-    /usr/lib64/qt6/plugins/kwin/effects/plugins/kwin4_effect_shapecorners.so \
-    /usr/lib64/qt6/plugins/kwin/effects/plugins/kwin4_effect_shapecorners.so
-COPY --from=builder \
-    /usr/lib64/qt6/plugins/kwin/effects/configs/kwin_shapecorners_config.so \
-    /usr/lib64/qt6/plugins/kwin/effects/configs/kwin_shapecorners_config.so
-COPY --from=builder \
-    /usr/share/kwin/shaders/shapecorners.frag \
-    /usr/share/kwin/shaders/shapecorners.frag
-COPY --from=builder \
-    /usr/share/kwin/shaders/shapecorners_core.frag \
-    /usr/share/kwin/shaders/shapecorners_core.frag
-COPY --from=builder \
-    /usr/share/locale/ru/LC_MESSAGES/kcmcorners.mo \
-    /usr/share/locale/ru/LC_MESSAGES/kcmcorners.mo
+    /KDE-Rounded-Corners/dist \
+    /
