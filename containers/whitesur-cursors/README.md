@@ -2,7 +2,7 @@
 
 Internal container image to provide
 [github.com/vinceliuice/WhiteSur-cursors](https://github.com/vinceliuice/WhiteSur-cursors)
-into grand-os.
+into GrandOS.
 
 ## Build
 

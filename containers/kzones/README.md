@@ -2,7 +2,7 @@
 
 Internal container image to provide
 [github.com/gerritdevriese/kzones](https://github.com/gerritdevriese/kzones)
-into grand-os.
+into GrandOS.
 
 ## Build
 

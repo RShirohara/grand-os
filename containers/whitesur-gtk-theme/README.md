@@ -2,7 +2,7 @@
 
 Internal container image to provide
 [github.com/vinceliuice/WhiteSur-gtk-theme](https://github.com/vinceliuice/WhiteSur-gtk-theme)
-into grand-os.
+into GrandOS.
 
 ## Build
 

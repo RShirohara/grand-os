@@ -2,7 +2,7 @@
 
 Internal container image to provide
 [github.com/vinceliuice/WhiteSur-kde](https://github.com/vinceliuice/WhiteSur-kde)
-into grand-os.
+into GrandOS.
 
 ## Build
 

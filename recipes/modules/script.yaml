@@ -1,0 +1,5 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/modules/script-v1.json
+
+type: "script"
+scripts:
+  - "./os-release.sh"

@@ -5,5 +5,5 @@
   "org.opencontainers.image.source": "https://github.com/RShirohara/grand-os/blob/main/containers/whitesur-kde/Containerfile",
   "org.opencontainers.image.licenses": "GPL-3.0-only",
   "org.opencontainers.image.title": "grand-os/internal/whitesur-kde",
-  "org.opencontainers.image.description": "Internal container image to provide github.com/vinceliuice/WhiteSur-kde into grand-os."
+  "org.opencontainers.image.description": "Internal container image to provide github.com/vinceliuice/WhiteSur-kde into GrandOS."
 }
