@@ -24,7 +24,7 @@ IMAGE_ID="${ID}"
 IMAGE_VERSION="${VERSION}"
 OSTREE_VERSION="${VERSION}"
 
-# write grand-os identification to /usr/lib/os-release
+# write grand-os identification to /usr/lib/os-release.
 sed -i "s|^NAME=.*|NAME=\"${NAME}\"|" /usr/lib/os-release
 sed -i "s|^VERSION=.*|VERSION=\"${VERSION}\"|" /usr/lib/os-release
 sed -i "s|^PRETTY_NAME=.*|PRETTY_NAME=\"${PRETTY_NAME}\"|" /usr/lib/os-release
