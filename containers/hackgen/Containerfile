@@ -6,8 +6,10 @@ FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS builder
 ARG BUILDER_VERSION
 ARG REPOSITORY_VERSION
 
+# hadolint ignore=DL3041
 RUN dnf install --assumeyes \
-        zip
+        zip \
+    && dnf clean all
 
 WORKDIR /hackgen
 RUN curl --location --output "./hackgen.zip" \
