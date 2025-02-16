@@ -56,4 +56,3 @@ jobs:
             --efm="%f:%l:%c: %m" \
             --name="Lint result (actionlint)" \
             --reporter="github-check"
-
