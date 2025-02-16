@@ -17,5 +17,6 @@ modules:
   - from-file: "./modules/copy/whitesur-gtk-theme.yaml"
   - from-file: "./modules/copy/whitesur-icon-theme.yaml"
   - from-file: "./modules/copy/whitesur-kde.yaml"
+  - from-file: "./modules/script/os-release.yaml"
   - from-file: "./modules/files.yaml"
   - type: "signing"
