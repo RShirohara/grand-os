@@ -18,6 +18,8 @@ install:
   - "kcm-fcitx5"
   - "keyd"
   - "kvantum"
+  - "libappindicator"
+  - "libdbusmenu"
   - "topgrade"
 remove:
   - "distrobox"
