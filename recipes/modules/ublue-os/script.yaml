@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/modules/script-v1.json
+
+type: "script"
+snippets:
+  - 'mkdir -p "/ctx"'
+  - 'curl --location --output "/tmp/ctx.tar.gz" "https://api.github.com/repos/ublue-os/main/tarball"'
+  - 'tar --extract --verbose --file="/tmp/ctx.tar.gz" --directory="/ctx" --strip-components=1'
+  - 'rm -f /usr/bin/chsh'
+  - 'rm -f /usr/bin/lchsh'
+  # remove unused dependency `mesa-libglapi`.
+  # ref: <https://github.com/ublue-os/main/pull/723>
+  - 'sed --in-place --regex --expression="59 d" --expression="50 s/(.*+)/\1\n  --remove=mesa-libglapi \\\\/" /ctx/install.sh'
+  - IMAGE_NAME="kinoite" FEDORA_MAJOR_VERSION="41" KERNEL_VERSION=$(skopeo inspect docker://ghcr.io/ublue-os/akmods:main-41 | jq -r '.Labels["ostree.linux"]') /ctx/install.sh
+  - '/ctx/post-install.sh'
+  # remove bluebuild mounted files from cleanup target.
+  - 'sed --in-place --expression="6 s#/tmp/\*#/tmp/!(files|modules|scripts)#" --expression="8 s#!(rpm-ostree)#!(rpm-ostree|libdnf5)#" /ctx/cleanup.sh'
+  - '/ctx/cleanup.sh'
+  - 'ostree container commit'
+  - 'mkdir -p /var/tmp'
+  - 'chmod -R 1777 /var/tmp'
+  - 'rm -rf /ctx'
