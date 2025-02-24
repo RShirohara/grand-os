@@ -5,6 +5,9 @@ modules:
     from: "ghcr.io/rshirohara/grand-os/internal/hackgen:latest"
     src: "/"
     dest: "/"
+  - type: "script"
+    snippets:
+      - "fc-cache --system-only --really-force /usr/share/fonts/hackgen"
 
   - type: "copy"
     from: "ghcr.io/rshirohara/grand-os/internal/kde-rounded-corners:latest"
