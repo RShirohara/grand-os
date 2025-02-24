@@ -1,6 +1,0 @@
-# yaml-language-server: $schema=https://schema.blue-build.org/modules/copy.json
-
-type: "copy"
-from: "ghcr.io/rshirohara/grand-os/internal/whitesur-gtk-theme:latest"
-src: "/"
-dest: "/"

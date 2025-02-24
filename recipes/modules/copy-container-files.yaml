@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
+
+modules:
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/hackgen:latest"
+    src: "/"
+    dest: "/"
+
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/kde-rounded-corners:latest"
+    src: "/"
+    dest: "/"
+
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/kzones:latest"
+    src: "/"
+    dest: "/"
+
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-cursors:latest"
+    src: "/"
+    dest: "/"
+
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-gtk-theme:latest"
+    src: "/"
+    dest: "/"
+
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-icon-theme:latest"
+    src: "/"
+    dest: "/"
+
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-kde:latest"
+    src: "/"
+    dest: "/"
