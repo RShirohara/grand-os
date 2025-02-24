@@ -3,18 +3,10 @@
 name: "grand-os/main"
 description: "A desktop Linux image based for Fedora Kinoite and customized for personal use."
 
-base-image: "quay.io/fedora-ostree-desktops/kinoite"
+base-image: "ghcr.io/ublue-os/kinoite-main"
 image-version: "41"
 
 modules:
-  # `ublue-os/kinoite-main:41` を利用してビルドするとインストールに失敗するため、
-  # `quay.io/fedora-ostree-desktops/kinoite` をベースにしたうえで `ublue-os` のカスタムを適用する。
-  - from-file: "./modules/ublue-os/copy/config.yaml"
-  - from-file: "./modules/ublue-os/copy/akmods.yaml"
-  - from-file: "./modules/ublue-os/copy/akmods-kernel.yaml"
-  - from-file: "./modules/ublue-os/script.yaml"
-
-  # `rshirohara/grand-os` customs.
   - from-file: "./modules/rpm-ostree.yaml"
   - from-file: "./modules/default-flatpaks.yaml"
   - from-file: "./modules/brew.yaml"
