@@ -57,6 +57,7 @@ modules:
         - "com.github.tchx84.Flatseal"
         - "io.missioncenter.MissionCenter"
         - "org.fedoraproject.MediaWriter"
+        - "org.kde.KStyle.Kvantum"
         - "org.kde.gwenview"
         - "org.kde.kcalc"
         - "org.kde.kclock"
