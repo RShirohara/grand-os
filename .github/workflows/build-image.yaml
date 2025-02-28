@@ -117,7 +117,7 @@ jobs:
           # base image version
           VERSION_ID=$(yq ".image-version" ./recipes/${{ matrix.recipe }}.yaml)
           RELEASE_VERSION=$(
-            grep "^RELEASE_VERSION" ./files/scripts/os-release.sh \
+            grep "^RELEASE_VERSION" ./files/scripts/update-os-release.sh \
             | sed --expression="s/^.*=//g" --expression="s/\"//g"
           )
           echo "image_version=${VERSION_ID}.${RELEASE_VERSION}" | tee --append "${GITHUB_OUTPUT}"
