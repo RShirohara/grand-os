@@ -1,6 +1,6 @@
 [Plugins]
 kwin4_effect_shapecornersEnabled=true
-kzonesEnable=true
+kzonesEnabled=true
 tileseditorEnabled=false
 
 [Round-Corners]

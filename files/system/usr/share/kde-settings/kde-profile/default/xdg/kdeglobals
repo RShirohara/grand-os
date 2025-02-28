@@ -1,7 +1,5 @@
 [General]
-XftAntialias=true
 XftHintStyle=hintmedium
-XftSubPixel=rgb
 fixed=HackGen,11,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
 font=Noto Sans CJK JP,11,-1,5,300,0,0,0,0,0,0,0,0,0,0,1,Light
 menuFont=Noto Sans CJK JP,11,-1,5,300,0,0,0,0,0,0,0,0,0,0,1,Light
