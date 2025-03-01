@@ -87,7 +87,7 @@ jobs:
           install: true
 
       - name: "Setup cosign cli"
-        uses: "sigstore/cosign-installer@v3.8.0"
+        uses: "sigstore/cosign-installer@v3.8.1"
         with:
           install-dir: "${{ runner.temp }}/cosign/bin"
 
