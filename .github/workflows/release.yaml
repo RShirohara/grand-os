@@ -35,15 +35,15 @@ jobs:
 
           echo "event_name=${{ github.event_name }}"
 
-          # Trigger が `pull_request` の場合、実行可能
+          # Trigger が `pull_request` の場合、実行可能。
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
             IS_RUNNABLE="true"
             echo "is_runnable=${IS_RUNNABLE}" | tee --append "${GITHUB_OUTPUT}"
             exit 0
           fi
 
-          # Trigger が `push` の場合、紐づく PullRequest の Label に
-          # `Type: Release` が含まれている場合のみ実行可能
+          # Trigger が `push` の場合、紐づく Pull Request の Label に
+          # `Type: Release` が含まれている場合のみ実行可能。
           if [[ "${{ github.event_name }}" == "push" ]]; then
             set +o "errexit"
             PR_NUMBER=$(
