@@ -5,4 +5,4 @@ Comment=Update GrandOS, Flatpaks, Homebrew formulas, and more.
 Icon=update
 Categories=ConsoleOnly;System;
 Terminal=true
-Exec=env CONFIG_DIR=/usr/share/topgrade /usr/bin/topgrade
+Exec=/usr/bin/topgrade --config="/usr/share/system-update/topgrade.toml" || read -p "Update failed!"
