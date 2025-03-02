@@ -170,7 +170,7 @@ jobs:
 
       - name: "Build image (and publish on release)"
         id: "build_image"
-        uses: "docker/build-push-action@v6.13.0"
+        uses: "docker/build-push-action@v6.15.0"
         with:
           annotations: |
             ${{ steps.build_metadata.outputs.annotations }}
