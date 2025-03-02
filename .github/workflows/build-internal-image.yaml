@@ -12,7 +12,6 @@ on:
     branches:
       - "main"
     paths:
-      - ".github/workflows/build-internal-image.yaml"
       - "containers/**/*"
 
 concurrency:
@@ -92,7 +91,7 @@ jobs:
           install-dir: "${{ runner.temp }}/cosign/bin"
 
       - name: "Validate cosign key-pair"
-        if: ${{ github.event_name == 'pull_request' && ( github.event.pull_request.user.login == github.event.repository.owner.login ) }}
+        if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && (github.event.pull_request.user.login == github.event.repository.owner.login)) }}
         env:
           COSIGN_PASSWORD: "${{ secrets.COSIGN_PASSWORD }}"
           COSIGN_PRIVATE_KEY: "${{ secrets.COSIGN_PRIVATE_KEY }}"

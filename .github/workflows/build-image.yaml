@@ -14,6 +14,7 @@ on:
 
 concurrency:
   group: "${{ github.workflow }}-${{ github.ref || github.run_id }}"
+  cancel-in-progress: true
 
 jobs:
   get_target:
@@ -91,7 +92,7 @@ jobs:
           install-dir: "${{ runner.temp }}/cosign/bin"
 
       - name: "Validate cosign key-pair"
-        if: ${{ github.event_name == 'pull_request' && ( github.event.pull_request.user.login == github.event.repository.owner.login ) }}
+        if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && (github.event.pull_request.user.login == github.event.repository.owner.login)) }}
         env:
           COSIGN_PASSWORD: "${{ secrets.COSIGN_PASSWORD }}"
           COSIGN_PRIVATE_KEY: "${{ secrets.COSIGN_PRIVATE_KEY }}"
