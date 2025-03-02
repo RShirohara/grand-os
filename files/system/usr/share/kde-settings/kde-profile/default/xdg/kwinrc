@@ -21,7 +21,7 @@ BorderSize=None
 BorderSizeAuto=false
 ButtonsOnLeft=XIA
 ButtonsOnRight=
-theme=__aurorae__svg__WhiteSur-dark
+theme=__aurorae__svg__WhiteSur-dark-sharp
 
 [Wayland]
 InputMethod[$e]=/usr/share/applications/fcitx5-wayland-launcher.desktop
