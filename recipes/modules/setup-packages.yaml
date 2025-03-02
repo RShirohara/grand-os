@@ -46,7 +46,6 @@ modules:
       - "kate-krunner-plugin"
       - "kate-plugins"
       - "kate"
-      - "ksshaskpass"
 
   - type: "default-flatpaks"
     system:
