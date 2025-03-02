@@ -10,5 +10,6 @@ modules:
   - from-file: "./modules/setup-packages.yaml"
   - from-file: "./modules/copy-container-files.yaml"
   - from-file: "./modules/copy-repository-files.yaml"
+  - from-file: "./modules/apply-systemd-unit-status.yaml"
   - from-file: "./modules/update-system-info.yaml"
   - type: "signing"
