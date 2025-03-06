@@ -105,7 +105,7 @@ jobs:
           git commit --file="./description.md"
 
           # create PR
-          git pr create \
+          gh pr create \
               --fill-verbose \
               --assignee="@${{ github.repository_owner }}" \
               --reviewer="@${{ github.repository_owner }}"
