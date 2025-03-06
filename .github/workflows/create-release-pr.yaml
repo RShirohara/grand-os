@@ -18,6 +18,9 @@ jobs:
     name: "Create PR"
     runs-on: "ubuntu-latest"
 
+    permissions:
+      contents: "write"
+
     steps:
       - name: "Checkout repository"
         uses: "actions/checkout@v4.2.2"
