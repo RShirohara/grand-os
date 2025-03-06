@@ -1,0 +1,112 @@
+name: "Create Release PR"
+
+on:
+  schedule:
+    - cron: "0 9 * * 5"
+  workflow_dispatch:
+    inputs:
+      info:
+        description: "Reasons for starting the workflow."
+        required: true
+
+env:
+  GIT_DEFAULT_BRANCH: "main"
+  GIT_RELEASE_BRANCH: "bump-os-image-version"
+
+jobs:
+  create_pr:
+    name: "Create PR"
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: "Checkout repository"
+        uses: "actions/checkout@v4.2.2"
+        with:
+          fetch-depth: 0
+
+      - name: "Setup Git"
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: "Generate CHANGELOG"
+        id: "generate_changelog"
+        run: |
+          set -o "errexit" -o "nounset"
+
+          LATEST_TAG=$(
+            git for-each-ref \
+                --sort="-creatordate" \
+                --count=1 \
+                --format="%(refname:short)" \
+                "refs/tags/"
+          )
+          CHANGELOG=$(
+            git log --pretty="format:%s" "${LATEST_TAG}..${GIT_DEFAULT_BRANCH}" \
+            | jq --null-input --raw-input --compact-output "[inputs]"
+          )
+          echo "changelog=${CHANGELOG}" | tee --append "${GITHUB_OUTPUT}"
+
+      - name: "Increase image version"
+        id: "increase_version"
+        run: |
+          # generate version
+          _MAJOR_VERSION=$(
+            date "+%Y%m%d"
+          )
+          set +o "errexit"
+          _MINOR_VERSION=$(
+            _PREFIX=$(
+              grep "^RELEASE_VERSION=\"${_MAJOR_VERSION}" \
+                  ./files/scripts/update-os-release.sh \
+              | sed --expression="s|^.*=||g" --expression="s|\"||g" \
+              | cut --delimiter="." --fields="2" \
+              | xargs --replace="@" expr @ + 1
+            )
+            echo "${_PREFIX:-0}"
+          )
+          set -o "errexit"
+          RELEASE_VERSION="${_MAJOR_VERSION}.${_MINOR_VERSION}"
+          echo "version=${RELEASE_VERSION}" | tee --append "${GITHUB_OUTPUT}"
+
+      - name: "Commit and create PR"
+        env:
+          GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        run: |
+          # generate commit message
+          cat << MESSAGE > ./description.md
+          chore: bump GrandOS image version to \`v${{ steps.increase_version.outputs.version }}\`
+
+          Bump GrandOS image version to \`v${{ steps.increase_version.outputs.version }}\`.
+
+          ## Changelog
+
+          $(
+            _COMMITS=$(
+              echo "${{ steps.generate_changelog.outputs.changelog }}" \
+              | jq --raw-output ".[] | '- '." \
+              | sed --expression="s|^|- |g"
+            )
+            echo "${_COMMITS:-Nope!}"
+          )
+
+          ## Note
+
+          This pull request created by workflow triggered by ${{ github.event_name }}.
+          Additional info: "${{ github.event.inputs.info || 'Nope!' }}"
+          MESSAGE
+
+          # commit
+          sed --expression="s|^RELEASE_VERSION=\".*\"$|RELEASE_VERSION=\"${{ steps.increase_version.outputs.version }}\"|g" \
+              --in-place \
+              ./files/scripts/update-os-release.sh
+          git switch --create "${GIT_RELEASE_BRANCH}"
+          git add ./files/scripts/update-op-release.sh
+          git commit --file="./description.sh"
+
+          # create PR
+          git pr create \
+              --fill-verbose \
+              --assignee="@${{ github.repository_owner }}" \
+              --reviewer="@${{ github.repository_owner }}"
+
