@@ -103,6 +103,7 @@ jobs:
           git switch --create "${GIT_RELEASE_BRANCH}"
           git add ./files/scripts/update-os-release.sh
           git commit --file="./description.md"
+          git push --set-upstream origin "${GIT_RELEASE_BRANCH}"
 
           # create PR
           gh pr create \
