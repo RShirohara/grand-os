@@ -89,6 +89,11 @@ jobs:
             )
             echo "${_COMMITS:-Nope!}"
           )
+
+          ## Note
+
+          This pull request created by workflow triggered by ${{ github.event_name }}.
+          Additional info: "${{ github.event.inputs.info || 'Nope!' }}"
           MESSAGE
 
           # commit
