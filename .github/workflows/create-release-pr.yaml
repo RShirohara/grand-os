@@ -84,10 +84,10 @@ jobs:
           $(
             _COMMITS=$(
               echo "${{ steps.generate_changelog.outputs.changelog }}" \
-              | jq --raw-output ".[] | '- '." \
+              | jq --raw-output ".[]" \
               | sed --expression="s|^|- |g"
             )
-            echo "${_COMMITS:-Nope!}"
+            echo "${_COMMITS:-Nope.}"
           )
 
           ## Note
