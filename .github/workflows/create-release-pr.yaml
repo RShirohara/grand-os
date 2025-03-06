@@ -102,7 +102,7 @@ jobs:
               ./files/scripts/update-os-release.sh
           git switch --create "${GIT_RELEASE_BRANCH}"
           git add ./files/scripts/update-os-release.sh
-          git commit --file="./description.sh"
+          git commit --file="./description.md"
 
           # create PR
           git pr create \
