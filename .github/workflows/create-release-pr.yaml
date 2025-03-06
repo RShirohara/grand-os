@@ -83,7 +83,7 @@ jobs:
 
           $(
             _COMMITS=$(
-              echo "${{ steps.generate_changelog.outputs.changelog }}" \
+              echo '${{ steps.generate_changelog.outputs.changelog }}' \
               | jq --raw-output ".[]" \
               | sed --expression="s|^|- |g"
             )
