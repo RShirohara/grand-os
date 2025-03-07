@@ -117,7 +117,7 @@ jobs:
           gh api graphql \
               -F githubRepository="${{ github.repository }}" \
               -F branchName="${GIT_RELEASE_BRANCH}" \
-              -F expectedHeadOid="$(git rev-parse "${GIT_DEFAULT_BRANCH}")" \
+              -F expectedHeadOid="$(git rev-parse "origin/${GIT_DEFAULT_BRANCH}")" \
               -F commitMessage="$(cat ./message.md)" \
               -F commitDetail="$(cat ./detail.md)" \
               -F files[][path]="./files/scripts/update-os-release.sh" \
