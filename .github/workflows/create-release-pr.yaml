@@ -134,8 +134,8 @@ jobs:
           set -o "errexit" -o "nounset"
 
           gh pr create \
+              --assignee="${{ github.repository_owner }}" \
               --draft \
               --fill-verbose \
-              --assignee="${{ github.repository_owner }}"
               --label="${GITHUB_RELEASE_LABEL}"
           gh pr ready
