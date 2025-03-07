@@ -12,6 +12,7 @@ on:
 env:
   GIT_DEFAULT_BRANCH: "main"
   GIT_RELEASE_BRANCH: "bump-os-image-version"
+  GITHUB_RELEASE_LABEL: "Type: Release"
 
 jobs:
   create_pr:
@@ -136,4 +137,5 @@ jobs:
               --draft \
               --fill-verbose \
               --assignee="${{ github.repository_owner }}"
+              --label="${GITHUB_RELEASE_LABEL}"
           gh pr ready
