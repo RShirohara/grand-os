@@ -99,7 +99,7 @@ jobs:
 
           ## Note
 
-          This pull request created by workflow triggered by ${{ github.event_name }}.
+          This pull request was created by workflow triggered by ${{ github.event_name }}.
           Additional info: "${{ github.event.inputs.info || 'None.' }}"
           MESSAGE
 
