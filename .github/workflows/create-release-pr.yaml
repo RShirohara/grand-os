@@ -33,7 +33,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: "Generate CHANGELOG"
+      - name: "Generate changelog"
         id: "generate_changelog"
         run: |
           set -o "errexit" -o "nounset"
@@ -54,7 +54,8 @@ jobs:
       - name: "Increase image version"
         id: "increase_version"
         run: |
-          # generate version
+          set -o "errexit" -o "nounset"
+
           _MAJOR_VERSION=$(
             date "+%Y%m%d"
           )
@@ -73,14 +74,15 @@ jobs:
           RELEASE_VERSION="${_MAJOR_VERSION}.${_MINOR_VERSION}"
           echo "version=${RELEASE_VERSION}" | tee --append "${GITHUB_OUTPUT}"
 
-      - name: "Commit and create PR"
-        env:
-          GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - name: "Generate description"
         run: |
-          # generate commit message
-          cat << MESSAGE > ./description.md
-          chore: bump GrandOS image version to \`v${{ steps.increase_version.outputs.version }}\`
+          set -o "errexit" -o "nounset"
 
+          cat << MESSAGE > ./message.md
+          chore: bump GrandOS image version to \`v${{ steps.increase_version.outputs.version }}\`
+          MESSAGE
+
+          cat << MESSAGE > ./detail.md
           Bump GrandOS image version to \`v${{ steps.increase_version.outputs.version }}\`.
 
           ## Changelog
@@ -91,27 +93,47 @@ jobs:
               | jq --raw-output ".[]" \
               | sed --expression="s|^|- |g"
             )
-            echo "${_COMMITS:-Nope.}"
+            echo "${_COMMITS:-None.}"
           )
 
           ## Note
 
           This pull request created by workflow triggered by ${{ github.event_name }}.
-          Additional info: "${{ github.event.inputs.info || 'Nope!' }}"
+          Additional info: "${{ github.event.inputs.info || 'None.' }}"
           MESSAGE
 
-          # commit
+      - name: "Commit"
+        env:
+          GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        run: |
+          set -o "errexit" -o "nounset"
+
           sed --expression="s|^RELEASE_VERSION=\".*\"$|RELEASE_VERSION=\"${{ steps.increase_version.outputs.version }}\"|g" \
               --in-place \
               ./files/scripts/update-os-release.sh
-          git switch --create "${GIT_RELEASE_BRANCH}"
-          git add ./files/scripts/update-os-release.sh
-          git commit --file="./description.md"
-          git push --set-upstream origin "${GIT_RELEASE_BRANCH}"
 
-          # create PR
+          git switch --create "${GIT_RELEASE_BRANCH}"
+          git push --set-upstream origin "${GIT_RELEASE_BRANCH}"
+          gh api graphql \
+              -F githubRepository="${{ github.repository }}" \
+              -F branchName="${GIT_RELEASE_BRANCH}" \
+              -F expectedHeadOid="$(git rev-parse "origin/${GIT_DEFAULT_BRANCH}")" \
+              -F commitMessage="$(cat ./message.md)" \
+              -F commitDetail="$(cat ./detail.md)" \
+              -F files[][path]="./files/scripts/update-os-release.sh" \
+              -F files[][contents]="$(base64 -w0 ./files/scripts/update-os-release.sh)" \
+              -F query=@.github/api/create-commit.graphql
+
+          git pull --prune
+
+      - name: "Create PR"
+        env:
+          GH_TOKEN: "${{ secrets.GH_WORKFLOW_PAT }}"
+        run: |
+          set -o "errexit" -o "nounset"
+
           gh pr create \
               --fill-verbose \
+              --head="${GIT_RELEASE_BRANCH}" \
               --assignee="${{ github.repository_owner }}" \
               --reviewer="${{ github.repository_owner }}"
-

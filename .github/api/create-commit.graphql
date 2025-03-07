@@ -1,0 +1,32 @@
+# create commit by github graphql api.
+# source: <https://dev.to/0xdbe/github-signing-commit-in-a-workflow-98p>
+
+mutation (
+  $githubRepository: String!,
+  $branchName: String!,
+  $expectedHeadOid: GitObjectID!,
+  $commitMessage: String!,
+  $commitDetail: String!,
+  $files: [FileAddition!]!,
+) {
+  createCommitOnBranch(
+    input: {
+      branch: {
+        repositoryNameWithOwner: $githubRepository,
+        branchName: $branchName
+      },
+      message: {
+        headline: $commitMessage,
+        body: $commitDetail
+      },
+      fileChanges: {
+        additions: $files
+      },
+      expectedHeadOid: $expectedHeadOid
+    }
+  ) {
+    commit {
+      url
+    }
+  }
+}
