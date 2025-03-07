@@ -109,8 +109,8 @@ jobs:
           set -o "errexit" -o "nounset"
 
           sed --expression="s|^RELEASE_VERSION=\".*\"$|RELEASE_VERSION=\"${{ steps.increase_version.outputs.version }}\"|g" \
-              --in-place \
               ./files/scripts/update-os-release.sh
+              > ./update-os-release.sh
 
           git switch --create "${GIT_RELEASE_BRANCH}"
           git push --set-upstream origin "${GIT_RELEASE_BRANCH}"
@@ -121,7 +121,7 @@ jobs:
               -F commitMessage="$(cat ./message.md)" \
               -F commitDetail="$(cat ./detail.md)" \
               -F files[][path]="files/scripts/update-os-release.sh" \
-              -F files[][contents]="$(base64 -w0 ./files/scripts/update-os-release.sh)" \
+              -F files[][contents]="$(base64 -w0 ./update-os-release.sh)" \
               -F query=@.github/api/create-commit.graphql
 
           git pull --prune
@@ -134,6 +134,5 @@ jobs:
 
           gh pr create \
               --fill-verbose \
-              --head="${GIT_RELEASE_BRANCH}" \
               --assignee="${{ github.repository_owner }}" \
               --reviewer="${{ github.repository_owner }}"
