@@ -12,6 +12,7 @@ on:
 env:
   GIT_DEFAULT_BRANCH: "main"
   GIT_RELEASE_BRANCH: "bump-os-image-version"
+  GITHUB_RELEASE_LABEL: "Type: Release"
 
 jobs:
   create_pr:
@@ -98,7 +99,7 @@ jobs:
 
           ## Note
 
-          This pull request created by workflow triggered by ${{ github.event_name }}.
+          This pull request was created by workflow triggered by ${{ github.event_name }}.
           Additional info: "${{ github.event.inputs.info || 'None.' }}"
           MESSAGE
 
@@ -133,6 +134,8 @@ jobs:
           set -o "errexit" -o "nounset"
 
           gh pr create \
-              --fill-verbose \
               --assignee="${{ github.repository_owner }}" \
-              --reviewer="${{ github.repository_owner }}"
+              --draft \
+              --fill-verbose \
+              --label="${GITHUB_RELEASE_LABEL}"
+          gh pr ready
