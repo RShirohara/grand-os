@@ -117,10 +117,10 @@ jobs:
           gh api graphql \
               -F githubRepository="${{ github.repository }}" \
               -F branchName="${GIT_RELEASE_BRANCH}" \
-              -F expectedHeadOid="$(git rev-parse "origin/${GIT_DEFAULT_BRANCH}")" \
+              -F expectedHeadOid="$(git rev-parse HEAD)" \
               -F commitMessage="$(cat ./message.md)" \
               -F commitDetail="$(cat ./detail.md)" \
-              -F files[][path]="./files/scripts/update-os-release.sh" \
+              -F files[][path]="files/scripts/update-os-release.sh" \
               -F files[][contents]="$(base64 -w0 ./files/scripts/update-os-release.sh)" \
               -F query=@.github/api/create-commit.graphql
 
