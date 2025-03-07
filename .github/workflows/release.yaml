@@ -137,7 +137,7 @@ jobs:
       - name: "Create release"
         env:
           CURRENT_VERSION: "${{ needs.check_release_version.outputs.current_version }}"
-          GH_TOKEN: "${{ secrets.RELEASE_PAT }}"
+          GH_TOKEN: "${{ secrets.GH_WORKFLOW_PAT }}"
           REPOSITORY: "${{ github.repository }}"
         run: |
           set -o "errexit" -o "nounset"
