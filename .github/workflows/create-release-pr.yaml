@@ -109,7 +109,7 @@ jobs:
           set -o "errexit" -o "nounset"
 
           sed --expression="s|^RELEASE_VERSION=\".*\"$|RELEASE_VERSION=\"${{ steps.increase_version.outputs.version }}\"|g" \
-              ./files/scripts/update-os-release.sh
+              ./files/scripts/update-os-release.sh \
               > ./update-os-release.sh
 
           git switch --create "${GIT_RELEASE_BRANCH}"
