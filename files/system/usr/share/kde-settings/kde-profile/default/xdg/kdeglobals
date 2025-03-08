@@ -1,15 +1,20 @@
 [General]
-XftAntialias=true
-XftHintStyle=hintmedium
-XftSubPixel=rgb
+ColorScheme=WhiteSurDark
 fixed=HackGen,11,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
 font=Noto Sans CJK JP,11,-1,5,300,0,0,0,0,0,0,0,0,0,0,1,Light
 menuFont=Noto Sans CJK JP,11,-1,5,300,0,0,0,0,0,0,0,0,0,0,1,Light
 smallestReadableFont=Noto Sans CJK JP,10,-1,5,300,0,0,0,0,0,0,0,0,0,0,1,Light
 toolBarFont=Noto Sans CJK JP,11,-1,5,300,0,0,0,0,0,0,0,0,0,0,1,Light
+XftAntialias=true
+XftHintStyle=hintmedium
+XftSubPixel=rgb
+
+[Icons]
+Theme=WhiteSur-dark
 
 [KDE]
 LookAndFeelPackage=com.github.vinceliuice.WhiteSur-dark
+widgetStyle=kvantum-dark
 
 [Toolbar style]
 ToolButtonStyle=NoText
