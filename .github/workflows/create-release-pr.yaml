@@ -47,7 +47,7 @@ jobs:
                 "refs/tags/"
           )
           CHANGELOG=$(
-            git log --pretty="format:%s" "${LATEST_TAG}..${GIT_DEFAULT_BRANCH}" \
+            git log --reverse --pretty="format:%s" "${LATEST_TAG}..${GIT_DEFAULT_BRANCH}" \
             | jq --null-input --raw-input --compact-output "[inputs]"
           )
           echo "changelog=${CHANGELOG}" | tee --append "${GITHUB_OUTPUT}"
