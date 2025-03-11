@@ -19,3 +19,6 @@ widgetStyle=kvantum-dark
 [Toolbar style]
 ToolButtonStyle=NoText
 ToolButtonStyleOtherToolbars=NoText
+
+[WM]
+activeFont=Noto Sans CJK JP,11,-1,5,300,0,0,0,0,0,0,0,0,0,0,1,Light
