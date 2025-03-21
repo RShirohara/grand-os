@@ -48,7 +48,8 @@ jobs:
           )
           CHANGELOG=$(
             git log --reverse --pretty="format:%s" "${LATEST_TAG}..${GIT_DEFAULT_BRANCH}" \
-            | jq --null-input --raw-input --compact-output "[inputs]"
+            | jq --null-input --raw-input --compact-output "[inputs]" \
+            | sed --expression="s|'|'\\\\''|g"
           )
           echo "changelog=${CHANGELOG}" | tee --append "${GITHUB_OUTPUT}"
 
