@@ -1,12 +1,11 @@
 [Unit]
-Description=GnuPG cryptographic agent and passphrase cache for %U.
+Description=GnuPG cryptographic agent and passphrase cache for %u
 Documentation=man:gpg-agent(1)
-Requires=gpg-agent.socket
-After=gpg-agent.socket
 
 [Service]
+ExecStartPre=sleep 5s
 ExecStart=/usr/bin/gpg-agent --supervised
 ExecReload=/usr/bin/gpgconf --reload gpg-agent
 
 [Install]
-WantedBy=default.target
+WantedBy=gpg-agent.socket

@@ -1,8 +1,6 @@
 [Unit]
-Description=GnuPG cryptographic agent (ssh-agent emulation) for %U.
+Description=GnuPG cryptographic agent (ssh-agent emulation) for %u
 Documentation=man:gpg-agent(1) man:ssh-add(1) man:ssh-agent(1) man:ssh(1)
-ConditionPathExists=${GPG_SOCKET_DIR}
-ConditionPathIsReadWrite=${GPG_SOCKET_DIR}
 
 [Socket]
 ListenStream=${GPG_SOCKET_DIR}/S.gpg-agent.ssh

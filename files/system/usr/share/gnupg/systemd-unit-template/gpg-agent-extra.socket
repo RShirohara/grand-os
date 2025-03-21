@@ -1,8 +1,6 @@
 [Unit]
-Description=GnuPG cryptographic agent and passphrase cache (restricted) for %U.
+Description=GnuPG cryptographic agent and passphrase cache (restricted) for %u
 Documentation=man:gpg-agent(1)
-ConditionPathExists=${GPG_SOCKET_DIR}
-ConditionPathIsReadWrite=${GPG_SOCKET_DIR}
 
 [Socket]
 ListenStream=${GPG_SOCKET_DIR}/S.gpg-agent.extra
