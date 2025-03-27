@@ -1,0 +1,9 @@
+{
+  "org.opencontainers.image.authors": "Ray Shirohara <RShirohara@proton.me>",
+  "org.opencontainers.image.url": "https://github.com/RShirohara/grand-os/blob/main/containers/rounded-window-corners",
+  "org.opencontainers.image.documentation": "https://github.com/RShirohara/grand-os/blob/main/containers/rounded-window-corners/README.md",
+  "org.opencontainers.image.source": "https://github.com/RShirohara/grand-os/blob/main/containers/rounded-window-corners/Containerfile",
+  "org.opencontainers.image.licenses": "GPL-3.0-only",
+  "org.opencontainers.image.title": "grand-os/internal/rounded-window-corners",
+  "org.opencontainers.image.description": "Internal container image to provide github.com/flexagoon/rounded-window-corners into GrandOS."
+}

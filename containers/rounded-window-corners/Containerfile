@@ -1,0 +1,32 @@
+ARG BUILDER_VERSION=latest
+ARG REPOSITORY_COMMIT_HASH
+
+# stage 1: build script.
+FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS builder
+ARG BUILDER_VERSION
+ARG REPOSITORY_COMMIT_HASH
+
+# hadolint ignore=DL3041
+RUN dnf --setopt="install_weak_deps=False" install --assumeyes \
+        gettext \
+        git \
+        just \
+        nodejs \
+        nodejs-npm \
+    && dnf clean all
+
+WORKDIR /rounded-window-corners
+RUN git init \
+    && git remote add origin https://github.com/flexagoon/rounded-window-corners \
+    && git fetch origin "${REPOSITORY_COMMIT_HASH}" --depth=1 \
+    && git checkout FETCH_HEAD
+
+WORKDIR /rounded-window-corners
+RUN just build
+
+# stage 2: copy extensions.
+FROM scratch
+
+COPY --from=builder \
+    /rounded-window-corners/_build \
+    /usr/share/gnome-shell/extensions/rounded-window-corners@fxgn
