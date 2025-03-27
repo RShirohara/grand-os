@@ -1,3 +1,4 @@
+/Containerfile
 cosign.key
 cosign.private
-/Containerfile
+dist/
