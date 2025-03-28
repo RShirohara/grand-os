@@ -2,7 +2,7 @@
 
 modules:
   - type: "copy"
-    from: "ghcr.io/rshirohara/grand-os/internal/hackgen:latest"
+    from: "ghcr.io/rshirohara/grand-os/internal/hackgen-fonts:latest"
     src: "/"
     dest: "/"
   - type: "script"
@@ -20,7 +20,7 @@ modules:
     dest: "/"
 
   - type: "copy"
-    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-cursors:latest"
+    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-cursor-theme:latest"
     src: "/"
     dest: "/"
 
