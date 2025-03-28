@@ -22,8 +22,8 @@ RUN USER=root ./install.sh \
         --dest /usr/share/themes \
         --silent-mode
 
-# stage 2: copy theme files.
-FROM scratch
+# stage 2: copy theme to distribution container.
+FROM scratch as dist
 
 COPY --from=builder \
     /usr/share/themes \

@@ -1,7 +1,7 @@
 ARG BUILDER_VERSION=latest
 ARG REPOSITORY_COMMIT_HASH
 
-# stage 1: build script.
+# stage 1: build extension.
 FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS builder
 ARG BUILDER_VERSION
 ARG REPOSITORY_COMMIT_HASH
@@ -24,8 +24,8 @@ RUN git init \
 WORKDIR /rounded-window-corners
 RUN just build
 
-# stage 2: copy extension.
-FROM scratch
+# stage 2: copy extension to distribution container.
+FROM scratch as dist
 
 COPY --from=builder \
     /rounded-window-corners/_build \

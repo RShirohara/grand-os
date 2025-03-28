@@ -32,8 +32,8 @@ RUN cmake -B build \
     && cmake --build build -j \
     && DESTDIR="./dist" cmake --install build
 
-# stage 2: copy effect files.
-FROM scratch
+# stage 2: copy effect to distribution container.
+FROM scratch as dist
 
 COPY --from=builder \
     /KDE-Rounded-Corners/dist \

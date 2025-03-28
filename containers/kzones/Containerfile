@@ -20,8 +20,8 @@ RUN git clone https://github.com/gerritdevriese/kzones \
 WORKDIR /kzones
 RUN make build
 
-# stage 2: copy script files.
-FROM scratch
+# stage 2: copy script to distribution container.
+FROM scratch as dist
 
 COPY --from=builder \
     /kzones/pkg \

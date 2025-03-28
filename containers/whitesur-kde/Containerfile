@@ -19,8 +19,8 @@ RUN mkdir --parents /usr/share/sddm/themes \
     && ./install.sh --window "sharp" \
     && ./sddm/install.sh
 
-# stage 2: copy theme files.
-FROM scratch
+# stage 2: copy theme to distribution container.
+FROM scratch as dist
 
 COPY --from=builder \
     /usr/share/aurorae/themes \

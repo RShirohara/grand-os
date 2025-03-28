@@ -1,7 +1,7 @@
 ARG BUILDER_VERSION=latest
 ARG REPOSITORY_VERSION
 
-# stage 1: build script.
+# stage 1: build extension.
 FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS builder
 ARG BUILDER_VERSION
 ARG REPOSITORY_VERSION
@@ -21,8 +21,8 @@ WORKDIR /gSnap
 RUN npm install \
     && npm run build
 
-# stage 2: copy extensions.
-FROM scratch
+# stage 2: copy extension to distribution container.
+FROM scratch as dist
 
 COPY --from=builder \
     /gSnap/dist \

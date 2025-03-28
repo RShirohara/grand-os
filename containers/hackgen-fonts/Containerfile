@@ -1,7 +1,7 @@
 ARG BUILDER_VERSION=latest
 ARG REPOSITORY_VERSION
 
-# stage 1: build fonts.
+# stage 1: extract fonts.
 FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS builder
 ARG BUILDER_VERSION
 ARG REPOSITORY_VERSION
@@ -20,8 +20,8 @@ RUN curl --location --output "./hackgen.zip" \
 RUN unzip hackgen.zip \
     && unzip hackgen_nf.zip
 
-# stage 2: copy fonts.
-FROM scratch
+# stage 2: copy fonts to distribution container.
+FROM scratch as dist
 ARG REPOSITORY_VERSION
 
 COPY --from=builder \
