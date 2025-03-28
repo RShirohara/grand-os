@@ -112,11 +112,11 @@ jobs:
           set -o "errexit" -o "nounset"
 
           # image name
-          IMAGE_NAME=$(yq ".name" ./recipes/${{ matrix.recipe }}.yaml)
+          IMAGE_NAME=$(yq ".name" ./recipes/general/${{ matrix.recipe }}.yaml)
           echo "image_name=${IMAGE_NAME}" | tee --append "${GITHUB_OUTPUT}"
 
           # base image version
-          VERSION_ID=$(yq ".image-version" ./recipes/${{ matrix.recipe }}.yaml)
+          VERSION_ID=$(yq ".image-version" ./recipes/general/${{ matrix.recipe }}.yaml)
           RELEASE_VERSION=$(
             grep "^RELEASE_VERSION" ./files/scripts/update-os-release.sh \
             | sed --expression="s/^.*=//g" --expression="s/\"//g"
@@ -124,7 +124,7 @@ jobs:
           echo "image_version=${VERSION_ID}.${RELEASE_VERSION}" | tee --append "${GITHUB_OUTPUT}"
 
           # author name
-          IMAGE_AUTHORS=$(jq --raw-output '.["org.opencontainers.image.authors"]' ./recipes/meta.json)
+          IMAGE_AUTHORS=$(jq --raw-output '.["org.opencontainers.image.authors"]' ./recipes/general/meta.json)
           echo "image_authors=${IMAGE_AUTHORS}" | tee --append "${GITHUB_OUTPUT}"
 
       - name: "Build metadata"
@@ -139,12 +139,12 @@ jobs:
           labels: |
             org.opencontainers.image.authors=${{ steps.get_metadata.outputs.image_authors }}
             org.opencontainers.image.documentation=https://github.com/${{ github.repository }}/blob/main/README.md
-            org.opencontainers.image.source=https://github.com/${{ github.repository }}/blob/main/recipes/${{ matrix.recipe }}.yaml
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}/blob/main/recipes/general/${{ matrix.recipe }}.yaml
             org.opencontainers.image.title=${{ steps.get_metadata.outputs.image_name }}
           annotations: |
             org.opencontainers.image.authors=${{ steps.get_metadata.outputs.image_authors }}
             org.opencontainers.image.documentation=https://github.com/${{ github.repository }}/blob/main/README.md
-            org.opencontainers.image.source=https://github.com/${{ github.repository }}/blob/main/recipes/${{ matrix.recipe }}.yaml
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}/blob/main/recipes/general/${{ matrix.recipe }}.yaml
             org.opencontainers.image.title=${{ steps.get_metadata.outputs.image_name }}
 
       - name: "Login to GitHub Container Registry"
@@ -156,7 +156,7 @@ jobs:
 
       - name: "Generate Containerfile"
         env:
-          RECIPE_PATH: "./recipes/${{ matrix.recipe }}.yaml"
+          RECIPE_PATH: "./recipes/general/${{ matrix.recipe }}.yaml"
           RUST_LOG_STYLE: "always"
           CLICOLOR_FORCE: "1"
         run: |
