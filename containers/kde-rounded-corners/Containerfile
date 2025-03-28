@@ -9,7 +9,7 @@ ARG REPOSITORY_VERSION
 ARG KWIN_VERSION
 
 # hadolint ignore=DL3041
-RUN dnf install --assumeyes \
+RUN dnf --setopt="install_weak_deps=False" install --assumeyes \
         git \
         cmake \
         gcc-c++ \

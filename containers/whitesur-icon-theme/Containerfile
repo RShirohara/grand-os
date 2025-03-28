@@ -6,7 +6,7 @@ FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS builder
 ARG REPOSITORY_VERSION
 
 # hadolint ignore=DL3041
-RUN dnf install --assumeyes \
+RUN dnf --setopt="install_weak_deps=False" install --assumeyes \
         git \
         gtk-update-icon-cache \
     && dnf clean all
