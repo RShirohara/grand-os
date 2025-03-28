@@ -21,7 +21,7 @@ WORKDIR /kzones
 RUN make build
 
 # stage 2: copy script to distribution container.
-FROM scratch as dist
+FROM scratch AS dist
 
 COPY --from=builder \
     /kzones/pkg \

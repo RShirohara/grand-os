@@ -21,7 +21,7 @@ RUN unzip hackgen.zip \
     && unzip hackgen_nf.zip
 
 # stage 2: copy fonts to distribution container.
-FROM scratch as dist
+FROM scratch AS dist
 ARG REPOSITORY_VERSION
 
 COPY --from=builder \

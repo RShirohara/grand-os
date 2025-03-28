@@ -19,7 +19,7 @@ RUN git init \
 RUN /WhiteSur-cursors/install.sh
 
 # stage 2: copy icons to distribution container.
-FROM scratch as dist
+FROM scratch AS dist
 
 COPY --from=builder \
     /usr/share/icons \

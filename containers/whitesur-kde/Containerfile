@@ -20,7 +20,7 @@ RUN mkdir --parents /usr/share/sddm/themes \
     && ./sddm/install.sh
 
 # stage 2: copy theme to distribution container.
-FROM scratch as dist
+FROM scratch AS dist
 
 COPY --from=builder \
     /usr/share/aurorae/themes \
