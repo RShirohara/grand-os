@@ -1,0 +1,26 @@
+ARG BUILDER_VERSION=latest
+ARG REPOSITORY_VERSION
+
+# stage 1: build theme.
+FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS builder
+ARG REPOSITORY_VERSION
+
+# hadolint ignore=DL3041
+RUN dnf --setopt="install_weak_deps=False" install --assumeyes \
+        git \
+    && dnf clean all
+
+RUN git clone https://github.com/vinceliuice/WhiteSur-kde \
+        --branch="${REPOSITORY_VERSION}" \
+        --depth=1
+
+WORKDIR /WhiteSur-kde
+RUN mkdir --parents /usr/share/sddm/themes \
+    && ./install.sh --window "sharp"
+
+# stage 2: copy theme to distribution container.
+FROM scratch as dist
+
+COPY --from=builder \
+    /usr/share/Kvantum \
+    /usr/share/Kvantum
