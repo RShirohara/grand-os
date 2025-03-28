@@ -24,7 +24,7 @@ RUN git init \
 WORKDIR /rounded-window-corners
 RUN just build
 
-# stage 2: copy extensions.
+# stage 2: copy extension.
 FROM scratch
 
 COPY --from=builder \
