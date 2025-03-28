@@ -19,7 +19,7 @@ RUN mkdir --parents /usr/share/sddm/themes \
     && ./install.sh --window "sharp"
 
 # stage 2: copy theme to distribution container.
-FROM scratch as dist
+FROM scratch AS dist
 
 COPY --from=builder \
     /usr/share/Kvantum \

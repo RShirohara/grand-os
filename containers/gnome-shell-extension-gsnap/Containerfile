@@ -22,7 +22,7 @@ RUN npm install \
     && npm run build
 
 # stage 2: copy extension to distribution container.
-FROM scratch as dist
+FROM scratch AS dist
 
 COPY --from=builder \
     /gSnap/dist \
