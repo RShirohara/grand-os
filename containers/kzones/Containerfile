@@ -7,7 +7,7 @@ ARG BUILDER_VERSION
 ARG REPOSITORY_VERSION
 
 # hadolint ignore=DL3041
-RUN dnf install --assumeyes \
+RUN dnf --setopt="install_weak_deps=False" install --assumeyes \
         git \
         make \
         zip \
@@ -20,8 +20,8 @@ RUN git clone https://github.com/gerritdevriese/kzones \
 WORKDIR /kzones
 RUN make build
 
-# stage 2: copy script files.
-FROM scratch
+# stage 2: copy script to distribution container.
+FROM scratch as dist
 
 COPY --from=builder \
     /kzones/pkg \
