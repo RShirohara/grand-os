@@ -7,7 +7,7 @@ ARG BUILDER_VERSION
 ARG REPOSITORY_VERSION
 
 # hadolint ignore=DL3041
-RUN dnf install --assumeyes \
+RUN dnf --setopt="install_weak_deps=False" install --assumeyes \
         zip \
     && dnf clean all
 
@@ -20,7 +20,7 @@ RUN curl --location --output "./hackgen.zip" \
 RUN unzip hackgen.zip \
     && unzip hackgen_nf.zip
 
-# stage 2: copy font files.
+# stage 2: copy fonts.
 FROM scratch
 ARG REPOSITORY_VERSION
 
