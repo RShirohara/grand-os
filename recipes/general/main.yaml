@@ -7,4 +7,4 @@ base-image: "ghcr.io/secureblue/silverblue-main-hardened"
 image-version: "41"
 
 modules:
-  - type: "signing"
+  - from-file: "modules/postprocess/common.yaml"
