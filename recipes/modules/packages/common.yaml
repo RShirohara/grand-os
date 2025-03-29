@@ -33,7 +33,28 @@ modules:
       - "toolbox"
 
   # setup flatpak packages.
+
   # add internal container packages.
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/hackgen-fonts:latest"
+    src: "/"
+    dest: "/"
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-cursor-theme:latest"
+    src: "/"
+    dest: "/"
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-gtk-theme:latest"
+    src: "/"
+    dest: "/"
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-icon-theme:latest"
+    src: "/"
+    dest: "/"
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-kde-kvantum:latest"
+    src: "/"
+    dest: "/"
 
   # setup homebrew.
   - type: "brew"
