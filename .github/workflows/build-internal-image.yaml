@@ -221,6 +221,7 @@ jobs:
 
           cosign sign \
             --key="env://COSIGN_PRIVATE_KEY" \
+            --recursive \
             "${IMAGE_NAME}@${IMAGE_DIGEST}"
 
       - name: "Attest build provenance for image"
