@@ -1,52 +1,6 @@
 # yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
 
 modules:
-  - type: "rpm-ostree"
-    repos:
-      - "https://copr.fedorainfracloud.org/coprs/alternateved/keyd/repo/fedora-%OS_VERSION%/alternateved-keyd-fedora-%OS_VERSION%.repo"
-      - "https://copr.fedorainfracloud.org/coprs/lilay/topgrade/repo/fedora-%OS_VERSION%/lilay-topgrade-fedora-%OS_VERSION%.repo"
-      - "https://packagecloud.io/install/repositories/filips/FirefoxPWA/config_file.repo?os=rpm_any&dist=rpm_any&source=script"
-    keys:
-      - "https://packagecloud.io/filips/FirefoxPWA/gpgkey"
-    install:
-      - "fcitx5-autostart"
-      - "fcitx5-configtool"
-      - "fcitx5-gtk"
-      - "fcitx5-mozc"
-      - "fcitx5-qt"
-      - "fcitx5"
-      - "firefoxpwa"
-      - "kcm-fcitx5"
-      - "keyd"
-      - "kvantum"
-      - "libappindicator"
-      - "libdbusmenu"
-      - "topgrade"
-    remove:
-      - "distrobox"
-      - "firefox-langpacks"
-      - "firefox"
-      - "fuse-overlayfs"
-      - "ibus-anthy-python"
-      - "ibus-anthy"
-      - "ibus-chewing"
-      - "ibus-gtk2"
-      - "ibus-gtk3"
-      - "ibus-gtk4"
-      - "ibus-hangul"
-      - "ibus-libpinyin"
-      - "ibus-m17n"
-      - "ibus-panel"
-      - "ibus-setup"
-      - "ibus-typing-booster"
-      - "ibus-xinit"
-      - "ibus"
-      - "kasumi-common"
-      - "kasumi-unicode"
-      - "kate-krunner-plugin"
-      - "kate-plugins"
-      - "kate"
-
   - type: "default-flatpaks"
     system:
       repo-url: "https://dl.flathub.org/repo/flathub.flatpakrepo"
