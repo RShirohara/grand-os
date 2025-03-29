@@ -7,4 +7,5 @@ base-image: "ghcr.io/secureblue/silverblue-main-hardened"
 image-version: "41"
 
 modules:
-  - from-file: "modules/postprocess/common.yaml"
+  - from-file: "./modules/packages/common.yaml"
+  - from-file: "./modules/postprocess/common.yaml"
