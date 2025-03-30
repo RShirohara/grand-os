@@ -1,8 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=System Update
-Comment=Update GrandOS, Flatpaks, Homebrew formulas, and more.
-Icon=update
-Categories=ConsoleOnly;System;
-Terminal=true
-Exec=/usr/bin/topgrade --config="/usr/share/system-update/topgrade.toml" || read -p "Update failed!"

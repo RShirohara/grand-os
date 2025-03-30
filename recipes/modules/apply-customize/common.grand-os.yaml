@@ -1,6 +1,17 @@
 # yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
 
 modules:
+  # apply file-based customization.
+  - type: "files"
+    files:
+      - source: "./system/common"
+        destination: "/"
+
+  # apply gtk customization
+  - type: "gschema-overrides"
+    include:
+      - "zzz-grand-os.gschema.override"
+
   # add grand-os image info.
   - type: "script"
     scripts:
