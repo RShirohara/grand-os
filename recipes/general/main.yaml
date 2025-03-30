@@ -8,4 +8,5 @@ image-version: "41"
 
 modules:
   - from-file: "./modules/packages/common.yaml"
+  - from-file: "./modules/apply-customize/common.yaml"
   - from-file: "./modules/postprocess/common.yaml"

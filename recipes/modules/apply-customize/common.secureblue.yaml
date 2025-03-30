@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
+
+modules:
+  # re-enable bluetooth module.
+  - type: "script"
+    snippets:
+      - sed --regexp-extended --expression="92 s|^(install bluetooth /bin/false)$|# \1|"
+      - sed --regexp-extended --expression="93 s|^(install btusb /bin/false)$|# \1|"
+
+  # disable flatpak auto-update.
+  - type: "script"
+    snippets:
+      - "rm -rf /usr/lib/systemd/system/flatpak-system-update.service"
+      - "rm -rf /usr/lib/systemd/system/flatpak-system-update.timer"
+      - "rm -rf /usr/lib/systemd/system-preset/10-flatpak-system-update.preset"
+      - "rm -rf /usr/lib/systemd/user/flatpak-user-update.service"
+      - "rm -rf /usr/lib/systemd/user/flatpak-user-update.timer"
+      - "rm -rf /usr/lib/systemd/user-preset/10-flatpak-user-update.preset"
+
+  # remove yatfi config provided by secureblue.
+  - type: "script"
+    snippets:
+      - "rm -rf /usr/share/ublue-os/firstboot/yatfi.yml"
