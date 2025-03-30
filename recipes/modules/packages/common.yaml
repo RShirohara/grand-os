@@ -49,6 +49,15 @@ modules:
         - "org.gnome.TextEditor"
         - "org.kde.KStyle.Kvantum"
 
+  # setup gnome extensions.
+  - type: "gnome-extensions"
+    install:
+      - "779" # https://extensions.gnome.org/extension/779/clipboard-indicator
+      - "4451" # https://extensions.gnome.org/extension/4451/logo-menu
+      - "5489" # https://extensions.gnome.org/extension/5489/search-light
+      - "7048" # https://extensions.gnome.org/extension/7048/rounded-window-corners-reborn
+      - "7065" # https://extensions.gnome.org/extension/7065/tiling-shell
+
   # add internal container packages.
   - type: "copy"
     from: "ghcr.io/rshirohara/grand-os/internal/hackgen-fonts:latest"
