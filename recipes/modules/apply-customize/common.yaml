@@ -2,3 +2,4 @@
 
 modules:
   - from-file: "./modules/apply-customize/common.secureblue.yaml"
+  - from-file: "./modules/apply-customize/common.grand-os.yaml"

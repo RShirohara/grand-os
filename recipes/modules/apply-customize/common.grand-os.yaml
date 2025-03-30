@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
 
 modules:
+  # add grand-os image info.
   - type: "script"
     scripts:
-      - "./update-os-release.sh"
+      - "./add-image-info.sh"
