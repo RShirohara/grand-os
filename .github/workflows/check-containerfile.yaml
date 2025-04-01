@@ -45,7 +45,7 @@ jobs:
           "${HADOLINT_INSTALL_DIR}/hadolint" --version
 
       - name: "Setup reviewdog"
-        uses: "reviewdog/action-setup@v1.3.0"
+        uses: "reviewdog/action-setup@v1.3.2"
 
       - name: "Lint"
         env:
