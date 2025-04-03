@@ -13,6 +13,11 @@ on:
       - "main"
     paths:
       - "containers/**/*"
+  workflow_dispatch:
+    inputs:
+      info:
+        description: "Reasons for starting the workflow."
+        required: true
 
 concurrency:
   group: "${{ github.workflow }}-${{ github.ref || github.run_id }}"
@@ -200,12 +205,12 @@ jobs:
           labels: |
             ${{ steps.build_metadata.outputs.labels }}
           platforms: "${{ matrix.platform }}"
-          push: ${{ github.event_name == 'push' }}
+          push: ${{ github.event_name != 'pull_request' }}
           tags: |
             ${{ steps.build_metadata.outputs.tags }}
 
       - name: "Signing image"
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ github.event_name != 'pull_request' }}
         env:
           COSIGN_PASSWORD: "${{ secrets.COSIGN_PASSWORD }}"
           COSIGN_PRIVATE_KEY: "${{ secrets.COSIGN_PRIVATE_KEY }}"
@@ -225,7 +230,7 @@ jobs:
             "${IMAGE_NAME}@${IMAGE_DIGEST}"
 
       - name: "Attest build provenance for image"
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ github.event_name != 'pull_request' }}
         uses: "actions/attest-build-provenance@c074443f1aee8d4aeeae555aebba3282517141b2" # v2.2.3
         with:
           subject-name: "ghcr.io/${{ github.repository_owner }}/${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.title'] }}"
