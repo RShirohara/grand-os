@@ -76,3 +76,9 @@ modules:
       - "5489" # https://extensions.gnome.org/extension/5489/search-light
       - "7048" # https://extensions.gnome.org/extension/7048/rounded-window-corners-reborn
       - "7065" # https://extensions.gnome.org/extension/7065/tiling-shell
+
+  # Homebrew.
+  - type: "brew"
+    brew-analytics: false
+    auto-update: false
+    auto-upgrade: false
