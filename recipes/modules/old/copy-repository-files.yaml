@@ -3,5 +3,5 @@
 modules:
   - type: "files"
     files:
-      - source: "system"
+      - source: "system/old"
         destination: "/"
