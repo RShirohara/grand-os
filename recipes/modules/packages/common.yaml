@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
+
+modules:
+  # DNF packages.
+  - type: "rpm-ostree"
+    repos:
+      - "https://copr.fedorainfracloud.org/coprs/alternateved/keyd/repo/fedora-%OS_VERSION%/alternateved-keyd-fedora-%OS_VERSION%.repo"
+      - "https://copr.fedorainfracloud.org/coprs/lilay/topgrade/repo/fedora-%OS_VERSION%/lilay-topgrade-fedora-%OS_VERSION%.repo"
+    install:
+      - "gnome-shell-extension-blur-my-shell"
+      - "gnome-shell-extension-dash-to-dock"
+      - "gnome-shell-extension-gsconnect"
+      - "gnome-shell-extension-just-perfection"
+      - "gnome-shell-extension-native-window-placement"
+      - "gnome-shell-extension-status-icons"
+      - "ibus-mozc"
+      - "keyd"
+      - "kvantum"
+      - "nautilus-python"
+      - "sushi"
+      - "topgrade"
+    remove:
+      - "distrobox"
+      - "fuse-overlayfs"
+      - "ibus-anthy-python"
+      - "ibus-anthy"
+      - "ibus-typing-booster"
+      - "kasumi-common"
+      - "kasumi-unicode"
+      - "toolbox"
