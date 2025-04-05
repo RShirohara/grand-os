@@ -1,0 +1,9 @@
+[misc]
+disable = ["helix"]
+assume_yes = true
+no_retry = true
+no_self_update = true
+
+[linux]
+bootc = false
+rpm-ostree = true

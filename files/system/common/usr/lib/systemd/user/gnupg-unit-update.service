@@ -1,0 +1,6 @@
+[Unit]
+Description=Update GnuPG unit files
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/gnupg-unit-update
