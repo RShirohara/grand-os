@@ -28,3 +28,20 @@ modules:
       - "kasumi-common"
       - "kasumi-unicode"
       - "toolbox"
+
+  # Flatpak packages.
+  - type: "default-flatpaks"
+    user:
+      repo-url: "https://dl.flathub.org/repo/flathub.flatpakrepo"
+      repo-name: "flathub"
+      repo-title: "Flathub"
+      install:
+        - "ca.desrt.dconf-editor"
+        - "com.github.tchx84.Flatseal"
+        - "io.missioncenter.MissionCenter"
+        - "org.fedoraproject.MediaWriter"
+        - "org.gnome.baobab"
+        - "org.gnome.Evince"
+        - "org.gnome.Loupe"
+        - "org.gnome.TextEditor"
+        - "org.kde.KStyle.Kvantum"
