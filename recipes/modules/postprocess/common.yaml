@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
+
+modules:
+  # Add signing verification key for container image used by cosign.
+  - type: "copy"
+    src: "./cosign.pub"
+    dest: "/etc/pki/containers/${IMAGE_NAME}.pub"
+  - type: "secureblue-signing"
+    source: "ghcr.io/rshirohara/grand-os/internal/bluebuild-secureblue-signing"
+  - type: "script"
+    snippets:
+      - "rm -rf /etc/pki/containers/${IMAGE_NAME%/*}"

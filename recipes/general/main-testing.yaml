@@ -6,4 +6,5 @@ description: "A desktop Linux image based for Fedora Silverblue and customized f
 base-image: "ghcr.io/secureblue/silverblue-main-hardened"
 image-version: "41"
 
-modules: []
+modules:
+  - from-file: "./modules/postprocess/common.yaml"
