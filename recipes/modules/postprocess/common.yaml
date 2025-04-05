@@ -15,3 +15,6 @@ modules:
   - type: "script"
     snippets:
       - "rm -rf /etc/pki/containers/${IMAGE_NAME%/*}"
+
+  # Regenerate initramfs.
+  - type: "initramfs"
