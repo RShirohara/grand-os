@@ -1,6 +1,11 @@
 # yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
 
 modules:
+  # Update font cache.
+  - type: "script"
+    snippets:
+      - "fc-cache --system-only --really-force /usr/share/fonts"
+
   # Add signing verification key for container image used by cosign.
   - type: "copy"
     src: "./cosign.pub"
