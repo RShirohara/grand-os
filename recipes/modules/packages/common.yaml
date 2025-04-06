@@ -44,7 +44,6 @@ modules:
         - "org.gnome.Evince"
         - "org.gnome.Loupe"
         - "org.gnome.TextEditor"
-        - "org.kde.KStyle.Kvantum"
 
   # Internal container images.
   - type: "copy"
