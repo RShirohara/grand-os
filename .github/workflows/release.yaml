@@ -99,7 +99,7 @@ jobs:
           set -o "errexit" -o "nounset"
 
           CURRENT_VERSION="v$(
-            grep "^RELEASE_VERSION" ./files/scripts/update-os-release.sh \
+            grep "^RELEASE_VERSION" ./files/scripts/add-image-info.sh \
             | sed --expression="s/^.*=//g" --expression="s/\"//g"
           )"
           echo "current_version=${CURRENT_VERSION}" | tee --append "${GITHUB_OUTPUT}"
