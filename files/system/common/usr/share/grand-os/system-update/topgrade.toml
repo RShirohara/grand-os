@@ -6,4 +6,4 @@ no_self_update = true
 
 [linux]
 bootc = false
-rpm-ostree = true
+rpm_ostree = true
