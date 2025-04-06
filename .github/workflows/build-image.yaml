@@ -35,7 +35,7 @@ jobs:
 
           # get recipes list
           RECIPES=$(
-            find recipes -mindepth 1 -maxdepth 1 -type "f" -name "*.yaml" -print0 \
+            find recipes/general -mindepth 1 -maxdepth 1 -type "f" -name "*.yaml" -print0 \
             | xargs --null --replace="@" basename -- "@" ".yaml" \
             | jq --null-input --raw-input --compact-output "[inputs]"
           )
@@ -112,19 +112,19 @@ jobs:
           set -o "errexit" -o "nounset"
 
           # image name
-          IMAGE_NAME=$(yq ".name" ./recipes/${{ matrix.recipe }}.yaml)
+          IMAGE_NAME=$(yq ".name" ./recipes/general/${{ matrix.recipe }}.yaml)
           echo "image_name=${IMAGE_NAME}" | tee --append "${GITHUB_OUTPUT}"
 
           # base image version
-          VERSION_ID=$(yq ".image-version" ./recipes/${{ matrix.recipe }}.yaml)
+          VERSION_ID=$(yq ".image-version" ./recipes/general/${{ matrix.recipe }}.yaml)
           RELEASE_VERSION=$(
-            grep "^RELEASE_VERSION" ./files/scripts/update-os-release.sh \
+            grep "^RELEASE_VERSION" ./files/scripts/add-image-info.sh \
             | sed --expression="s/^.*=//g" --expression="s/\"//g"
           )
           echo "image_version=${VERSION_ID}.${RELEASE_VERSION}" | tee --append "${GITHUB_OUTPUT}"
 
           # author name
-          IMAGE_AUTHORS=$(jq --raw-output '.["org.opencontainers.image.authors"]' ./recipes/meta.json)
+          IMAGE_AUTHORS=$(jq --raw-output '.["org.opencontainers.image.authors"]' ./recipes/general/meta.json)
           echo "image_authors=${IMAGE_AUTHORS}" | tee --append "${GITHUB_OUTPUT}"
 
       - name: "Build metadata"
@@ -156,7 +156,7 @@ jobs:
 
       - name: "Generate Containerfile"
         env:
-          RECIPE_PATH: "./recipes/${{ matrix.recipe }}.yaml"
+          RECIPE_PATH: "./recipes/general/${{ matrix.recipe }}.yaml"
           RUST_LOG_STYLE: "always"
           CLICOLOR_FORCE: "1"
         run: |

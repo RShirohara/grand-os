@@ -3,4 +3,4 @@
 modules:
   - type: "script"
     scripts:
-      - "./update-os-release.sh"
+      - "./add-image-info.sh"
