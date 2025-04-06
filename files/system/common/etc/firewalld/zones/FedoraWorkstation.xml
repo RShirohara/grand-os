@@ -2,6 +2,6 @@
 <zone>
   <short>Fedora Workstation</short>
   <description>Overridden default config.</description>
-  <service name="GSConnect"/>
+  <service name="gsconnect"/>
   <forward/>
 </zone>
