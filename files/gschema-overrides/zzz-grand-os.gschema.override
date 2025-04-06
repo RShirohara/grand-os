@@ -80,6 +80,11 @@ shortcut-search = ['<Super>Space']
 [org.gnome.shell.extensions.tilingshell]
 # TODO: fix layout
 
+[org.gnome.software]
+allow-updates = false
+download-updates = false
+download-updates-notify = false
+
 [org.gtk.gtk4.settings.file-chooser]
 show-hidden = true
 sort-directories-first = true
