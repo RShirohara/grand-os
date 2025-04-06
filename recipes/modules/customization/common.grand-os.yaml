@@ -11,6 +11,14 @@ modules:
   - type: "gschema-overrides"
     include:
       - "zzz-grand-os.gschema.override"
+  - type: "script"
+    snippets:
+      # Apply gnome extension `dash-to-dock` theme.
+      - "
+        cp
+          /usr/share/themes/WhiteSur-Extension/dash-to-dock/stylesheet.css
+          /usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/
+        "
 
   # Add default kargs to bootc config.
   - type: "script"

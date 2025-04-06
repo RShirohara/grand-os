@@ -62,6 +62,9 @@ use-system-font = false
 favorite-apps = ['trivalent.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Ptyxis.desktop']
 enabled-extensions = ['blur-my-shell@aunetx', 'clipboard-indicator@tudmotu.com', 'dash-to-dock@micxgx.gmail.com', 'gsconnect@andyholmes.github.io', 'just-perfection-desktop@just-perfection', 'logomenu@aryan_k', 'native-window-placement@gnome-shell-extensions.gcampax.github.com', 'rounded-window-corners@fxgn', 'search-light@icedman.github.com', 'status-icons@gnome-shell-extensions.gcampax.github.com', 'tilingshell@ferrarodomenico.com']
 
+[org.gnome.shell.extensions.blur-my-shell.dash-to-dock]
+blur = true
+
 [org.gnome.shell.extensions.clipboard-indicator]
 clear-history = []
 clear-on-boot = true
@@ -71,6 +74,10 @@ next-entry = []
 prev-entry = []
 private-mode-binding = []
 toggle-menu = ['<Super>v']
+
+[org.gnome.shell.extensions.dash-to-dock]
+apply-custom-theme = true
+show-show-apps-button = false
 
 [org.gnome.shell.extensions.just-perfection]
 activities-button = false
