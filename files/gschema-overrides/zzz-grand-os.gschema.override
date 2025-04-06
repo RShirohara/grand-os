@@ -53,6 +53,11 @@ use-tree-view = true
 default-folder-viewer = 'list-view'
 migrated-gtk-settings = true
 
+[org.gnome.Ptyxis]
+cursor-shape = 'ibeam'
+font-name = 'HackGen Console NF 11'
+use-system-font = false
+
 [org.gnome.shell]
 favorite-apps = ['trivalent.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Ptyxis.desktop']
 enabled-extensions = ['blur-my-shell@aunetx', 'clipboard-indicator@tudmotu.com', 'dash-to-dock@micxgx.gmail.com', 'gsconnect@andyholmes.github.io', 'just-perfection-desktop@just-perfection', 'logomenu@aryan_k', 'native-window-placement@gnome-shell-extensions.gcampax.github.com', 'rounded-window-corners@fxgn', 'search-light@icedman.github.com', 'status-icons@gnome-shell-extensions.gcampax.github.com', 'tilingshell@ferrarodomenico.com']
