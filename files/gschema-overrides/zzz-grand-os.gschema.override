@@ -96,6 +96,12 @@ show-activities-button = false
 hide-forcequit = true
 
 [org.gnome.shell.extensions.search-light]
+background-color = (0.0, 0.0, 0.0, 0.3)
+border-color = (0.23, 0.23, 0.23, 1.0)
+border-radius = 1.65
+border-thickness = 1
+scale-height=0.15
+scale-width = 0.10
 shortcut-search = ['<Super>Space']
 
 [org.gnome.shell.extensions.tilingshell]
