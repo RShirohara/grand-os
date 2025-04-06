@@ -53,10 +53,11 @@ toggle-menu = ['<Super>v']
 
 [org.gnome.shell.extensions.just-perfection]
 activities-button = false
-clock-menu-position-offset = 8
+clock-menu-position = 1
+clock-menu-position-offset = 20
 notification-banner-position = 2
 overlay-key = false
-power-icon = false
+panel-button-padding-size = 6
 startup-status = 0
 
 [org.gnome.shell.extensions.Logo-menu]
