@@ -37,6 +37,21 @@ activate-window-menu = []
 button-layout = 'close,minimize,maximize:'
 theme = 'WhiteSur-Dark'
 
+[org.gnome.nautilus.compression]
+default-compression-format = 'tar.xz'
+
+[org.gnome.nautilus.icon-view]
+default-zoom-level = 'small'
+
+[org.gnome.nautilus.list-view]
+default-visible-columns = ['name', 'type', 'size', 'date_modified']
+default-zoom-level = 'small'
+use-tree-view = true
+
+[org.gnome.nautilus.preferences]
+default-folder-viewer = 'list-view'
+migrated-gtk-settings = true
+
 [org.gnome.shell]
 favorite-apps = ['trivalent.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Ptyxis.desktop']
 enabled-extensions = ['blur-my-shell@aunetx', 'clipboard-indicator@tudmotu.com', 'dash-to-dock@micxgx.gmail.com', 'gsconnect@andyholmes.github.io', 'just-perfection-desktop@just-perfection', 'logomenu@aryan_k', 'native-window-placement@gnome-shell-extensions.gcampax.github.com', 'rounded-window-corners@fxgn', 'search-light@icedman.github.com', 'status-icons@gnome-shell-extensions.gcampax.github.com', 'tilingshell@ferrarodomenico.com']
