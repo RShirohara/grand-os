@@ -7,21 +7,27 @@ ARG REPOSITORY_VERSION
 
 # hadolint ignore=DL3041
 RUN dnf --setopt="install_weak_deps=False" install --assumeyes \
-        git \
-        glib2-devel \
-        sassc \
-        sudo \
-        which \
+      git \
+      glib2-devel \
+      sassc \
+      sudo \
+      which \
     && dnf clean all
 
 RUN git clone https://github.com/vinceliuice/WhiteSur-gtk-theme \
-        --branch="${REPOSITORY_VERSION}" \
-        --depth=1
+      --branch="${REPOSITORY_VERSION}" \
+      --depth=1
 
 WORKDIR /WhiteSur-gtk-theme
 RUN USER=root ./install.sh \
-        --dest /usr/share/themes \
-        --silent-mode
+      --dest /usr/share/themes \
+      --silent-mode \
+    && mkdir --parents \
+      /usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com \
+    && sassc \
+      --style=expanded \
+      ./src/other/dash-to-dock/stylesheet-4.scss  \
+      /usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/stylesheet.css
 
 # stage 2: copy theme to distribution container.
 FROM scratch AS dist
@@ -29,3 +35,6 @@ FROM scratch AS dist
 COPY --from=builder \
     /usr/share/themes \
     /usr/share/themes
+COPY --from=builder \
+    /usr/share/gnome-shell \
+    /usr/share/gnome-shell

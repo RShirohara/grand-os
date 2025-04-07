@@ -10,22 +10,22 @@ ARG KWIN_VERSION
 
 # hadolint ignore=DL3041
 RUN dnf --setopt="install_weak_deps=False" install --assumeyes \
-        git \
-        cmake \
-        gcc-c++ \
-        extra-cmake-modules \
-        kwin-devel-${KWIN_VERSION}-*.fc${BUILDER_VERSION} \
-        kf6-kconfigwidgets-devel \
-        libepoxy-devel \
-        kf6-kcmutils-devel \
-        kf6-ki18n-devel \
-        qt6-qtbase-private-devel \
-        wayland-devel \
+      git \
+      cmake \
+      gcc-c++ \
+      extra-cmake-modules \
+      kwin-devel-${KWIN_VERSION}-*.fc${BUILDER_VERSION} \
+      kf6-kconfigwidgets-devel \
+      libepoxy-devel \
+      kf6-kcmutils-devel \
+      kf6-ki18n-devel \
+      qt6-qtbase-private-devel \
+      wayland-devel \
     && dnf clean all
 
 RUN git clone https://github.com/matinlotfali/KDE-Rounded-Corners \
-        --branch="${REPOSITORY_VERSION}" \
-        --depth=1
+      --branch="${REPOSITORY_VERSION}" \
+      --depth=1
 
 WORKDIR /KDE-Rounded-Corners
 RUN cmake -B build \
