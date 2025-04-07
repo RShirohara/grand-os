@@ -8,14 +8,14 @@ ARG REPOSITORY_VERSION
 
 # hadolint ignore=DL3041
 RUN dnf --setopt="install_weak_deps=False" install --assumeyes \
-        zip \
+      zip \
     && dnf clean all
 
 WORKDIR /hackgen
 RUN curl --location --output "./hackgen.zip" \
-        "https://github.com/yuru7/Hackgen/releases/download/${REPOSITORY_VERSION}/HackGen_${REPOSITORY_VERSION}.zip" \
+      "https://github.com/yuru7/Hackgen/releases/download/${REPOSITORY_VERSION}/HackGen_${REPOSITORY_VERSION}.zip" \
     && curl --location --output "./hackgen_nf.zip" \
-        "https://github.com/yuru7/Hackgen/releases/download/${REPOSITORY_VERSION}/HackGen_NF_${REPOSITORY_VERSION}.zip"
+      "https://github.com/yuru7/Hackgen/releases/download/${REPOSITORY_VERSION}/HackGen_NF_${REPOSITORY_VERSION}.zip"
 
 RUN unzip hackgen.zip \
     && unzip hackgen_nf.zip
