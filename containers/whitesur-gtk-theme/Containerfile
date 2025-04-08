@@ -7,6 +7,7 @@ ARG REPOSITORY_VERSION
 
 # hadolint ignore=DL3041
 RUN dnf --setopt="install_weak_deps=False" install --assumeyes \
+      gdm \
       git \
       glib2-devel \
       sassc \
@@ -19,22 +20,66 @@ RUN git clone https://github.com/vinceliuice/WhiteSur-gtk-theme \
       --depth=1
 
 WORKDIR /WhiteSur-gtk-theme
+# Install themes.
 RUN USER=root ./install.sh \
       --dest /usr/share/themes \
-      --silent-mode \
-    && mkdir --parents \
+      --silent-mode
+# Install GDM theme.
+RUN USER=root ./tweaks.sh \
+      --gdm \
+      --silent-mode
+# Install dash-to-dock theme.
+RUN mkdir --parents \
       /usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com \
-    && sassc \
-      --style=expanded \
-      ./src/other/dash-to-dock/stylesheet-4.scss  \
-      /usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/stylesheet.css
+    && sed \
+      --expression="336 s|fix_dash_to_dock|install_dash_to_dock_theme|" \
+      --in-place ./tweaks.sh \
+    && USER=root ./tweaks.sh \
+      --dash-to-dock \
+      --silent-mode
 
 # stage 2: copy theme to distribution container.
 FROM scratch AS dist
 
 COPY --from=builder \
-    /usr/share/themes \
-    /usr/share/themes
+    /usr/share/themes/WhiteSur-Dark \
+    /usr/share/themes/WhiteSur-Dark
 COPY --from=builder \
-    /usr/share/gnome-shell \
-    /usr/share/gnome-shell
+    /usr/share/themes/WhiteSur-Dark-hdpi \
+    /usr/share/themes/WhiteSur-Dark-hdpi
+COPY --from=builder \
+    /usr/share/themes/WhiteSur-Dark-solid \
+    /usr/share/themes/WhiteSur-Dark-solid
+COPY --from=builder \
+    /usr/share/themes/WhiteSur-Dark-solid-hdpi \
+    /usr/share/themes/WhiteSur-Dark-solid-hdpi
+COPY --from=builder \
+    /usr/share/themes/WhiteSur-Dark-solid-xhdpi \
+    /usr/share/themes/WhiteSur-Dark-solid-xhdpi
+COPY --from=builder \
+    /usr/share/themes/WhiteSur-Dark-xhdpi \
+    /usr/share/themes/WhiteSur-Dark-xhdpi
+COPY --from=builder \
+    /usr/share/themes/WhiteSur-Light \
+    /usr/share/themes/WhiteSur-Light
+COPY --from=builder \
+    /usr/share/themes/WhiteSur-Light-hdpi \
+    /usr/share/themes/WhiteSur-Light-hdpi
+COPY --from=builder \
+    /usr/share/themes/WhiteSur-Light-solid \
+    /usr/share/themes/WhiteSur-Light-solid
+COPY --from=builder \
+    /usr/share/themes/WhiteSur-Light-solid-hdpi \
+    /usr/share/themes/WhiteSur-Light-solid-hdpi
+COPY --from=builder \
+    /usr/share/themes/WhiteSur-Light-solid-xhdpi \
+    /usr/share/themes/WhiteSur-Light-solid-xhdpi
+COPY --from=builder \
+    /usr/share/themes/WhiteSur-Light-xhdpi \
+    /usr/share/themes/WhiteSur-Light-xhdpi
+COPY --from=builder \
+    /usr/share/gnome-shell/gnome-shell-theme.gresource \
+    /usr/share/themes/WhiteSur-Extension/gdm/gnome-shell-theme.gresource
+COPY --from=builder \
+    /usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/stylesheet.css \
+    /usr/share/themes/WhiteSur-Extension/dash-to-dock/stylesheet.css
