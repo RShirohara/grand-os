@@ -13,6 +13,14 @@ modules:
       - "zzz-grand-os.gschema.override"
   - type: "script"
     snippets:
+      # Apply GTK4 theme.
+      - "echo 'GTK_THEME=WhiteSur-Dark' >> /etc/environment"
+      # Apply GDM theme
+      - "
+        cp
+          /usr/share/themes/WhiteSur-Extension/gdm/gnome-shell-theme.gresource
+          /usr/share/gnome-shell/
+        "
       # Apply gnome extension `dash-to-dock` theme.
       - "
         cp
