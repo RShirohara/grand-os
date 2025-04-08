@@ -23,17 +23,21 @@ WORKDIR /WhiteSur-gtk-theme
 # Install themes.
 RUN USER=root ./install.sh \
       --dest /usr/share/themes \
-      --silent-mode
+      --silent-mode \
 # Install GDM theme.
-RUN USER=root ./tweaks.sh \
+    && USER=root ./tweaks.sh \
       --gdm \
-      --silent-mode
+      --silent-mode \
 # Install dash-to-dock theme.
-RUN mkdir --parents \
+    && mkdir --parents \
       /usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com \
     && sed \
       --expression="336 s|fix_dash_to_dock|install_dash_to_dock_theme|" \
       --in-place ./tweaks.sh \
+    && sed \
+      --expression="810 s|\"sudo\"$||" \
+      --expression="812 s|sudo ||" \
+      --in-place ./libs/lib-install.sh \
     && USER=root ./tweaks.sh \
       --dash-to-dock \
       --silent-mode
