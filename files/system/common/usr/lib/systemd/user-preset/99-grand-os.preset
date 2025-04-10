@@ -1,2 +1,3 @@
 enable flatpak-override-update.service
 enable gnupg-unit-update.service
+enable keyd.service

@@ -28,3 +28,8 @@ modules:
   - type: "script"
     snippets:
       - "rm -rf /usr/share/ublue-os/firstboot/yatfi.yml"
+
+  # Remove motd console output.
+  - type: "script"
+    snippets:
+      - "rm -rf /usr/share/ublue-os/motd/secureblue.md"

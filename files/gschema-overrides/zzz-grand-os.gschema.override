@@ -1,7 +1,13 @@
 [org.gnome.desktop.background]
-# TODO: change wallpaper
+picture-uri = 'file:///usr/share/backgrounds/fedora-workstation/glasscurtains_light.webp'
+picture-uri-dark = 'file:///usr/share/backgrounds/fedora-workstation/glasscurtains_dark.webp'
+
+[org.gnome.desktop.input-sources]
+mru-sources = [('xkb', 'us'), ('ibus', 'mozc-on')]
+sources = [('xkb', 'us'), ('ibus', 'mozc-on')]
 
 [org.gnome.desktop.interface]
+clock-format = '24h'
 color-scheme = 'prefer-dark'
 cursor-theme = 'WhiteSur-cursors'
 document-font-name = 'Noto Sans CJK JP, Light 11'
@@ -27,7 +33,6 @@ switch-applications = ['<Super>Tab']
 switch-applications-backward = ['<Shift><Super>Tab']
 switch-windows = ['<Alt>Tab']
 switch-windows-backward = ['<Shift><Alt>Tab']
-# TODO: Add IME Input Shortcut
 switch-input-source = ['<Shift><Super>space']
 switch-input-source-backward = ['']
 unmaximize = ['<Super>Down']
@@ -37,9 +42,32 @@ activate-window-menu = []
 button-layout = 'close,minimize,maximize:'
 theme = 'WhiteSur-Dark'
 
+[org.gnome.nautilus.compression]
+default-compression-format = 'tar.xz'
+
+[org.gnome.nautilus.icon-view]
+default-zoom-level = 'small'
+
+[org.gnome.nautilus.list-view]
+default-visible-columns = ['name', 'type', 'size', 'date_modified']
+default-zoom-level = 'small'
+use-tree-view = true
+
+[org.gnome.nautilus.preferences]
+default-folder-viewer = 'list-view'
+migrated-gtk-settings = true
+
+[org.gnome.Ptyxis]
+cursor-shape = 'ibeam'
+font-name = 'HackGen Console NF 11'
+use-system-font = false
+
 [org.gnome.shell]
 favorite-apps = ['trivalent.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Ptyxis.desktop']
 enabled-extensions = ['blur-my-shell@aunetx', 'clipboard-indicator@tudmotu.com', 'dash-to-dock@micxgx.gmail.com', 'gsconnect@andyholmes.github.io', 'just-perfection-desktop@just-perfection', 'logomenu@aryan_k', 'native-window-placement@gnome-shell-extensions.gcampax.github.com', 'rounded-window-corners@fxgn', 'search-light@icedman.github.com', 'status-icons@gnome-shell-extensions.gcampax.github.com', 'tilingshell@ferrarodomenico.com']
+
+[org.gnome.shell.extensions.blur-my-shell.dash-to-dock]
+blur = true
 
 [org.gnome.shell.extensions.clipboard-indicator]
 clear-history = []
@@ -51,32 +79,59 @@ prev-entry = []
 private-mode-binding = []
 toggle-menu = ['<Super>v']
 
+[org.gnome.shell.extensions.dash-to-dock]
+apply-custom-theme = true
+show-show-apps-button = false
+
+[org.gnome.shell.extensions.inputmethod-shortcuts]
+imkey-0 = ['Hangul_Hanja']
+imkey-1 = ['Hangul']
+
 [org.gnome.shell.extensions.just-perfection]
 activities-button = false
-clock-menu-position-offset = 8
+clock-menu-position = 1
+clock-menu-position-offset = 20
 notification-banner-position = 2
 overlay-key = false
-power-icon = false
+panel-button-padding-size = 6
 startup-status = 0
 
 [org.gnome.shell.extensions.Logo-menu]
 symbolic-icon = true
-# TODO: update icon
-menu-button-icon-image = 30
-menu-button-terminal = 'org.gnome.Ptyxis.desktop'
-menu-button-system-monitor = 'io.missioncenter.MissionCenter.desktop'
+menu-button-icon-image = 1
+menu-button-icon-size = 18
+menu-button-terminal = 'xdg-terminal-exec'
+menu-button-system-monitor = 'flatpak run --user io.missioncenter.MissionCenter.desktop'
 menu-button-software-center = 'gnome-software'
 show-activities-button = true
 show-lockscreen = false
 show-power-option = false
 show-gamemode = false
+show-activities-button = false
 hide-forcequit = true
 
 [org.gnome.shell.extensions.search-light]
+background-color = (0.0, 0.0, 0.0, 0.3)
+border-color = (0.23, 0.23, 0.23, 1.0)
+border-radius = 1.65
+border-thickness = 1
+scale-height=0.15
+scale-width = 0.10
 shortcut-search = ['<Super>Space']
 
 [org.gnome.shell.extensions.tilingshell]
-# TODO: fix layout
+inner-gaps = 0
+layouts-json = '[{"id":"Default 1","tiles":[{"x":0,"y":0,"width":0.5,"height":1,"groups":[1]},{"x":0.5,"y":0,"width":0.5,"height":1,"groups":[1]}]},{"id":"Default 2i","tiles":[{"x":0,"y":0,"width":0.25,"height":1,"groups":[1]},{"x":0.25,"y":0,"width":0.5,"height":1,"groups":[1]},{"x":0.75,"y":0,"width":0.25,"height":1,"groups":[1]}]},{"id":"Default 3","tiles":[{"x":0,"y":0,"width":0.1,"height":1,"groups":[1]},{"x":0.1,"y":0,"width":0.15,"height":1,"groups":[1]},{"x":0.25,"y":0,"width":0.25,"height":1,"groups":[1]},{"x":0.5,"y":0,"width":0.25,"height":1,"groups":[1]},{"x":0.75,"y":0,"width":0.25,"height":1,"groups":[1]}]}]'
+outer-gaps = 0
+show-indicator = false
+
+[org.gnome.software]
+allow-updates = false
+download-updates = false
+download-updates-notify = false
+
+[org.gnome.tweaks]
+show-extensions-notice = false
 
 [org.gtk.gtk4.settings.file-chooser]
 show-hidden = true
