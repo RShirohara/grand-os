@@ -1,6 +1,10 @@
 [org.gnome.desktop.background]
 # TODO: change wallpaper
 
+[org.gnome.desktop.input-sources]
+mru-sources = [('xkb', 'us'), ('ibus', 'mozc-on')]
+sources = [('xkb', 'us'), ('ibus', 'mozc-on')]
+
 [org.gnome.desktop.interface]
 clock-format = '24h'
 color-scheme = 'prefer-dark'
@@ -28,7 +32,6 @@ switch-applications = ['<Super>Tab']
 switch-applications-backward = ['<Shift><Super>Tab']
 switch-windows = ['<Alt>Tab']
 switch-windows-backward = ['<Shift><Alt>Tab']
-# TODO: Add IME Input Shortcut
 switch-input-source = ['<Shift><Super>space']
 switch-input-source-backward = ['']
 unmaximize = ['<Super>Down']
@@ -78,6 +81,10 @@ toggle-menu = ['<Super>v']
 [org.gnome.shell.extensions.dash-to-dock]
 apply-custom-theme = true
 show-show-apps-button = false
+
+[org.gnome.shell.extensions.inputmethod-shortcuts]
+imkey-0 = ['Hangul_Hanja']
+imkey-1 = ['Hangul']
 
 [org.gnome.shell.extensions.just-perfection]
 activities-button = false

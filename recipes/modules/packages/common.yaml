@@ -73,6 +73,7 @@ modules:
       - "779" # https://extensions.gnome.org/extension/779/clipboard-indicator
       - "4451" # https://extensions.gnome.org/extension/4451/logo-menu
       - "5489" # https://extensions.gnome.org/extension/5489/search-light
+      - "6066" # https://extensions.gnome.org/extension/6066/shortcuts-to-activate-input-methods
       - "7048" # https://extensions.gnome.org/extension/7048/rounded-window-corners-reborn
       - "7065" # https://extensions.gnome.org/extension/7065/tiling-shell
 
