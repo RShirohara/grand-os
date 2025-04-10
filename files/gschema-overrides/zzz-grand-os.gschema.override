@@ -1,5 +1,6 @@
 [org.gnome.desktop.background]
-# TODO: change wallpaper
+picture-uri = 'file:///usr/share/backgrounds/fedora-workstation/glasscurtains_light.webp'
+picture-uri-dark = 'file:///usr/share/backgrounds/fedora-workstation/glasscurtains_dark.webp'
 
 [org.gnome.desktop.input-sources]
 mru-sources = [('xkb', 'us'), ('ibus', 'mozc-on')]

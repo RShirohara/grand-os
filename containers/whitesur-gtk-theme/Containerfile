@@ -7,9 +7,12 @@ ARG REPOSITORY_VERSION
 
 # hadolint ignore=DL3041
 RUN dnf --setopt="install_weak_deps=False" install --assumeyes \
+      fedora-workstation-backgrounds \
+      file \
       gdm \
       git \
       glib2-devel \
+      ImageMagick \
       sassc \
       sudo \
       which \
@@ -27,6 +30,7 @@ RUN USER=root ./install.sh \
 # Install GDM theme.
     && USER=root ./tweaks.sh \
       --gdm \
+      -background "/usr/share/backgrounds/fedora-workstation/glasscurtains_dark.webp" \
       --silent-mode \
 # Install dash-to-dock theme.
     && mkdir --parents \
