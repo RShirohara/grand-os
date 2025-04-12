@@ -32,4 +32,5 @@ modules:
   # Remove motd console output.
   - type: "script"
     snippets:
-      - "rm -rf /usr/share/ublue-os/motd/secureblue.md"
+      - "
+        rm -rf /etc/profile.d/user-motd.sh"
