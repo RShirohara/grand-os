@@ -24,12 +24,13 @@ modules:
           /usr/lib/systemd/user-preset/10-flatpak-user-update.preset
         "
 
-  # Remove yatfi config provided by secureblue.
+  # Remove firstboot script.
   - type: "script"
     snippets:
-      - "rm -rf /usr/share/ublue-os/firstboot/yatfi.yml"
+      - "rm -rf /etc/profile.d/ublue-firstboot.sh"
 
   # Remove motd console output.
   - type: "script"
     snippets:
-      - "rm -rf /usr/share/ublue-os/motd/secureblue.md"
+      - "
+        rm -rf /etc/profile.d/user-motd.sh"

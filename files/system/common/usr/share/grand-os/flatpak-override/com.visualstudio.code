@@ -2,4 +2,5 @@
 filesystems=xdg-config/Code/User;xdg-config/git:ro;xdg-run/gnupg:ro
 
 [Environment]
+ELECTRON_OZONE_PLATFORM_HINT=wayland
 PATH=/app/bin:/usr/local/bin:/usr/bin:/home/linuxbrew/.linuxbrew/bin

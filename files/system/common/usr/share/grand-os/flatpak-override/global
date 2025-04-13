@@ -1,6 +1,7 @@
 [Context]
 devices=dri
 filesystems=host-etc:ro;host-os:ro
+sockets=!x11;wayland;!fallback-x11
 
 [Environment]
 GTK_THEME=WhiteSur-Dark

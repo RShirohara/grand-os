@@ -29,6 +29,7 @@ RUN USER=root ./install.sh \
       --silent-mode \
 # Install GDM theme.
     && USER=root ./tweaks.sh \
+      --color dark \
       --gdm \
       -background "/usr/share/backgrounds/fedora-workstation/glasscurtains_dark.webp" \
       --silent-mode \
