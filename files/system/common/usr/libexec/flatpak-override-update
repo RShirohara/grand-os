@@ -13,3 +13,5 @@ find /usr/share/grand-os/flatpak-override -type "f" \
       /usr/bin/cp "${PATH}" ${FLATPAK_OVERRIDE_DIR}
     fi
   done
+
+ujust harden-flatpak
