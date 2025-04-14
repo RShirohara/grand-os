@@ -28,4 +28,6 @@ ARCH=$(
   --arch="${ARCH}" \
   --command=code \
   --file-forwarding \
-  com.visualstudio.code "${@}"
+  com.visualstudio.code \
+  --enable-wayland-ime \
+  "${@}"
