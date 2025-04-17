@@ -3,6 +3,6 @@ Type=Application
 Name=System Update
 Comment=Update GrandOS, Flatpaks, Homebrew formulas, and more.
 Icon=update
-Exec=/usr/bin/topgrade --config="/usr/share/grand-os/system-update/topgrade.toml" \|\| read -p "Update failed!"
+Exec=bash -i -c "/usr/bin/topgrade --config=/usr/share/grand-os/system-update/topgrade.toml" \|\| read -p "Update failed!"
 Terminal=true
 Categories=ConsoleOnly;System;
