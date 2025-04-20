@@ -116,7 +116,7 @@ shortcut-search = ['<Super>Space']
 
 [org.gnome.shell.extensions.tilingshell]
 inner-gaps = 0
-layouts-json = '[{"id":"Default 1","tiles":[{"x":0,"y":0,"width":0.5,"height":1,"groups":[1]},{"x":0.5,"y":0,"width":0.5,"height":1,"groups":[1]}]},{"id":"Default 2","tiles":[{"x":0,"y":0,"width":0.25,"height":1,"groups":[1]},{"x":0.25,"y":0,"width":0.5,"height":1,"groups":[1]},{"x":0.75,"y":0,"width":0.25,"height":1,"groups":[1]}]},{"id":"Default 3","tiles":[{"x":0,"y":0,"width":0.1,"height":1,"groups":[1]},{"x":0.1,"y":0,"width":0.15,"height":1,"groups":[1]},{"x":0.25,"y":0,"width":0.25,"height":1,"groups":[1]},{"x":0.5,"y":0,"width":0.25,"height":1,"groups":[1]},{"x":0.75,"y":0,"width":0.25,"height":1,"groups":[1]}]}]'
+layouts-json = '[{"id":"Default","tiles":[{"x":0,"y":0,"width":0.1,"height":1,"groups":[]},{"x":0,"y":0,"width":0.25,"height":1,"groups":[]},{"x":0.1,"y":0,"width":0.15,"height":1,"groups":[]},{"x":0.25,"y":0,"width":0.25,"height":1,"groups":[]},{"x":0.25,"y":0,"width":0.5,"height":1,"groups":[]},{"x":0.5,"y":0,"width":0.25,"height":1,"groups":[]},{"x":0.5,"y":0,"width":0.5,"height":1,"groups":[]},{"x":0.75,"y":0,"width":0.25,"height":1,"groups":[]}]}]'
 outer-gaps = 0
 show-indicator = false
 
