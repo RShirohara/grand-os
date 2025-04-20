@@ -30,4 +30,5 @@ ARCH=$(
   --file-forwarding \
   com.visualstudio.code \
   --enable-wayland-ime \
+  --wayland-text-input-version=3 \
   "${@}"
