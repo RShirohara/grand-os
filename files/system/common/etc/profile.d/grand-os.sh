@@ -13,3 +13,6 @@ XCURSOR_PATH="${XCURSOR_PATH}:/usr/share/icons:${XDG_DATA_HOME}/icons"
 
 # Override GnuPG default config directory.
 export GNUPGHOME="${XDG_DATA_HOME:-${HOME}/.local/share}/gnupg"
+
+# Override qt client-side decoration on wayland.
+export QT_WAYLAND_DECORATION=whitesur-gtk
