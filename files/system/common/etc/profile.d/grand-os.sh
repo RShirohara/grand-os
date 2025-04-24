@@ -1,15 +1,21 @@
 #!/usr/bin/env bash
 
 # Override XDG Base directory.
-export XDG_DATA_DIRS="/usr/share/grand-os/data-dirs-override:${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
-
-# Override IME setting.
-GTK_IM_MODULE="ibus"
-QT_IM_MODULE="ibus"
-XMODIFIERS="@im=ibus"
+GRAND_OS_DATA_DIRS="/usr/share/grand-os/data-dirs-override"
+if [[ ! "${XDG_DATA_DIRS}" =~ .*:?${GRAND_OS_DATA_DIRS}:* ]]; then
+  export XDG_DATA_DIRS="${GRAND_OS_DATA_DIRS}:${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
+fi
 
 # Override cursor location.
-XCURSOR_PATH="${XCURSOR_PATH}:/usr/share/icons:${XDG_DATA_HOME}/icons"
+export XCURSOR_PATH="${XDG_DATA_HOME:-${HOME}/.local/share}/icons:/usr/share/icons"
 
 # Override GnuPG default config directory.
 export GNUPGHOME="${XDG_DATA_HOME:-${HOME}/.local/share}/gnupg"
+
+# Override IME setting.
+export GTK_IM_MODULE="ibus"
+export QT_IM_MODULE="ibus"
+export XMODIFIERS="@im=ibus"
+
+# Override qt client-side decoration on wayland.
+export QT_WAYLAND_DECORATION=whitesur-gtk

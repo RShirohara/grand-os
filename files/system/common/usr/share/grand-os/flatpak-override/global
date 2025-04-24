@@ -5,5 +5,6 @@ sockets=!x11;wayland;!fallback-x11
 
 [Environment]
 GTK_THEME=WhiteSur-Dark
+QT_PLUGIN_PATH=/usr/lib/qt5/plugins:/usr/lib/qt6/plugins:/run/host/usr/lib/qt6/plugins:/run/host/usr/lib/qt5/plugins
 XDG_CONFIG_DIRS=/app/etc/xdg:/etc/xdg:/run/host/etc/xdg
 XDG_DATA_DIRS=/app/share:/usr/share:/run/host/usr/share
