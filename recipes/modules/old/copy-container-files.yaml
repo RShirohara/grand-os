@@ -20,6 +20,11 @@ modules:
     dest: "/"
 
   - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/topgrade:latest"
+    src: "/"
+    dest: "/"
+
+  - type: "copy"
     from: "ghcr.io/rshirohara/grand-os/internal/whitesur-cursor-theme:latest"
     src: "/"
     dest: "/"
