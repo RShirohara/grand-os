@@ -1,0 +1,62 @@
+ARG BUILDER_VERSION=latest
+ARG REPOSITORY_VERSION
+
+# stage 1: build binary.
+FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS builder
+ARG REPOSITORY_VERSION
+
+# hadolint ignore=DL3041
+RUN dnf --setopt="install_weak_deps=False" install --assumeyes \
+      cargo \
+      git \
+      rust \
+    && dnf clean all
+
+RUN git clone https://github.com/topgrade-rs/topgrade \
+      --branch="${REPOSITORY_VERSION}" \
+      --depth=1
+
+WORKDIR /topgrade
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN cargo fetch \
+      --locked \
+      --target "$(rustc --version --verbose | sed --quiet 's|host: ||p')" \
+    && CFLAGS+=" -ffat-lto-objects" \
+      cargo build --frozen --release \
+    && ./target/release/topgrade --gen-manpage \
+      > topgrade.1 \
+    && gzip topgrade.1 \
+    && ./target/release/topgrade --gen-completion bash \
+      > topgrade.bash \
+    && ./target/release/topgrade --gen-completion fish \
+      > topgrade.fish \
+    && ./target/release/topgrade --gen-completion zsh \
+      > topgrade.zsh
+
+# stage 2: copy binary and document to distribution container.
+FROM scratch AS dist
+
+COPY --from=builder \
+    /topgrade/target/release/topgrade \
+    /usr/bin/
+COPY --from=builder \
+    /topgrade/README.md \
+    /usr/share/doc/topgrade/
+COPY --from=builder \
+    /topgrade/LICENSE \
+    /usr/share/licenses/topgrade/
+COPY --from=builder \
+    /topgrade/topgrade.1.gz \
+    /usr/share/man/man1/
+COPY --from=builder \
+    /topgrade/topgrade.bash \
+    /usr/share/bash-completion/completions/topgrade
+COPY --from=builder \
+    /topgrade/topgrade.fish \
+    /usr/share/fish/vendor_completions.d/
+COPY --from=builder \
+    /topgrade/topgrade.zsh \
+    /usr/share/zsh/site-functions/_topgrade
+COPY --from=builder \
+    /topgrade/config.example.toml \
+    /usr/share/doc/topgrade/
