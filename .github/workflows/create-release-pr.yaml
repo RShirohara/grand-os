@@ -80,12 +80,12 @@ jobs:
         run: |
           set -o "errexit" -o "nounset"
 
-          cat << MESSAGE > ./message.md
-          chore: bump GrandOS image version to \`v${{ steps.increase_version.outputs.version }}\`
+          cat << 'MESSAGE' > ./message.md
+          chore: bump GrandOS image version to `v${{ steps.increase_version.outputs.version }}`
           MESSAGE
 
-          cat << MESSAGE > ./detail.md
-          Bump GrandOS image version to \`v${{ steps.increase_version.outputs.version }}\`.
+          cat << 'MESSAGE' > ./detail.md
+          Bump GrandOS image version to `v${{ steps.increase_version.outputs.version }}`.
 
           ## Changelog
 
@@ -100,8 +100,9 @@ jobs:
 
           ## Note
 
-          This pull request was created by workflow triggered by ${{ github.event_name }}.
-          Additional info: "${{ github.event.inputs.info || 'None.' }}"
+          This pull request was created by workflow triggered by `${{ github.event_name }}`.
+          Additional info:
+          > ${{ github.event.inputs.info || 'None.' }}
           MESSAGE
 
       - name: "Commit"
