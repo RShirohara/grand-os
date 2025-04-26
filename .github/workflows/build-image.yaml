@@ -121,6 +121,7 @@ jobs:
             grep "^RELEASE_VERSION" ./files/scripts/add-image-info.sh \
             | sed --expression="s/^.*=//g" --expression="s/\"//g"
           )
+          echo "image_major_version=${VERSION_ID}" | tee --append "${GITHUB_OUTPUT}"
           echo "image_version=${VERSION_ID}.${RELEASE_VERSION}" | tee --append "${GITHUB_OUTPUT}"
 
           # author name
@@ -131,17 +132,18 @@ jobs:
         id: "build_metadata"
         uses: "docker/metadata-action/@369eb591f429131d6889c46b94e711f089e6ca96" # v5.6.1
         with:
-          images: |
+          images: |-
             ghcr.io/${{ github.repository_owner }}/${{ steps.get_metadata.outputs.image_name }}
-          tags: |
+          tags: |-
             type=raw,value=${{ steps.get_metadata.outputs.image_version }}
-            type=raw,value=latest,enable=${{ github.event_name == 'release' }}
-          labels: |
+            type=raw,value=${{ steps.get_metadata.outputs.image_major_version }}
+            type=raw,value=latest
+          labels: |-
             org.opencontainers.image.authors=${{ steps.get_metadata.outputs.image_authors }}
             org.opencontainers.image.documentation=https://github.com/${{ github.repository }}/blob/main/README.md
             org.opencontainers.image.source=https://github.com/${{ github.repository }}/blob/main/recipes/${{ matrix.recipe }}.yaml
             org.opencontainers.image.title=${{ steps.get_metadata.outputs.image_name }}
-          annotations: |
+          annotations: |-
             org.opencontainers.image.authors=${{ steps.get_metadata.outputs.image_authors }}
             org.opencontainers.image.documentation=https://github.com/${{ github.repository }}/blob/main/README.md
             org.opencontainers.image.source=https://github.com/${{ github.repository }}/blob/main/recipes/${{ matrix.recipe }}.yaml
@@ -172,15 +174,16 @@ jobs:
         id: "build_image"
         uses: "docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4" # v6.15.0
         with:
-          annotations: |
+          annotations: |-
             ${{ steps.build_metadata.outputs.annotations }}
           context: "."
           file: "./Containerfile"
-          labels: |
+          labels: |-
             ${{ steps.build_metadata.outputs.labels }}
           platforms: "${{ matrix.platform }}"
+          provenance: false
           push: ${{ github.event_name == 'release' }}
-          tags: |
+          tags: |-
             ${{ steps.build_metadata.outputs.tags }}
 
       - name: "Signing image"

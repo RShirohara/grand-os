@@ -162,18 +162,20 @@ jobs:
           )
           set -o "errexit"
           IMAGE_VERSION="${_IMAGE_MAJOR_VERSION}.${_IMAGE_MINOR_VERSION}.${_IMAGE_PATCH_VERSION}"
+          echo "image_major_version=${_IMAGE_MAJOR_VERSION}" | tee --append "${GITHUB_OUTPUT}"
           echo "image_version=${IMAGE_VERSION}" | tee --append "${GITHUB_OUTPUT}"
 
       - name: "Build metadata"
         id: "build_metadata"
         uses: "docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804" # v5.7.0
         with:
-          images: |
+          images: |-
             ghcr.io/${{ github.repository_owner }}/${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.title'] }}
-          tags: |
+          tags: |-
             type=raw,value=${{ steps.get_metadata.outputs.image_version }}
-            type=raw,value=latest,enable={{is_default_branch}}
-          labels: |
+            type=raw,value=${{ steps.get_metadata.outputs.image_major_version }}
+            type=raw,value=latest
+          labels: |-
             org.opencontainers.image.authors=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.authors'] }}
             org.opencontainers.image.url=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.url'] }}
             org.opencontainers.image.documentation=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.documentation'] }}
@@ -181,7 +183,7 @@ jobs:
             org.opencontainers.image.licenses=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.licenses'] }}
             org.opencontainers.image.title=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.title'] }}
             org.opencontainers.image.description=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.description'] }}
-          annotations: |
+          annotations: |-
             org.opencontainers.image.authors=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.authors'] }}
             org.opencontainers.image.url=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.url'] }}
             org.opencontainers.image.documentation=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.documentation'] }}
@@ -194,19 +196,20 @@ jobs:
         id: "build_image"
         uses: "docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4" # v6.15.0
         with:
-          annotations: |
+          annotations: |-
             ${{ steps.build_metadata.outputs.annotations }}
-          build-args: |
+          build-args: |-
             ${{ fromJson(steps.get_metadata.outputs.build_args) }}
           cache-from: "type=gha"
           cache-to: "type=gha,mode=max"
           context: "."
           file: "./containers/${{ matrix.image }}/Containerfile"
-          labels: |
+          labels: |-
             ${{ steps.build_metadata.outputs.labels }}
           platforms: "${{ matrix.platform }}"
+          provenance: false
           push: ${{ github.event_name != 'pull_request' }}
-          tags: |
+          tags: |-
             ${{ steps.build_metadata.outputs.tags }}
 
       - name: "Signing image"
