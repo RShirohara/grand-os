@@ -179,6 +179,7 @@ jobs:
           labels: |
             ${{ steps.build_metadata.outputs.labels }}
           platforms: "${{ matrix.platform }}"
+          provenance: false
           push: ${{ github.event_name == 'release' }}
           tags: |
             ${{ steps.build_metadata.outputs.tags }}

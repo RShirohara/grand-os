@@ -205,6 +205,7 @@ jobs:
           labels: |
             ${{ steps.build_metadata.outputs.labels }}
           platforms: "${{ matrix.platform }}"
+          provenance: false
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
             ${{ steps.build_metadata.outputs.tags }}
