@@ -37,6 +37,7 @@ activate-window-menu = []
 [org.gnome.desktop.wm.preferences]
 button-layout = 'close,minimize,maximize:'
 theme = 'WhiteSur-Dark'
+titlebar-font = 'Noto Sans CJK JP, Light 11'
 
 [org.gnome.nautilus.compression]
 default-compression-format = 'tar.xz'
