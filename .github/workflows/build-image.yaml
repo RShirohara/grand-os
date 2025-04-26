@@ -121,6 +121,7 @@ jobs:
             grep "^RELEASE_VERSION" ./files/scripts/add-image-info.sh \
             | sed --expression="s/^.*=//g" --expression="s/\"//g"
           )
+          echo "image_major_version=${VERSION_ID}" | tee --append "${GITHUB_OUTPUT}"
           echo "image_version=${VERSION_ID}.${RELEASE_VERSION}" | tee --append "${GITHUB_OUTPUT}"
 
           # author name
@@ -135,7 +136,8 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/${{ steps.get_metadata.outputs.image_name }}
           tags: |-
             type=raw,value=${{ steps.get_metadata.outputs.image_version }}
-            type=raw,value=latest,enable=${{ github.event_name == 'release' }}
+            type=raw,value=${{ steps.get_metadata.outputs.image_major_version }}
+            type=raw,value=latest
           labels: |-
             org.opencontainers.image.authors=${{ steps.get_metadata.outputs.image_authors }}
             org.opencontainers.image.documentation=https://github.com/${{ github.repository }}/blob/main/README.md
