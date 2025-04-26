@@ -2,7 +2,7 @@
 
 modules:
   - type: "copy"
-    from: "ghcr.io/rshirohara/grand-os/internal/hackgen-fonts:latest"
+    from: "ghcr.io/rshirohara/grand-os/internal/hackgen-fonts:41"
     src: "/"
     dest: "/"
   - type: "script"
@@ -10,36 +10,36 @@ modules:
       - "fc-cache --system-only --really-force /usr/share/fonts/hackgen"
 
   - type: "copy"
-    from: "ghcr.io/rshirohara/grand-os/internal/kde-rounded-corners:latest"
+    from: "ghcr.io/rshirohara/grand-os/internal/kde-rounded-corners:41"
     src: "/"
     dest: "/"
 
   - type: "copy"
-    from: "ghcr.io/rshirohara/grand-os/internal/kzones:latest"
+    from: "ghcr.io/rshirohara/grand-os/internal/kzones:41"
     src: "/"
     dest: "/"
 
   - type: "copy"
-    from: "ghcr.io/rshirohara/grand-os/internal/topgrade:latest"
+    from: "ghcr.io/rshirohara/grand-os/internal/topgrade:41"
     src: "/"
     dest: "/"
 
   - type: "copy"
-    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-cursor-theme:latest"
+    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-cursor-theme:41"
     src: "/"
     dest: "/"
 
   - type: "copy"
-    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-gtk-theme:latest"
+    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-gtk-theme:41"
     src: "/"
     dest: "/"
 
   - type: "copy"
-    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-icon-theme:latest"
+    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-icon-theme:41"
     src: "/"
     dest: "/"
 
   - type: "copy"
-    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-kde:latest"
+    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-kde:41"
     src: "/"
     dest: "/"
