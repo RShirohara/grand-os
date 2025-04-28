@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Override XDG Base directory.
-GRAND_OS_DATA_DIRS="/usr/share/grand-os/data-dirs-override"
+GRAND_OS_DATA_DIRS="/usr/share/grand-os/xdg-overrides/data-dirs"
 if [[ ! "${XDG_DATA_DIRS}" =~ .*:?${GRAND_OS_DATA_DIRS}:* ]]; then
   export XDG_DATA_DIRS="${GRAND_OS_DATA_DIRS}:${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
 fi

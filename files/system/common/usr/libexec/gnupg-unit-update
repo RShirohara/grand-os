@@ -7,7 +7,7 @@ if [[ ! -d "${SYSTEMD_UNIT_DIR}" ]]; then
   /usr/bin/mkdir --parents "${SYSTEMD_UNIT_DIR}"
 fi
 
-find /usr/share/grand-os/systemd-unit-template/gnupg -type "f" \
+find /usr/share/grand-os/gnupg/systemd-units -type "f" \
 | while read -r PATH; do \
     FILE_NAME="${PATH##*/}"
     if [[ ! -f "${SYSTEMD_UNIT_DIR}/${FILE_NAME}" ]]; then
