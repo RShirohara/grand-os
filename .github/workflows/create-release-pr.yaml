@@ -83,14 +83,18 @@ jobs:
           COMMITS=$(
             echo '${{ steps.generate_changelog.outputs.changelog }}' \
             | jq --raw-output ".[]" \
-            | sed --expression="s|^|- |g"
+            | sed --expression="s|^|- |g" \
+            | sed --null-data \
+              --expression="$ s|\\n$||" \
+              --expression="s|\\n|\\\\n|g"
           )
 
+          # shellcheck disable=SC2016
           sed \
             --expression="s|\${VERSION}|${{ steps.increase_version.outputs.version }}|g" \
             --expression="s|\${COMMITS}|${COMMITS:-None.}|" \
             --expression="s|\${EVENT_NAME}|${{ github.event_name }}|" \
-            --expression="s|\${ADDITIONAL_INFO}|${{ github.event.inputs.info || 'None.' }}|" \
+            --expression='s|\${ADDITIONAL_INFO}|${{ github.event.inputs.info || 'None.' }}|' \
             ./.github/COMMIT_TEMPLATE/release.md \
             > ./release.md
           head --lines=1 ./release.md > ./message.md
