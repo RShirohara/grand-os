@@ -12,7 +12,6 @@ modules:
       - "gnome-shell-extension-just-perfection"
       - "gnome-shell-extension-native-window-placement"
       - "gnome-shell-extension-status-icons"
-      - "gnome-shell-extension-user-theme"
       - "ibus-mozc"
       - "keyd"
       - "kvantum"
