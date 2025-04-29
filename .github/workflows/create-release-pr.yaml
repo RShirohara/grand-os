@@ -80,30 +80,21 @@ jobs:
         run: |
           set -o "errexit" -o "nounset"
 
-          cat << 'MESSAGE' > ./message.md
-          chore: bump GrandOS image version to `v${{ steps.increase_version.outputs.version }}`
-          MESSAGE
-
-          cat << 'MESSAGE' > ./detail.md
-          Bump GrandOS image version to `v${{ steps.increase_version.outputs.version }}`.
-
-          ## Changelog
-
-          $(
-            _COMMITS=$(
-              echo '${{ steps.generate_changelog.outputs.changelog }}' \
-              | jq --raw-output ".[]" \
-              | sed --expression="s|^|- |g"
-            )
-            echo "${_COMMITS:-None.}"
+          COMMITS=$(
+            echo '${{ steps.generate_changelog.outputs.changelog }}' \
+            | jq --raw-output ".[]" \
+            | sed --expression="s|^|- |g"
           )
 
-          ## Note
-
-          This pull request was created by workflow triggered by `${{ github.event_name }}`.
-          Additional info:
-          > ${{ github.event.inputs.info || 'None.' }}
-          MESSAGE
+          sed \
+            --expression="s|\${VERSION}|${{ steps.increase_version.outputs.version }}|g" \
+            --expression="s|\${COMMITS}|${COMMITS:-None.}|" \
+            --expression="s|\${EVENT_NAME}|${{ github.event_name }}|" \
+            --expression="s|\${ADDITIONAL_INFO}|${{ github.event.inputs.info || 'None.' }}|" \
+            ./.github/COMMIT_TEMPLATE/release.md \
+            > ./release.md
+          head --lines=1 ./release.md > ./message.md
+          tail --lines=+3 ./release.md > ./detail.md
 
       - name: "Commit"
         env:
