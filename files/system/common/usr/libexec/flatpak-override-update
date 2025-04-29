@@ -6,7 +6,7 @@ if [[ ! -d "${FLATPAK_OVERRIDE_DIR}" ]]; then
   /usr/bin/mkdir --parents "${FLATPAK_OVERRIDE_DIR}"
 fi
 
-find /usr/share/grand-os/flatpak-override -type "f" \
+find /usr/share/grand-os/flatpak/overrides -type "f" \
 | while read -r PATH; do \
     FILE_NAME="${PATH##*/}"
     if [[ ! -f "${FLATPAK_OVERRIDE_DIR}/${FILE_NAME}" ]]; then
