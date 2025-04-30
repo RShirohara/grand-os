@@ -41,59 +41,37 @@ RUN cmake \
     && DESTDIR="./dist" cmake --install ./build-qt6
 
 # stage 2: build resources for flatpak package.
-FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS flatpak-builder
+## Runtime: 5.15-24.08
+FROM ghcr.io/flathub-infra/flatpak-github-actions:kde-5.15-24.08 AS flatpak-builder-5.15-24.08
 ARG REPOSITORY_VERSION
+ENV RUNTIME_VERSION="5.15-24.08"
+ENV QT_VERSION="qt5"
 
-# hadolint ignore=DL3041
-RUN dnf --setopt="install_weak_deps=False" install --assumeyes \
-      cmake \
-      gcc-c++ \
-      git \
-      libstdc++ \
-      qt5-qtbase-private-devel \
-      qt5-qtbase-static \
-      qt5-qtsvg-devel \
-      qt5-qtwayland-devel \
-      qt6-qtbase-private-devel \
-      qt6-qtbase-static \
-      qt6-qtsvg-devel \
-      qt6-qtwayland-devel \
-      wayland-devel \
-    && dnf clean all
+# WORKAROUND: generate machine-id
+RUN uname -a \
+    | md5sum \
+    | cut --delimiter=" " --field=1 \
+    > /etc/machine-id
 
-RUN git clone https://github.com/FengZhongShaoNian/QWhiteSurGtkDecorations \
-      --branch="${REPOSITORY_VERSION}" \
-      --depth=1
-
+COPY ./flatpak /QWhiteSurGtkDecorations
 WORKDIR /QWhiteSurGtkDecorations
-RUN mkdir --parents /run/host \
-    && ln --symbolic /usr /run/host/usr \
-    && cmake \
-      -B build-qt5 \
-      -DCMAKE_INSTALL_PREFIX=/usr \
-      -DCMAKE_PREFIX_PATH=/run/host/usr \
-      -DCMAKE_CXX_FLAGS="-Wl,-rpath,/run/host/usr/lib64" \
-      -DHAS_QT6_SUPPORT=true \
-      -DUSE_QT6=false \
-    && cmake --build ./build-qt5 -j \
-    && DESTDIR="./dist/build" cmake --install ./build-qt5 \
-    && cmake \
-      -B build-qt6 \
-      -DCMAKE_INSTALL_PREFIX=/usr \
-      -DCMAKE_PREFIX_PATH=/run/host/usr \
-      -DCMAKE_CXX_FLAGS="-Wl,-rpath,/run/host/usr/lib64" \
-      -DUSE_QT6=true \
-    && cmake --build ./build-qt6 -j \
-    && DESTDIR="./dist/build" cmake --install ./build-qt6 \
-    && mkdir --parents ./dist/output/usr/share/grand-os/flatpak/libraries \
-    && cp -r ./dist/build/usr/lib64/* ./dist/output/usr/share/grand-os/flatpak/libraries/
+RUN sed \
+      --expression="s|\${RUNTIME_VERSION}|${RUNTIME_VERSION}|g" \
+      --expression="s|\${REPOSITORY_VERSION}|${REPOSITORY_VERSION}|" \
+      --in-place "./org.kde.WaylandDecoration.QWhiteSurGtkDecorations.${QT_VERSION}.json" \
+    && flatpak-builder \
+      --verbose \
+      --disable-rofiles-fuse \
+      --force-clean \
+      ./build \
+      "./org.kde.WaylandDecoration.QWhiteSurGtkDecorations.${QT_VERSION}.json"
 
 # stage 3: copy resources to distribution container.
-FROM scratch AS dist
+# FROM scratch AS dist
 
-COPY --from=system-builder \
-  /QWhiteSurGtkDecorations/dist \
-  /
-COPY --from=flatpak-builder \
-  /QWhiteSurGtkDecorations/dist/output \
-  /
+# COPY --from=system-builder \
+#   /QWhiteSurGtkDecorations/dist \
+#   /
+# COPY --from=flatpak-builder \
+#   /QWhiteSurGtkDecorations/dist/output \
+#   /
