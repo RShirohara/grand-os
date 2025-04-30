@@ -2,7 +2,7 @@ ARG BUILDER_VERSION=latest
 ARG REPOSITORY_VERSION
 
 # stage 1: build resources for system package.
-FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS system-builder
+FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS builder
 ARG REPOSITORY_VERSION
 
 # hadolint ignore=DL3041
@@ -40,60 +40,9 @@ RUN cmake \
     && cmake --build ./build-qt6 -j \
     && DESTDIR="./dist" cmake --install ./build-qt6
 
-# stage 2: build resources for flatpak package.
-FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS flatpak-builder
-ARG REPOSITORY_VERSION
-
-# hadolint ignore=DL3041
-RUN dnf --setopt="install_weak_deps=False" install --assumeyes \
-      cmake \
-      gcc-c++ \
-      git \
-      libstdc++ \
-      qt5-qtbase-private-devel \
-      qt5-qtbase-static \
-      qt5-qtsvg-devel \
-      qt5-qtwayland-devel \
-      qt6-qtbase-private-devel \
-      qt6-qtbase-static \
-      qt6-qtsvg-devel \
-      qt6-qtwayland-devel \
-      wayland-devel \
-    && dnf clean all
-
-RUN git clone https://github.com/FengZhongShaoNian/QWhiteSurGtkDecorations \
-      --branch="${REPOSITORY_VERSION}" \
-      --depth=1
-
-WORKDIR /QWhiteSurGtkDecorations
-RUN mkdir --parents /run/host \
-    && ln --symbolic /usr /run/host/usr \
-    && cmake \
-      -B build-qt5 \
-      -DCMAKE_INSTALL_PREFIX=/usr \
-      -DCMAKE_PREFIX_PATH=/run/host/usr \
-      -DCMAKE_CXX_FLAGS="-Wl,-rpath,/run/host/usr/lib64" \
-      -DHAS_QT6_SUPPORT=true \
-      -DUSE_QT6=false \
-    && cmake --build ./build-qt5 -j \
-    && DESTDIR="./dist/build" cmake --install ./build-qt5 \
-    && cmake \
-      -B build-qt6 \
-      -DCMAKE_INSTALL_PREFIX=/usr \
-      -DCMAKE_PREFIX_PATH=/run/host/usr \
-      -DCMAKE_CXX_FLAGS="-Wl,-rpath,/run/host/usr/lib64" \
-      -DUSE_QT6=true \
-    && cmake --build ./build-qt6 -j \
-    && DESTDIR="./dist/build" cmake --install ./build-qt6 \
-    && mkdir --parents ./dist/output/usr/share/grand-os/flatpak/libraries \
-    && cp -r ./dist/build/usr/lib64/* ./dist/output/usr/share/grand-os/flatpak/libraries/
-
-# stage 3: copy resources to distribution container.
+# stage 2: copy resources to distribution container.
 FROM scratch AS dist
 
-COPY --from=system-builder \
+COPY --from=builder \
   /QWhiteSurGtkDecorations/dist \
-  /
-COPY --from=flatpak-builder \
-  /QWhiteSurGtkDecorations/dist/output \
   /
