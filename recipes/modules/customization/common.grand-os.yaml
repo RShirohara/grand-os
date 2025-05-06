@@ -25,7 +25,7 @@ modules:
     snippets:
       # Apply GTK4 theme.
       - "echo 'GTK_THEME=WhiteSur-Dark' >> /etc/environment"
-      # Apply GDM theme
+      # Apply GDM theme.
       - "
         cp
           /usr/share/themes/WhiteSur-Extension/gdm/gnome-shell-theme.gresource
