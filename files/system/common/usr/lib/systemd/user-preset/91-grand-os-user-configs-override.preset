@@ -1,2 +1,0 @@
-enable flatpak-override-update.timer
-enable gnupg-unit-update.timer

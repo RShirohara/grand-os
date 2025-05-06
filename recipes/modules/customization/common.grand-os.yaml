@@ -7,6 +7,16 @@ modules:
       - source: "./system/common"
         destination: "/"
 
+  # Add grand-os image info.
+  - type: "script"
+    scripts:
+      - "./add-image-info.sh"
+
+  # Add default kargs to bootc config.
+  - type: "script"
+    scripts:
+      - "./apply-default-kargs.sh"
+
   # Apply gnome/gtk customizations.
   - type: "gschema-overrides"
     include:
@@ -15,7 +25,7 @@ modules:
     snippets:
       # Apply GTK4 theme.
       - "echo 'GTK_THEME=WhiteSur-Dark' >> /etc/environment"
-      # Apply GDM theme
+      # Apply GDM theme.
       - "
         cp
           /usr/share/themes/WhiteSur-Extension/gdm/gnome-shell-theme.gresource
@@ -28,12 +38,12 @@ modules:
           /usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/
         "
 
-  # Add default kargs to bootc config.
-  - type: "script"
-    scripts:
-      - "./apply-default-kargs.sh"
-
-  # Add grand-os image info.
-  - type: "script"
-    scripts:
-      - "./add-image-info.sh"
+  # Enable systemd units.
+  - type: "systemd"
+    system:
+      enabled:
+        - "keyd.service"
+    user:
+      enabled:
+        - "flatpak-override-update.timer"
+        - "gnupg-unit-update.timer"
