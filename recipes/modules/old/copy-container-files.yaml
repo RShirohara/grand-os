@@ -10,11 +10,6 @@ modules:
       - "fc-cache --system-only --really-force /usr/share/fonts/hackgen"
 
   - type: "copy"
-    from: "ghcr.io/rshirohara/grand-os/internal/kde-rounded-corners:41"
-    src: "/"
-    dest: "/"
-
-  - type: "copy"
     from: "ghcr.io/rshirohara/grand-os/internal/kzones:41"
     src: "/"
     dest: "/"
