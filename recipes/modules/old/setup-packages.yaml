@@ -4,6 +4,8 @@ modules:
   - type: "rpm-ostree"
     repos:
       - "https://copr.fedorainfracloud.org/coprs/alternateved/keyd/repo/fedora-%OS_VERSION%/alternateved-keyd-fedora-%OS_VERSION%.repo"
+      - "https://copr.fedorainfracloud.org/coprs/lilay/topgrade/repo/fedora-%OS_VERSION%/lilay-topgrade-fedora-%OS_VERSION%.repo"
+      - "https://copr.fedorainfracloud.org/coprs/matinlotfali/KDE-Rounded-Corners/repo/fedora-%OS_VERSION%/matinlotfali-KDE-Rounded-Corners-fedora-%OS_VERSION%.repo"
       - "https://packagecloud.io/install/repositories/filips/FirefoxPWA/config_file.repo?os=rpm_any&dist=rpm_any&source=script"
     keys:
       - "https://packagecloud.io/filips/FirefoxPWA/gpgkey"
@@ -18,8 +20,10 @@ modules:
       - "kcm-fcitx5"
       - "keyd"
       - "kvantum"
+      - "kwin-effect-roundcorners"
       - "libappindicator"
       - "libdbusmenu"
+      - "topgrade"
     remove:
       - "distrobox"
       - "firefox-langpacks"

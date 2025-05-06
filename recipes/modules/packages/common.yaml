@@ -5,6 +5,7 @@ modules:
   - type: "rpm-ostree"
     repos:
       - "https://copr.fedorainfracloud.org/coprs/alternateved/keyd/repo/fedora-%OS_VERSION%/alternateved-keyd-fedora-%OS_VERSION%.repo"
+      - "https://copr.fedorainfracloud.org/coprs/lilay/topgrade/repo/fedora-%OS_VERSION%/lilay-topgrade-fedora-%OS_VERSION%.repo"
     install:
       - "gnome-shell-extension-blur-my-shell"
       - "gnome-shell-extension-dash-to-dock"
@@ -17,6 +18,7 @@ modules:
       - "kvantum"
       - "nautilus-python"
       - "sushi"
+      - "topgrade"
     remove:
       - "distrobox"
       - "fuse-overlayfs"
@@ -50,10 +52,6 @@ modules:
     dest: "/"
   - type: "copy"
     from: "ghcr.io/rshirohara/grand-os/internal/qwhitesurgtkdecorations:41"
-    src: "/"
-    dest: "/"
-  - type: "copy"
-    from: "ghcr.io/rshirohara/grand-os/internal/topgrade:41"
     src: "/"
     dest: "/"
   - type: "copy"
