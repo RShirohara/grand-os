@@ -6,12 +6,15 @@ modules:
     repos:
       - "https://copr.fedorainfracloud.org/coprs/alternateved/keyd/repo/fedora-%OS_VERSION%/alternateved-keyd-fedora-%OS_VERSION%.repo"
       - "https://copr.fedorainfracloud.org/coprs/lilay/topgrade/repo/fedora-%OS_VERSION%/lilay-topgrade-fedora-%OS_VERSION%.repo"
+      - "https://copr.fedorainfracloud.org/coprs/ublue-os/staging/repo/fedora-%OS_VERSION%/ublue-os-staging-fedora-%OS_VERSION%.repo"
     install:
       - "gnome-shell-extension-blur-my-shell"
       - "gnome-shell-extension-dash-to-dock"
       - "gnome-shell-extension-gsconnect"
       - "gnome-shell-extension-just-perfection"
+      - "gnome-shell-extension-logo-menu"
       - "gnome-shell-extension-native-window-placement"
+      - "gnome-shell-extension-search-light"
       - "gnome-shell-extension-status-icons"
       - "ibus-mozc"
       - "keyd"
@@ -28,6 +31,9 @@ modules:
       - "kasumi-common"
       - "kasumi-unicode"
       - "toolbox"
+  - type: "script"
+    snippets:
+      - "dnf config-manager setopt copr:copr.fedorainfracloud.org:ublue-os:staging.enabled=0"
 
   # Flatpak packages.
   - type: "default-flatpaks"
@@ -46,6 +52,10 @@ modules:
         - "org.gnome.TextEditor"
 
   # Internal container images.
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/gnome-shell-extension-inputmethod-shortcuts:42"
+    src: "/"
+    dest: "/"
   - type: "copy"
     from: "ghcr.io/rshirohara/grand-os/internal/hackgen-fonts:42"
     src: "/"
@@ -75,9 +85,6 @@ modules:
   - type: "gnome-extensions"
     install:
       - "779" # https://extensions.gnome.org/extension/779/clipboard-indicator
-      - "4451" # https://extensions.gnome.org/extension/4451/logo-menu
-      - "5489" # https://extensions.gnome.org/extension/5489/search-light
-      - "6066" # https://extensions.gnome.org/extension/6066/shortcuts-to-activate-input-methods
       - "7048" # https://extensions.gnome.org/extension/7048/rounded-window-corners-reborn
       - "7065" # https://extensions.gnome.org/extension/7065/tiling-shell
 
