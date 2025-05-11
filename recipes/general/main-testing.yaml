@@ -4,7 +4,7 @@ name: "grand-os/main-testing"
 description: "A desktop Linux image based for Fedora Silverblue and customized for personal use."
 
 base-image: "ghcr.io/secureblue/silverblue-main-hardened"
-image-version: "41"
+image-version: "42"
 
 modules:
   - from-file: "./modules/packages/common.yaml"
