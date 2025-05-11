@@ -1,0 +1,25 @@
+# Source: <https://github.com/osamuaoki/inputmethod-shortcuts/pull/10>
+From 7418d1a6f1d38ffb0edbefc4766b980871be52f1 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=C3=81lan=20Cr=C3=ADstoffer?= <acristoffers@startmail.com>
+Date: Sat, 19 Apr 2025 11:00:44 +0200
+Subject: [PATCH] Bump supported shell version to 48
+
+---
+ metadata.json | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/metadata.json b/metadata.json
+index f10c182..865c756 100644
+--- a/metadata.json
++++ b/metadata.json
+@@ -6,7 +6,8 @@
+   "shell-version": [
+     "45",
+     "46",
+-    "47"
++    "47",
++    "48"
+   ],
+   "url": "https://github.com/osamuaoki/inputmethod-shortcuts",
+   "uuid": "inputmethod-shortcuts@osamu.debian.org"
+

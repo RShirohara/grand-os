@@ -202,7 +202,7 @@ jobs:
             ${{ fromJson(steps.get_metadata.outputs.build_args) }}
           cache-from: "type=gha"
           cache-to: "type=gha,mode=max"
-          context: "."
+          context: "./containers/${{ matrix.image }}"
           file: "./containers/${{ matrix.image }}/Containerfile"
           labels: |-
             ${{ steps.build_metadata.outputs.labels }}
