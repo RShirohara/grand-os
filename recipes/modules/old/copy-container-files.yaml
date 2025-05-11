@@ -2,7 +2,7 @@
 
 modules:
   - type: "copy"
-    from: "ghcr.io/rshirohara/grand-os/internal/hackgen-fonts:41"
+    from: "ghcr.io/rshirohara/grand-os/internal/hackgen-fonts:42"
     src: "/"
     dest: "/"
   - type: "script"
@@ -10,26 +10,26 @@ modules:
       - "fc-cache --system-only --really-force /usr/share/fonts/hackgen"
 
   - type: "copy"
-    from: "ghcr.io/rshirohara/grand-os/internal/kzones:41"
+    from: "ghcr.io/rshirohara/grand-os/internal/kzones:42"
     src: "/"
     dest: "/"
 
   - type: "copy"
-    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-cursor-theme:41"
+    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-cursor-theme:42"
     src: "/"
     dest: "/"
 
   - type: "copy"
-    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-gtk-theme:41"
+    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-gtk-theme:42"
     src: "/"
     dest: "/"
 
   - type: "copy"
-    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-icon-theme:41"
+    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-icon-theme:42"
     src: "/"
     dest: "/"
 
   - type: "copy"
-    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-kde:41"
+    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-kde:42"
     src: "/"
     dest: "/"
