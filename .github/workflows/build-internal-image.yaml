@@ -50,8 +50,9 @@ jobs:
 
           # get modified images list
           MODIFIED_IMAGES=$(
-            git diff --name-only "${COMPARE_TARGET}" "HEAD" \
+            git diff --name-status "${COMPARE_TARGET}" "HEAD" \
             | grep "containers/*" \
+            | cut --fields="2" \
             | cut --delimiter="/" --fields="2" \
             | uniq \
             | jq --null-input --raw-input --compact-output "[inputs]"
@@ -123,12 +124,6 @@ jobs:
           set -o "errexit" -o "nounset"
           cd ./containers/${{ matrix.image }}
 
-          # build args
-          ## GitHub Actions が `KEY=VALUE` 形式の複数行文字列を `${GITHUB_OUTPUT}` で受けると解釈に失敗するため、
-          ## 単一要素を持つ JSON String にしたうえで出力し、値を使用する側で `fromJson()` で受けるようにする。
-          BUILD_ARGS=$(jq --raw-input --slurp "." ./build.env)
-          echo "build_args=${BUILD_ARGS}" | tee --append "${GITHUB_OUTPUT}"
-
           # image metadata
           IMAGE_METADATA=$(jq --compact-output --raw-output "." ./meta.json)
           echo "image_metadata=${IMAGE_METADATA}" | tee --append "${GITHUB_OUTPUT}"
@@ -136,7 +131,7 @@ jobs:
           # image version
           ## major version
           _IMAGE_MAJOR_VERSION=$(
-            grep "^BUILDER_VERSION" ./build.env \
+            grep "^ARG BUILDER_VERSION=" ./Containerfile \
             | sed --expression="s/^.*=//g"
           )
           ## minor version
@@ -198,8 +193,6 @@ jobs:
         with:
           annotations: |-
             ${{ steps.build_metadata.outputs.annotations }}
-          build-args: |-
-            ${{ fromJson(steps.get_metadata.outputs.build_args) }}
           cache-from: "type=gha"
           cache-to: "type=gha,mode=max"
           context: "./containers/${{ matrix.image }}"

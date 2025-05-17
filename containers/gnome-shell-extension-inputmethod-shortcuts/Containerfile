@@ -1,5 +1,5 @@
-ARG BUILDER_VERSION=latest
-ARG REPOSITORY_COMMIT_HASH
+ARG BUILDER_VERSION=42
+ARG REPOSITORY_COMMIT_HASH=96e0bc1c230aeddd163d96ee46113418a6aaeb5f
 
 # stage 1: build extension.
 FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS builder

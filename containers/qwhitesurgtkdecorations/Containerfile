@@ -1,5 +1,5 @@
-ARG BUILDER_VERSION=latest
-ARG REPOSITORY_VERSION
+ARG BUILDER_VERSION=42
+ARG REPOSITORY_VERSION=0.1.0
 
 # stage 1: build resources for system package.
 FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS builder

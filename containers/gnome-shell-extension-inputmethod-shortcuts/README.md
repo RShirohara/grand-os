@@ -7,5 +7,5 @@ into GrandOS.
 ## Build
 
 ```shell
-podman build . --build-arg-file="./build.env" --tag="ghcr.io/rshirohara/grand-os/internal/gnome-shell-extension-inputmethod-shortcuts:edge"
+podman build --tag="ghcr.io/rshirohara/grand-os/internal/gnome-shell-extension-inputmethod-shortcuts:edge" .
 ```
