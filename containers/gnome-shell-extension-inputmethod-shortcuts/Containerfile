@@ -28,3 +28,6 @@ FROM scratch
 COPY --from=builder \
     /inputmethod-shortcuts/dist \
     /usr/share/gnome-shell/extensions/inputmethod-shortcuts@osamu.debian.org
+COPY --from=builder \
+    /inputmethod-shortcuts/dist/schemas/org.gnome.shell.extensions.inputmethod-shortcuts.gschema.xml \
+    /usr/share/glib-2.0/schemas/
