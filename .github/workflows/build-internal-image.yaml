@@ -50,8 +50,9 @@ jobs:
 
           # get modified images list
           MODIFIED_IMAGES=$(
-            git diff --name-only "${COMPARE_TARGET}" "HEAD" \
+            git diff --name-status "${COMPARE_TARGET}" "HEAD" \
             | grep "containers/*" \
+            | cut --fields="2" \
             | cut --delimiter="/" --fields="2" \
             | uniq \
             | jq --null-input --raw-input --compact-output "[inputs]"
