@@ -44,3 +44,17 @@ modules:
         - "kate"
         - "toolbox"
       auto-remove: true
+
+  # Flatpak packages.
+  - type: "default-flatpaks"
+    user:
+      repo-url: "https://dl.flathub.org/repo/flathub.flatpakrepo"
+      repo-name: "flathub"
+      repo-title: "Flathub"
+      install:
+        - "com.github.tchx84.Flatseal"
+        - "io.missioncenter.MissionCenter"
+        - "org.kde.gwenview"
+        - "org.kde.kwrite"
+        - "org.kde.okular"
+        - "org.videolan.VLC"
