@@ -1,8 +1,0 @@
-[Unit]
-Description=Update Flatpak overrides Trigger
-
-[Timer]
-OnBootSec=2sec
-
-[Install]
-WantedBy=timers.target

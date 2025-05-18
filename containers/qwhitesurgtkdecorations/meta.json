@@ -1,9 +1,0 @@
-{
-  "org.opencontainers.image.authors": "Ray Shirohara <RShirohara@proton.me>",
-  "org.opencontainers.image.url": "https://github.com/RShirohara/grand-os/blob/main/containers/qwhitesurgtkdecorations",
-  "org.opencontainers.image.documentation": "https://github.com/RShirohara/grand-os/blob/main/containers/qwhitesurgtkdecorations/README.md",
-  "org.opencontainers.image.source": "https://github.com/RShirohara/grand-os/blob/main/containers/qwhitesurgtkdecorations/Containerfile",
-  "org.opencontainers.image.licenses": "LGPL-2.1-or-later",
-  "org.opencontainers.image.title": "grand-os/internal/qwhitesurgtkdecorations",
-  "org.opencontainers.image.description": "Internal container image to provide github.com/FengZhongShaoNian/QWhiteSurGtkDecorations into GrandOS."
-}
