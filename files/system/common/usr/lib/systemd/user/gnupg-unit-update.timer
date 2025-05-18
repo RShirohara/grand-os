@@ -1,0 +1,8 @@
+[Unit]
+Description=Update GnuPG unit files Trigger
+
+[Timer]
+OnBootSec=2sec
+
+[Install]
+WantedBy=timers.target
