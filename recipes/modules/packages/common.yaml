@@ -84,3 +84,9 @@ modules:
     from: "ghcr.io/rshirohara/grand-os/internal/whitesur-kde:42"
     src: "/"
     dest: "/"
+
+  # Homebrew.
+  - type: "brew"
+    brew-analytics: false
+    auto-update: false
+    auto-upgrade: false
