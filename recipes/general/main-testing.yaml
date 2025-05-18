@@ -6,4 +6,5 @@ description: "A desktop Linux image based for Fedora Kinoite and customized for 
 base-image: "ghcr.io/secureblue/kinoite-main-hardened"
 image-version: "42"
 
-modules: []
+modules:
+  - from-file: "./modules/packages/common.yaml"

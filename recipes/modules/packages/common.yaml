@@ -1,0 +1,46 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
+
+modules:
+  # dnf packages.
+  - type: "dnf"
+    repos:
+      copr:
+        - "alternateved/keyd"
+        - "lilay/topgrade"
+        - "matinlotfali/KDE-Rounded-Corners"
+      cleanup: false
+    install:
+      packages:
+        - "fcitx5-autostart"
+        - "fcitx5-configtool"
+        - "fcitx5-gtk"
+        - "fcitx5-mozc"
+        - "fcitx5-qt"
+        - "fcitx5"
+        - "kcm-fcitx5"
+        - "keyd"
+        - "kvantum"
+        - "kwin-effect-roundcorners"
+        - "libappindicator"
+        - "libdbusmenu"
+        - "topgrade"
+      install-weak-deps: false
+      skip-unavailable: false
+      skip-broken: false
+      allow-erasing: false
+    remove:
+      packages:
+        - "distrobox"
+        - "fuse-overlayfs"
+        - "ibus-chewing"
+        - "ibus-gtk2"
+        - "ibus-gtk3"
+        - "ibus-gtk4"
+        - "ibus"
+        - "kasumi-common"
+        - "kasumi-unicode"
+        - "kate-krunner-plugin"
+        - "kate-plugins"
+        - "kate"
+        - "toolbox"
+      auto-remove: true
