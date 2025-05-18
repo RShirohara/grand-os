@@ -1,0 +1,55 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
+
+modules:
+  # Apply file-based customizations.
+  - type: "files"
+    files:
+      - source: "./system/common"
+        destination: "/"
+
+  # Add grand-os image info.
+  - type: "script"
+    scripts:
+      - "./add-image-info.sh"
+
+  # Add default kargs to bootc config.
+  - type: "script"
+    scripts:
+      - "./apply-default-kargs.sh"
+
+  # Apply GTK theme customization.
+  - type: "script"
+    snippets:
+      # Apply GTK Theme.
+      - "echo 'GTK_THEME=WhiteSur-Dark' >> /etc/environment"
+
+  # Apply KDE theme customization.
+  - type: "script"
+    snippets:
+      # Change background image on WhiteSur SDDM theme.
+      - "
+        sed
+          --expression='s|^background=.*|background=/usr/share/wallpapers/Mountain/contents/images_dark/5120x2880.png|'
+          --in-place /usr/share/sddm/themes/WhiteSur-dark/theme.conf
+        "
+      - "
+        sed
+          --expression='s|^background=.*|background=/usr/share/wallpapers/Mountain/contents/images/5120x2880.png|'
+          --in-place /usr/share/sddm/themes/WhiteSur-light/theme.conf
+        "
+      # Update transparent settings on WhetSur Kvantum theme.
+      - "
+        sed
+          --expression='s|^transparent_dolphin_view=.*|transparent_dolphin_view=false|'
+          --in-place /usr/share/Kvantum/WhiteSur/WhiteSur*.kvconfig
+        "
+
+  # Enable systemd units.
+  - type: "systemd"
+    system:
+      enabled:
+        - "keyd.service"
+    user:
+      enabled:
+        - "flatpak-override-update.timer"
+        - "gnupg-unit-update.timer"
