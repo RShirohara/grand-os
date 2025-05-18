@@ -1,0 +1,21 @@
+{
+  "KPackageStructure": "Plasma/LookAndFeel",
+  "KPlugin": {
+    "Authors": [
+      {
+        "Email": "RShirohara@proton.me",
+        "Name": "Ray Shirohara"
+      }
+    ],
+    "EnabledByDefault": true,
+    "Id": "com.github.rshirohara.grand-os",
+    "License": "MIT",
+    "Name": "GrandOS",
+    "ServiceTypes": [
+      "Plasma/LookAndFeel"
+    ]
+  },
+  "X-KDE-fallbackPackage": "org.fedoraproject.fedora.desktop",
+  "X-Plasma-ApiVersion": "2",
+  "X-Plasma-MainScript": "defaults"
+}

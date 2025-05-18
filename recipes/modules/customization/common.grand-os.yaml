@@ -17,11 +17,32 @@ modules:
     scripts:
       - "./apply-default-kargs.sh"
 
-  # Apply gtk theme customization.
+  # Apply GTK theme customization.
   - type: "script"
     snippets:
       # Apply GTK Theme.
       - "echo 'GTK_THEME=WhiteSur-Dark' >> /etc/environment"
+
+  # Apply KDE theme customization.
+  - type: "script"
+    snippets:
+      # Change background image on WhiteSur SDDM theme.
+      - "
+        sed
+          --expression='s|^background=.*|background=/usr/share/wallpapers/Mountain/contents/images_dark/5120x2880.png|'
+          --in-place /usr/share/sddm/themes/WhiteSur-dark/theme.conf
+        "
+      - "
+        sed
+          --expression='s|^background=.*|background=/usr/share/wallpapers/Mountain/contents/images/5120x2880.png|'
+          --in-place /usr/share/sddm/themes/WhiteSur-light/theme.conf
+        "
+      # Update transparent settings on WhetSur Kvantum theme.
+      - "
+        sed
+          --expression='s|^transparent_dolphin_view=.*|transparent_dolphin_view=false|'
+          --in-place /usr/share/Kvantum/WhiteSur/WhiteSur*.kvconfig
+        "
 
   # Enable systemd units.
   - type: "systemd"
