@@ -1,9 +1,0 @@
-{
-  "org.opencontainers.image.authors": "Ray Shirohara <RShirohara@proton.me>",
-  "org.opencontainers.image.url": "https://github.com/RShirohara/grand-os/blob/main/containers/gnome-shell-extension-inputmethod-shortcuts",
-  "org.opencontainers.image.documentation": "https://github.com/RShirohara/grand-os/blob/main/containers/gnome-shell-extension-inputmethod-shortcuts/README.md",
-  "org.opencontainers.image.source": "https://github.com/RShirohara/grand-os/blob/main/containers/gnome-shell-extension-inputmethod-shortcuts/Containerfile",
-  "org.opencontainers.image.licenses": "GPL-2.0-or-later",
-  "org.opencontainers.image.title": "grand-os/internal/gnome-shell-extension-inputmethod-shortcuts",
-  "org.opencontainers.image.description": "Internal container image to provide github.com/osamuaoki/inputmethod-shortcuts into GrandOS."
-}

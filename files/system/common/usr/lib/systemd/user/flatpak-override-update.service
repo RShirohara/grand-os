@@ -1,6 +1,0 @@
-[Unit]
-Description=Update Flatpak overrides
-
-[Service]
-Type=oneshot
-ExecStart=/usr/libexec/flatpak-override-update

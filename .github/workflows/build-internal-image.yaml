@@ -52,6 +52,7 @@ jobs:
           MODIFIED_IMAGES=$(
             git diff --name-status "${COMPARE_TARGET}" "HEAD" \
             | grep "containers/*" \
+            | grep --invert-match "^D" \
             | cut --fields="2" \
             | cut --delimiter="/" --fields="2" \
             | uniq \
