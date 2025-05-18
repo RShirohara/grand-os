@@ -8,3 +8,4 @@ image-version: "42"
 
 modules:
   - from-file: "./modules/packages/common.yaml"
+  - from-file: "./modules/customization/common.yaml"

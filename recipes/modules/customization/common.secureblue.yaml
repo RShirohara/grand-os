@@ -1,0 +1,36 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
+
+modules:
+  # Re-enable bluetooth module.
+  - type: "script"
+    snippets:
+      - "
+        sed --regexp-extended
+          --expression='s|^(install bluetooth /bin/false)$|# \\1|'
+          --expression='s|^(install btusb /bin/false)$|# \\1|'
+          --in-place /etc/modprobe.d/blacklist.conf
+        "
+
+  # Disable flatpak auto-update.
+  - type: "script"
+    snippets:
+      - "
+        rm -rf
+          /usr/lib/systemd/system/flatpak-system-update.service
+          /usr/lib/systemd/system/flatpak-system-update.timer
+          /usr/lib/systemd/system-preset/10-flatpak-system-update.preset
+          /usr/lib/systemd/user/flatpak-user-update.service
+          /usr/lib/systemd/user/flatpak-user-update.timer
+          /usr/lib/systemd/user-preset/10-flatpak-user-update.preset
+        "
+
+  # Remove firstboot script.
+  - type: "script"
+    snippets:
+      - "rm -rf /etc/profile.d/ublue-firstboot.sh"
+
+  # Remove motd console output.
+  - type: "script"
+    snippets:
+      - "
+        rm -rf /etc/profile.d/user-motd.sh"
