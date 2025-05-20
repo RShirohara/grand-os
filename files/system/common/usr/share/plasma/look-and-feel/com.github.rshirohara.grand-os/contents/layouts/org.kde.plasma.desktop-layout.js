@@ -26,8 +26,17 @@ var layout = {
       "opacity": "adaptive",
       "config": {},
       "applets": [
-        // TODO: add Darwin menu.
-        // Ref: https://store.kde.org/p/2157390
+        {
+          "plugin": "org.latgardi.darwinmenu",
+          "config": {
+            "/Configuration/General": {
+              "customButtonImage": "hamburger-menu-symbolic",
+              "iconSizePercent": 50,
+              "useCustomButtonImage": true,
+              "useRectangleButtonShape": false,
+            },
+          },
+        },
         {
           "plugin": "org.kde.plasma.windowlist",
           "config": {},
