@@ -1,0 +1,9 @@
+{
+  "org.opencontainers.image.authors": "Ray Shirohara <RShirohara@proton.me>",
+  "org.opencontainers.image.url": "https://github.com/RShirohara/grand-os/blob/main/containers/darwinmenu-plasma-applet",
+  "org.opencontainers.image.documentation": "https://github.com/RShirohara/grand-os/blob/main/containers/darwinmenu-plasma-applet/README.md",
+  "org.opencontainers.image.source": "https://github.com/RShirohara/grand-os/blob/main/containers/darwinmenu-plasma-applet/Containerfile",
+  "org.opencontainers.image.licenses": "BSD-2-Clause",
+  "org.opencontainers.image.title": "grand-os/internal/darwinmenu-plasma-applet",
+  "org.opencontainers.image.description": "Internal container image to provide github.com/Latgardi/darwinmenu into GrandOS."
+}
