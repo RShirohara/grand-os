@@ -61,6 +61,10 @@ modules:
 
   # Internal container images.
   - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/darwinmenu-plasma-applet:42"
+    src: "/"
+    dest: "/"
+  - type: "copy"
     from: "ghcr.io/rshirohara/grand-os/internal/hackgen-fonts:42"
     src: "/"
     dest: "/"
