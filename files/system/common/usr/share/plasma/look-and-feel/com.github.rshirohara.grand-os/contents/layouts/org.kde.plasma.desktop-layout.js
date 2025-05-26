@@ -22,7 +22,7 @@ var layout = {
       "lengthMode": "fill",
       "height": 1.5,
       "hiding": "none",
-      "floating": false,
+      "floating": false,    // TODO: Can't apply
       "opacity": "adaptive",
       "config": {},
       "applets": [
@@ -52,9 +52,9 @@ var layout = {
         {
           "plugin": "org.kde.plasma.systemtray",
           "config": {
-            "extraItems": "org.kde.kdeconnect,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.mediacontroller,org.kde.plasma.networkmanagement,org.kde.plasma.volume",
-            "knownItems": "org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.brightness,org.kde.plasma.cameraindicator,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.networkmanagement,org.kde.plasma.notifications,org.kde.plasma.printmanager,org.kde.plasma.vault,org.kde.plasma.volume",
-            "showAllItems": true,
+            "/General": {
+              "extraItems": "org.kde.kdeconnect,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.mediacontroller,org.kde.plasma.networkmanagement,org.kde.plasma.volume",
+            }
           },
         },
         {
@@ -79,7 +79,7 @@ var layout = {
       "lengthMode": "fit",
       "height": 2.75,
       "hiding": "dodgewindows",
-      "floating": true,
+      "floating": true,     // TODO: Can't apply
       "opacity": "adaptive",
       "config": {},
       "applets": [

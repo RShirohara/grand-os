@@ -1,6 +1,3 @@
-[Daemon]
-Timeout=3
-
 [Greeter]
 WallpaperPlugin=org.kde.image
 
