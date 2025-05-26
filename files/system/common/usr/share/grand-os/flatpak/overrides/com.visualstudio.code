@@ -1,5 +1,2 @@
 [Context]
 filesystems=xdg-config/Code/User;xdg-config/git:ro;xdg-run/gnupg:ro
-
-[Environment]
-PATH=/app/bin:/usr/local/bin:/usr/bin:/home/linuxbrew/.linuxbrew/bin
