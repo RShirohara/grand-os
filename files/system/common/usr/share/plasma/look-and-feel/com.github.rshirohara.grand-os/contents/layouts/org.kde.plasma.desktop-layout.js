@@ -87,7 +87,7 @@ var layout = {
           "plugin": "org.kde.plasma.icontasks",
           "config": {
             "/General": {
-              "launchers": "applications:trivalent.desktop,applications:org.kde.dolphin.desktop,applications:org.kde.konsole.desktop"
+              "launchers": "preferred://browser,preferred://filemanager"
             },
           },
         },
@@ -101,6 +101,16 @@ var layout = {
             },
           },
         },
+        {
+          "plugin": "org.kde.plasma.kickerdash",
+          "config": {
+            "/General": {
+              "alphaSort": true,
+              "customButtonImage": "applications-all",
+              "useCustomButtonImage": true
+            }
+          }
+        }
       ],
     },
   ],
