@@ -17,14 +17,15 @@ LINE_END=$(
 KARGS=$(
   cat /usr/share/bluebuild/justfiles/kargs.just \
   | head --lines="${LINE_END}" \
-  | tail --lines="${LINE_START}" \
+  | tail --lines="+${LINE_START}" \
+  | sed --null-data --expression="s|\r\n|\n|g" \
   | grep --only-matching --extended-regexp \
     --regexp="--append-if-missing=(.+)" \
   | sed --expression="s| \\\\$||g" \
   | cut --delimiter="=" --fields="2-3" \
   | sed --regexp-extended \
     --expression="s|^(.+)$|\"\1\"|g" \
-  | sed --null-dat --expression="s|\n|, |g"
+  | sed --null-data --expression="s|\n|, |g"
 )
 
 # Write kargs to bootc config.
