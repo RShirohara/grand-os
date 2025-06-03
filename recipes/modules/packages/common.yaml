@@ -23,6 +23,7 @@ modules:
         - "kwin-effect-roundcorners"
         - "libappindicator"
         - "libdbusmenu"
+        - "plasma-discover-rpm-ostree"
         - "topgrade"
       install-weak-deps: false
       skip-unavailable: false
@@ -92,5 +93,5 @@ modules:
   # Homebrew.
   - type: "brew"
     brew-analytics: false
-    auto-update: false
-    auto-upgrade: false
+    auto-update: true
+    auto-upgrade: true
