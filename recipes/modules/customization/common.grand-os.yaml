@@ -17,6 +17,11 @@ modules:
     scripts:
       - "./apply-default-kargs.sh"
 
+  # Change rebase-image refs on securebluecleanup script.
+  - type: "script"
+    scripts:
+      - "./update-cleanup-refs.sh"
+
   # Apply GTK theme customization.
   - type: "script"
     snippets:
