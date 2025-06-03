@@ -3,4 +3,4 @@ Description=Update Flatpak overrides
 
 [Service]
 Type=oneshot
-ExecStart=/usr/libexec/flatpak-override-update
+ExecStart=/usr/libexec/grand-os/flatpak-override-update
