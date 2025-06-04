@@ -1,9 +1,0 @@
-[Daemon]
-Timeout=3
-
-[Greeter]
-WallpaperPlugin=org.kde.image
-
-[Greeter][Wallpaper][org.kde.image][General]
-Image=/usr/share/wallpapers/Mountain/
-PreviewImage=/usr/share/wallpapers/Mountain/
