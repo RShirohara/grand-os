@@ -4,7 +4,7 @@ A desktop Linux image based for Fedora Kinoite and customized for personal use.
 
 ## Variants
 
-- `main`: Basic image.
+- [`main`](https://github.com/RShirohara/grand-os/pkgs/container/grand-os%2Fmain): Basic image.
 
 ## Installation
 
@@ -14,7 +14,7 @@ A desktop Linux image based for Fedora Kinoite and customized for personal use.
 2. Generate ISO file.
 
    ```shell
-   sudo bluebuild generate-iso --iso-name="grand-os.iso" image "ghcr.io/rshirohara/grand-os/main"
+   sudo bluebuild generate-iso --iso-name="grand-os.iso" image "ghcr.io/rshirohara/grand-os/<variant>:<version>"
    ```
 
 3. Write ISO file to installation device.
@@ -23,17 +23,9 @@ A desktop Linux image based for Fedora Kinoite and customized for personal use.
 ### From Fedora Kinoite (Rebasing)
 
 1. Install [Fedora Kinoite](https://fedoraproject.org/atomic-desktops/kinoite/).
-   - Do not create root user!
-2. Rebase to GrandOS (unverified image).
+2. Rebase image to GrandOS.
 
    ```shell
-   rpm-ostree rebase ostree-unverified-image:ghcr.io/rshirohara/grand-os/<variant>:latest
-   systemctl reboot
-   ```
-
-3. Rebase to GrandOS (signed image).
-
-   ```shell
-   rpm-ostree rebase ostree-image-signed:docker://ghcr.io/rshirohara/grand-os/<variant>:latest
+   bootc switch docker://ghcr.io/rshirohara/grand-os/<variant>:<version>
    systemctl reboot
    ```
