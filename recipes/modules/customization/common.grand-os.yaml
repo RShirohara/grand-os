@@ -42,10 +42,11 @@ modules:
           --expression='s|^background=.*|background=/usr/share/wallpapers/Mountain/contents/images/5120x2880.png|'
           --in-place /usr/share/sddm/themes/WhiteSur-light/theme.conf
         "
-      # Update transparent settings on WhetSur Kvantum theme.
+      # Apply customization to WhiteSur Kvantum theme.
       - "
         sed
           --expression='s|^transparent_dolphin_view=.*|transparent_dolphin_view=false|'
+          --expression='s|^scrollbar_in_view=.*|scrollbar_in_view=true|'
           --in-place /usr/share/Kvantum/WhiteSur/WhiteSur*.kvconfig
         "
 
