@@ -139,11 +139,13 @@ jobs:
             type=raw,value=${{ steps.get_metadata.outputs.image_major_version }}
             type=raw,value=latest
           labels: |-
+            io.artifacthub.package.readme-url=https://github.com/${{ github.repository }}/blob/main/README.md
             org.opencontainers.image.authors=${{ steps.get_metadata.outputs.image_authors }}
             org.opencontainers.image.documentation=https://github.com/${{ github.repository }}/blob/main/README.md
             org.opencontainers.image.source=https://github.com/${{ github.repository }}/blob/main/recipes/${{ matrix.recipe }}.yaml
             org.opencontainers.image.title=${{ steps.get_metadata.outputs.image_name }}
           annotations: |-
+            io.artifacthub.package.readme-url=https://github.com/${{ github.repository }}/blob/main/README.md
             org.opencontainers.image.authors=${{ steps.get_metadata.outputs.image_authors }}
             org.opencontainers.image.documentation=https://github.com/${{ github.repository }}/blob/main/README.md
             org.opencontainers.image.source=https://github.com/${{ github.repository }}/blob/main/recipes/${{ matrix.recipe }}.yaml
@@ -169,14 +171,6 @@ jobs:
             --platform="${{ matrix.platform }}" \
             --verbose \
             "${RECIPE_PATH}"
-
-          sed \
-            --expression="/LABEL org.opencontainers.image.title/d" \
-            --expression="/LABEL org.opencontainers.image.description/d" \
-            --expression="/LABEL org.opencontainers.image.source/d" \
-            --expression="/LABEL org.opencontainers.image.created/d" \
-            --expression="/LABEL io.artifacthub/d" \
-            --in-place ./Containerfile
 
       - name: "Build image (and publish on release)"
         id: "build_image"
