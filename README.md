@@ -26,6 +26,6 @@ A desktop Linux image based for Fedora Kinoite and customized for personal use.
 2. Rebase image to GrandOS.
 
    ```shell
-   bootc switch docker://ghcr.io/rshirohara/grand-os/<variant>:<version>
+   bootc switch ghcr.io/rshirohara/grand-os/<variant>:<version>
    systemctl reboot
    ```
