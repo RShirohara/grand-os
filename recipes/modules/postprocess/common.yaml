@@ -14,6 +14,16 @@ modules:
     source: "ghcr.io/rshirohara/grand-os/internal/bluebuild-secureblue-signing"
   - type: "script"
     snippets:
+      - "
+        cat /etc/containers/policy.json
+        | jq
+          '
+            .transports.docker.\"\".[0].type = \"insecureAcceptAnything\"
+            | .transports.\"containers-storage\".\"\".[0].type = \"insecureAcceptAnything\"
+          '
+          > /etc/containers/policy.updated.json
+        && mv /etc/containers/policy.updated.json /etc/containers/policy.json
+        "
       - "rm -rf /etc/pki/containers/${IMAGE_NAME%/*}"
 
   # Regenerate initramfs.
