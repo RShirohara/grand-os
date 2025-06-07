@@ -1,0 +1,28 @@
+ARG BUILDER_VERSION=42
+
+# stage 1: download resource.
+FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS builder
+
+# hadolint ignore=DL3041
+RUN dnf --setopt="install_weak_deps=False" install --assumeyes \
+      unzip \
+    && dnf clean all
+
+WORKDIR /widevine-cdm
+RUN VERSION=$(curl --location https://dl.google.com/widevine-cdm/versions.txt | tail --lines=1) \
+    && curl \
+      --location \
+      --output ./widevine.zip \
+      https://dl.google.com/widevine-cdm/${VERSION}-linux-x64.zip \
+    && unzip widevine.zip \
+    && install --directory --mode=755 ./dist/WidevineCdm/_platform_specific/linux_x64 \
+    && install --mode=644 ./LICENSE.txt ./dist/WidevineCdm/ \
+    && install --mode=644 ./manifest.json ./dist/WidevineCdm/ \
+    && install --mode=644 ./libwidevinecdm.so ./dist/WidevineCdm/_platform_specific/linux_x64/
+
+# stage 2: copy resource to distribution container.
+FROM scratch AS dist
+
+COPY --from=builder \
+    /widevine-cdm/dist \
+    /usr/lib64/trivalent
