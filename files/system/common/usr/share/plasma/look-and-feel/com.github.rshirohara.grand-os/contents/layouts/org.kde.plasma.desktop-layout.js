@@ -87,7 +87,8 @@ var layout = {
           "plugin": "org.kde.plasma.icontasks",
           "config": {
             "/General": {
-              "launchers": "preferred://browser,preferred://filemanager"
+              "iconSpacing": "0",
+              "launchers": "preferred://browser,preferred://filemanager",
             },
           },
         },
@@ -96,7 +97,7 @@ var layout = {
           "config": {
             "/General": {
               "icon": "trash-empty",
-              "useCustomIcon": "true",
+              "useCustomIcon": true,
               "url": "trash:/",
             },
           },
