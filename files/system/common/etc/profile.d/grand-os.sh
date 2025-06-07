@@ -20,6 +20,4 @@ export GTK_RC_FILES="${XDG_CONFIG_HOME:-${HOME}/.config}/gtk-1.0/gtkrc"
 export GTK2_RC_FILES="${XDG_CONFIG_HOME:-${HOME}/.config}/gtk-2.0/gtkrc"
 
 # Override IME setting.
-export GTK_IM_MODULE="fcitx"
-export QT_IM_MODULE="fcitx"
 export XMODIFIERS="@im=fcitx"
