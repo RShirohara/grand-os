@@ -9,11 +9,12 @@ RUN dnf --setopt="install_weak_deps=False" install --assumeyes \
     && dnf clean all
 
 WORKDIR /widevine-cdm
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN VERSION=$(curl --location https://dl.google.com/widevine-cdm/versions.txt | tail --lines=1) \
     && curl \
       --location \
       --output ./widevine.zip \
-      https://dl.google.com/widevine-cdm/${VERSION}-linux-x64.zip \
+      "https://dl.google.com/widevine-cdm/${VERSION}-linux-x64.zip" \
     && unzip widevine.zip \
     && install --directory --mode=755 ./dist/WidevineCdm/_platform_specific/linux_x64 \
     && install --mode=644 ./LICENSE.txt ./dist/WidevineCdm/ \
