@@ -49,6 +49,15 @@ modules:
           --expression='s|^scrollbar_in_view=.*|scrollbar_in_view=true|'
           --in-place /usr/share/Kvantum/WhiteSur/WhiteSur*.kvconfig
         "
+      # Add KDE integration to trivalent.
+      - "
+        mkdir --parents /etc/trivalent/native-messaging-hosts
+        && cp
+          /etc/chromium/native-messaging-hosts/org.kde.plasma.browser_integration.json
+          /etc/trivalent/native-messaging-hosts/org.kde.plasma.browser_integration.json
+        && chmod 644
+          /etc/trivalent/native-messaging-hosts/org.kde.plasma.browser_integration.json
+        "
 
   # Enable systemd units.
   - type: "systemd"
