@@ -1,2 +1,0 @@
-[Script-kzones]
-layoutsJson=[{"name":"Default","padding":0,"zones":[{"x":0,"y":0,"height":100,"width":15},{"x":0,"y":0,"height":100,"width":25},{"x":10,"y":0,"height":100,"width":15},{"x":15,"y":0,"height":100,"width":35},{"x":25,"y":0,"height":100,"width":25},{"x":25,"y":0,"height":100,"width":50},{"x":50,"y":0,"height":100,"width":25},{"x":50,"y":0,"height":100,"width":50},{"x":75,"y":0,"height":100,"width":25}]}]
