@@ -17,7 +17,6 @@ modules:
         - "fcitx5-mozc"
         - "fcitx5-qt"
         - "fcitx5"
-        - "fedora-chromium-config-kde"
         - "kcm-fcitx5"
         - "kde-connect"
         - "keyd"
