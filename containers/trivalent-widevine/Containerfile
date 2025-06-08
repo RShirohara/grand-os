@@ -5,6 +5,7 @@ FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS builder
 
 # hadolint ignore=DL3041
 RUN dnf --setopt="install_weak_deps=False" install --assumeyes \
+      jq \
       unzip \
     && dnf clean all
 
@@ -15,7 +16,11 @@ RUN VERSION=$(curl --location https://dl.google.com/widevine-cdm/versions.txt | 
       --location \
       --output ./widevine.zip \
       "https://dl.google.com/widevine-cdm/${VERSION}-linux-x64.zip" \
-    && unzip widevine.zip \
+    && unzip ./widevine.zip \
+    && jq 'del(.arch, .os) | ."x-cdm-supported-encryption-schemes" = ["cenc", "cbcs"] | .platforms.[0] = {"os": "linux", "arch": "x64", "sub_package_path": "_platform_specific/linux_x64/"} ' \
+      ./manifest.json \
+      > ./manifest.updated.json \
+    && mv manifest.updated.json manifest.json \
     && install --directory --mode=755 ./dist/WidevineCdm/_platform_specific/linux_x64 \
     && install --mode=644 ./LICENSE.txt ./dist/WidevineCdm/ \
     && install --mode=644 ./manifest.json ./dist/WidevineCdm/ \
