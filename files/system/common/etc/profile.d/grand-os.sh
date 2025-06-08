@@ -12,7 +12,7 @@ export XCURSOR_PATH="${XDG_DATA_HOME:-${HOME}/.local/share}/icons:/usr/share/ico
 # Override GnuPG default config directory.
 export GNUPGHOME="${XDG_DATA_HOME:-${HOME}/.local/share}/gnupg"
 if [[ ! -d "${GNUPGHOME}" ]]; then
-  mkdir --parents "${GNUPGHOME}"
+  mkdir --mode=700 --parents "${GNUPGHOME}"
 fi
 
 # Override GTK1 & 2 config directory location.
