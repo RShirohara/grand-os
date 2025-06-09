@@ -2,6 +2,7 @@
 set -o "errexit" -o "nounset" -o "pipefail"
 
 FLATPAK_OVERRIDE_DIR="${XDG_DATA_HOME:-${HOME}/.local/share}/flatpak/overrides"
+
 if [[ ! -d "${FLATPAK_OVERRIDE_DIR}" ]]; then
   /usr/bin/mkdir --parents "${FLATPAK_OVERRIDE_DIR}"
 fi
