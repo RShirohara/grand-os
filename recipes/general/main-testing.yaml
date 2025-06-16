@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
+
+name: "grand-os/main"
+description: "A desktop Linux image based for Fedora Silverblue and customized for personal use."
+
+base-image: "ghcr.io/secureblue/silverblue-main-hardened"
+image-version: "42"
+
+modules:
+  - from-file: "./modules/packages/testing.yaml"
+  - from-file: "./modules/customization/testing.yaml"
+  - from-file: "./modules/postprocess/common.yaml"
