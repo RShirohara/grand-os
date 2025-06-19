@@ -1,0 +1,3 @@
+[tools]
+"aqua:hadolint/hadolint" = "latest"
+"aqua:rhysd/actionlint" = "latest"
