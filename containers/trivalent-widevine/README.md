@@ -8,3 +8,9 @@ to Trivalent.
 ```shell
 podman build --tag="ghcr.io/rshirohara/grand-os/internal/trivalent-widevine:edge" .
 ```
+
+## Check version
+
+```shell
+curl https://dl.google.com/widevine-cdm/versions.txt | tail --lines=1
+```

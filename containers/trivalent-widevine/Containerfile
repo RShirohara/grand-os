@@ -1,7 +1,9 @@
 ARG BUILDER_VERSION=42
+ARG RELEASE_VERSION=4.10.2891.0
 
 # stage 1: download resource.
 FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS builder
+ARG RELEASE_VERSION
 
 # hadolint ignore=DL3041
 RUN dnf --setopt="install_weak_deps=False" install --assumeyes \
@@ -11,11 +13,10 @@ RUN dnf --setopt="install_weak_deps=False" install --assumeyes \
 
 WORKDIR /widevine-cdm
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-RUN VERSION=$(curl --location https://dl.google.com/widevine-cdm/versions.txt | tail --lines=1) \
-    && curl \
+RUN curl \
       --location \
       --output ./widevine.zip \
-      "https://dl.google.com/widevine-cdm/${VERSION}-linux-x64.zip" \
+      "https://dl.google.com/widevine-cdm/${RELEASE_VERSION}-linux-x64.zip" \
     && unzip ./widevine.zip \
     && jq 'del(.arch, .os) | ."x-cdm-supported-encryption-schemes" = ["cenc", "cbcs"] | .platforms.[0] = {"os": "linux", "arch": "x64", "sub_package_path": "_platform_specific/linux_x64/"} ' \
       ./manifest.json \
