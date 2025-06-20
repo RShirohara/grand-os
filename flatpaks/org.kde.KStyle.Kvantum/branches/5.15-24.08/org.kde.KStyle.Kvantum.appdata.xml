@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="addon">
+  <id>org.kde.KStyle.Kvantum</id>
+  <extends>org.kde.Platform</extends>
+  <metadata_license>CC0-1.0</metadata_license>
+  <name>Kvantum theme engine</name>
+  <summary>SVG-based theme engine for Qt</summary>
+  <description>
+    <p>A Linux SVG-based theme engine for Qt and KDE.</p>
+  </description>
+  <url type="homepage">https://github.com/tsujan/Kvantum</url>
+  <releases>
+    <release version="1.1.5" date="2025-05-14"/>
+  </releases>
+</component>
