@@ -1,0 +1,109 @@
+name: "Build (Flatpak bundle)"
+
+on:
+  pull_request:
+    types:
+      - "ready_for_review"
+      - "review_requested"
+    paths:
+      - ".github/workflows/build-internal-image.yaml"
+      - "flatpaks/**/*"
+  push:
+    branches:
+      - "main"
+    paths:
+      - "flatpaks/**/*"
+  workflow_dispatch:
+    inputs:
+      info:
+        description: "Reasons for starting the workflow."
+        required: true
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref || github.run_id }}"
+  cancel-in-progress: true
+
+jobs:
+  get_target:
+    name: "Get build target"
+    runs-on: "ubuntu-latest"
+
+    outputs:
+      targets: "${{ steps.get_packages.outputs.targets }}"
+      packages: "${{ steps.get_packages.outputs.packages }}"
+
+    steps:
+      - name: "Checkout repository"
+        uses: "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683" # v4.2.2
+        with:
+          fetch-depth: 0
+
+      - name: "Get modified packages"
+        id: "get_packages"
+        run: |
+          set -o "errexit" -o "nounset"
+
+          # get compare target
+          COMPARE_TARGET="origin/main"
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            COMPARE_TARGET="HEAD~1"
+          fi
+
+          # get modified packages list
+          MODIFIED_TARGETS=$(
+            git diff --name-status "${COMPARE_TARGET}" "HEAD" \
+            | grep "flatpaks/*" \
+            | grep --invert-match "^D" \
+            | cut --fields="2" \
+            | cut --delimiter="/" --fields="1,2" \
+            | uniq \
+            | xargs --replace="@" \
+              cat @/package.jsonl \
+            | jq --compact-output "[inputs]"
+          )
+          TARGETS=$(
+            find flatpaks -mindepth 1 -maxdepth 1 -type "d" -print0 \
+            | xargs --null --replace="@" \
+              cat @/package.jsonl \
+            | jq --compact-output "[inputs]"
+          )
+          echo "targets=${MODIFIED_TARGETS/[]/${TARGETS}}" | tee --append "${GITHUB_OUTPUT}"
+
+          PACKAGES=$(
+            echo "${MODIFIED_TARGETS/[]/${TARGETS}}" \
+            | jq --compact-output "[.[].name]"
+          )
+          echo "packages=${PACKAGES}" | tee --append "${GITHUB_OUTPUT}"
+
+  build:
+    name: "Build (${{ matrix.target.name }}:${{ matrix.target.branch }}, ${{ matrix.platform }})"
+    needs: "get_target"
+    runs-on: "${{ matrix.runner }}"
+
+    container:
+      image: "ghcr.io/flathub-infra/flatpak-github-actions${{ matrix.target.github_action_image }}"
+      options: "--privileged"
+
+    strategy:
+      fail-fast: false
+      matrix:
+        target: ${{ fromJson(needs.get_target.outputs.targets) }}
+        include:
+          - platform: "linux/amd64"
+            runner: "ubuntu-latest"
+            arch: "x86_64"
+
+    steps:
+      - name: "Checkout repository"
+        uses: "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683" # v4.2.2
+
+      - name: "Build flatpak package"
+        uses: "flatpak/flatpak-github-actions/flatpak-builder@10a3c29f0162516f0f68006be14c92f34bd4fa6c" # v6.5
+        with:
+          manifest-path: "./flatpaks/${{ matrix.target.name }}/branches/${{ matrix.target.branch }}/${{ matrix.target.manifest }}"
+          bundle: "${{ matrix.target.name }}.${{ matrix.target.branch }}.flatpak"
+          build-bundle: true
+          arch: ${{ matrix.arch }}
+          upload-artifact: true
+
+  # TODO: create internal container package
