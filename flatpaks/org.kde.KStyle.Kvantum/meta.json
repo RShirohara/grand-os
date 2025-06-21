@@ -1,0 +1,9 @@
+{
+  "org.opencontainers.image.authors": "Ray Shirohara <RShirohara@proton.me>",
+  "org.opencontainers.image.url": "https://github.com/RShirohara/grand-os/blob/main/flatpaks/org.kde.KStyle.Kvantum",
+  "org.opencontainers.image.documentation": "https://github.com/RShirohara/grand-os/blob/main/flatpaks/org.kde.KStyle.Kvantum/README.md",
+  "org.opencontainers.image.source": "https://github.com/RShirohara/grand-os/blob/main/flatpaks/org.kde.KStyle.Kvantum/Containerfile",
+  "org.opencontainers.image.licenses": "GPL-3.0-only",
+  "org.opencontainers.image.title": "grand-os/internal/org.kde.kstyle.kvantum",
+  "org.opencontainers.image.description": "Internal flatpak bundle to provide org.kde.KStyle.Kvantum into GrandOS."
+}

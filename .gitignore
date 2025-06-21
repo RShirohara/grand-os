@@ -1,5 +1,6 @@
+.flatpak-builder/
 /Containerfile
+bundles/
 cosign.key
 cosign.private
 dist/
-.flatpak-builder/

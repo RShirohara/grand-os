@@ -1,0 +1,280 @@
+name: "Build (Flatpak bundle)"
+
+on:
+  pull_request:
+    types:
+      - "ready_for_review"
+      - "review_requested"
+    paths:
+      - ".github/workflows/build-internal-image.yaml"
+      - "flatpaks/**/*"
+  push:
+    branches:
+      - "main"
+    paths:
+      - "flatpaks/**/*"
+  workflow_dispatch:
+    inputs:
+      info:
+        description: "Reasons for starting the workflow."
+        required: true
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref || github.run_id }}"
+  cancel-in-progress: true
+
+jobs:
+  get_target:
+    name: "Get build target"
+    runs-on: "ubuntu-latest"
+
+    outputs:
+      targets: "${{ steps.get_packages.outputs.targets }}"
+      packages: "${{ steps.get_packages.outputs.packages }}"
+
+    steps:
+      - name: "Checkout repository"
+        uses: "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683" # v4.2.2
+        with:
+          fetch-depth: 0
+
+      - name: "Get modified packages"
+        id: "get_packages"
+        run: |
+          set -o "errexit" -o "nounset"
+
+          # get compare target
+          COMPARE_TARGET="origin/main"
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            COMPARE_TARGET="HEAD~1"
+          fi
+
+          # get modified packages list
+          MODIFIED_TARGETS=$(
+            git diff --name-status "${COMPARE_TARGET}" "HEAD" \
+            | grep "flatpaks/*" \
+            | grep --invert-match "^D" \
+            | cut --fields="2" \
+            | cut --delimiter="/" --fields="1,2" \
+            | uniq \
+            | xargs --replace="@" \
+              cat @/package.jsonl \
+            | jq --null-input --compact-output "[inputs]"
+          )
+          TARGETS=$(
+            find flatpaks -mindepth 1 -maxdepth 1 -type "d" -print0 \
+            | xargs --null --replace="@" \
+              cat @/package.jsonl \
+            | jq --null-input --compact-output "[inputs]"
+          )
+          echo "targets=${MODIFIED_TARGETS/[]/${TARGETS}}" | tee --append "${GITHUB_OUTPUT}"
+
+          PACKAGES=$(
+            echo "${MODIFIED_TARGETS/[]/${TARGETS}}" \
+            | jq --compact-output "[.[].name] | unique"
+          )
+          echo "packages=${PACKAGES}" | tee --append "${GITHUB_OUTPUT}"
+
+  build:
+    name: "Build (${{ matrix.target.name }}:${{ matrix.target.branch }}, ${{ matrix.platform }})"
+    needs: "get_target"
+    runs-on: "${{ matrix.runner }}"
+
+    container:
+      image: "ghcr.io/flathub-infra/flatpak-github-actions:${{ matrix.target.github_action_image }}"
+      options: "--privileged"
+
+    strategy:
+      fail-fast: false
+      matrix:
+        target: ${{ fromJson(needs.get_target.outputs.targets) }}
+        include:
+          - platform: "linux/amd64"
+            runner: "ubuntu-latest"
+            arch: "x86_64"
+
+    steps:
+      - name: "Checkout repository"
+        uses: "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683" # v4.2.2
+
+      - name: "Build flatpak package"
+        uses: "flatpak/flatpak-github-actions/flatpak-builder@10a3c29f0162516f0f68006be14c92f34bd4fa6c" # v6.5
+        with:
+          manifest-path: "./flatpaks/${{ matrix.target.name }}/branches/${{ matrix.target.branch }}/${{ matrix.target.manifest }}"
+          bundle: "${{ matrix.target.name }}_${{ matrix.target.branch }}.flatpak"
+          build-bundle: true
+          arch: ${{ matrix.arch }}
+          upload-artifact: true
+
+  package:
+    name: "Package (${{ matrix.image }}, ${{ matrix.platform }})"
+    needs:
+      - "get_target"
+      - "build"
+    runs-on: "${{ matrix.runner }}"
+
+    strategy:
+      fail-fast: false
+      matrix:
+        image: ${{ fromJson(needs.get_target.outputs.packages) }}
+        include:
+          - platform: "linux/amd64"
+            runner: "ubuntu-latest"
+            arch: "x86_64"
+
+    steps:
+      - name: "Checkout repository"
+        uses: "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683" # v4.2.2
+
+      - name: "Setup Docker Buildx"
+        uses: "docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2" # v3.10.0
+        with:
+          install: true
+
+      - name: "Setup cosign cli"
+        uses: "sigstore/cosign-installer@3454372f43399081ed03b604cb2d021dabca52bb" # v3.8.2
+        with:
+          install-dir: "${{ runner.temp }}/cosign/bin"
+
+      - name: "Validate cosign key-pair"
+        if: ${{ github.event_name != 'pull_request' || (github.event_name == 'pull_request' && (github.event.pull_request.user.login == github.event.repository.owner.login)) }}
+        env:
+          COSIGN_PASSWORD: "${{ secrets.COSIGN_PASSWORD }}"
+          COSIGN_PRIVATE_KEY: "${{ secrets.COSIGN_PRIVATE_KEY }}"
+          COSIGN_YES: "true"
+        run: |
+          set -o "errexit" -o "nounset"
+
+          cosign public-key --key="env://COSIGN_PRIVATE_KEY" > cosign.pub
+          if [[ $(git diff --name-only | grep "cosign.pub") -gt 0 ]]; then
+            echo "::error title=Invalid cosign key::Failed to validate cosign key pair."
+            exit 1
+          fi
+
+      - name: "Login to GitHub Container Registry"
+        uses: "docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772" # v3.4.0
+        with:
+          registry: "ghcr.io"
+          username: "${{ github.repository_owner }}"
+          password: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: "Download builded artifacts"
+        uses: "actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093" # v4.3.0
+        with:
+          path: "./flatpaks/${{ matrix.image }}/bundles/"
+          pattern: "${{ matrix.image }}_*-${{ matrix.arch }}.flatpak"
+          merge-multiple: true
+
+      - name: "Get image metadata"
+        id: "get_metadata"
+        run: |
+          set -o "errexit" -o "nounset"
+          cd ./flatpaks/${{ matrix.image }}
+
+          # image metadata
+          IMAGE_METADATA=$(jq --compact-output --raw-output "." ./meta.json)
+          echo "image_metadata=${IMAGE_METADATA}" | tee --append "${GITHUB_OUTPUT}"
+
+          # image version
+          ## major version
+          _IMAGE_MAJOR_VERSION=$(
+            grep "^ARG BUILDER_VERSION=" ./Containerfile \
+            | sed --expression="s/^.*=//g"
+          )
+          ## minor version
+          _IMAGE_MINOR_VERSION=$(
+            date "+%Y%m%d"
+          )
+          ## patch version
+          _REPOSITORY_OWNER="${{ github.repository_owner }}"
+          _IMAGE_NAME=$(jq --raw-output '.["org.opencontainers.image.title"]' ./meta.json)
+          _IMAGE_URL="ghcr.io/${_REPOSITORY_OWNER,,}/${_IMAGE_NAME}"
+          set +o "errexit"
+          _IMAGE_PATCH_VERSION=$(
+            _PREFIX=$(
+              skopeo list-tags "docker://${_IMAGE_URL}" \
+              | jq --raw-output ".Tags[]" \
+              | grep "^${_IMAGE_MAJOR_VERSION}.${_IMAGE_MINOR_VERSION}." \
+              | sort --reverse \
+              | head --lines="1" \
+              | cut --delimiter="." --fields="3" \
+              | xargs --replace="@" expr @ + 1
+            )
+            echo "${_PREFIX:-0}"
+          )
+          set -o "errexit"
+          IMAGE_VERSION="${_IMAGE_MAJOR_VERSION}.${_IMAGE_MINOR_VERSION}.${_IMAGE_PATCH_VERSION}"
+          echo "image_major_version=${_IMAGE_MAJOR_VERSION}" | tee --append "${GITHUB_OUTPUT}"
+          echo "image_version=${IMAGE_VERSION}" | tee --append "${GITHUB_OUTPUT}"
+
+      - name: "Build metadata"
+        id: "build_metadata"
+        uses: "docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804" # v5.7.0
+        with:
+          images: |-
+            ghcr.io/${{ github.repository_owner }}/${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.title'] }}
+          tags: |-
+            type=raw,value=${{ steps.get_metadata.outputs.image_version }}
+            type=raw,value=${{ steps.get_metadata.outputs.image_major_version }}
+            type=raw,value=latest
+          labels: |-
+            org.opencontainers.image.authors=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.authors'] }}
+            org.opencontainers.image.url=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.url'] }}
+            org.opencontainers.image.documentation=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.documentation'] }}
+            org.opencontainers.image.source=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.source'] }}
+            org.opencontainers.image.licenses=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.licenses'] }}
+            org.opencontainers.image.title=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.title'] }}
+            org.opencontainers.image.description=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.description'] }}
+          annotations: |-
+            org.opencontainers.image.authors=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.authors'] }}
+            org.opencontainers.image.url=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.url'] }}
+            org.opencontainers.image.documentation=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.documentation'] }}
+            org.opencontainers.image.source=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.source'] }}
+            org.opencontainers.image.licenses=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.licenses'] }}
+            org.opencontainers.image.title=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.title'] }}
+            org.opencontainers.image.description=${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.description'] }}
+
+      - name: "Build image (and publish on main branch)"
+        id: "build_image"
+        uses: "docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83" # v6.18.0
+        with:
+          annotations: |-
+            ${{ steps.build_metadata.outputs.annotations }}
+          cache-from: "type=gha"
+          cache-to: "type=gha,mode=max"
+          context: "./flatpaks/${{ matrix.image }}"
+          file: "./flatpaks/${{ matrix.image }}/Containerfile"
+          labels: |-
+            ${{ steps.build_metadata.outputs.labels }}
+          platforms: "${{ matrix.platform }}"
+          provenance: false
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: |-
+            ${{ steps.build_metadata.outputs.tags }}
+
+      - name: "Signing image"
+        if: ${{ github.event_name != 'pull_request' }}
+        env:
+          COSIGN_PASSWORD: "${{ secrets.COSIGN_PASSWORD }}"
+          COSIGN_PRIVATE_KEY: "${{ secrets.COSIGN_PRIVATE_KEY }}"
+          COSIGN_YES: "true"
+        run: |
+          set -o "errexit" -o "nounset"
+
+          IMAGE_NAME=$(
+            echo "${{ fromJson(steps.build_metadata.outputs.json).tags[0] }}" \
+            | cut --delimiter=":" --fields="1"
+          )
+          IMAGE_DIGEST="${{ steps.build_image.outputs.digest }}"
+
+          cosign sign \
+            --key="env://COSIGN_PRIVATE_KEY" \
+            --recursive \
+            "${IMAGE_NAME}@${IMAGE_DIGEST}"
+
+      - name: "Attest build provenance for image"
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: "actions/attest-build-provenance@db473fddc028af60658334401dc6fa3ffd8669fd" # v2.3.0
+        with:
+          subject-name: "ghcr.io/${{ github.repository_owner }}/${{ fromJson(steps.get_metadata.outputs.image_metadata)['org.opencontainers.image.title'] }}"
+          subject-digest: "${{ steps.build_image.outputs.digest }}"
