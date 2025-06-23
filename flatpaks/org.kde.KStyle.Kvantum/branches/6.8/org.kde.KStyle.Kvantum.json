@@ -1,0 +1,60 @@
+{
+  "id": "org.kde.KStyle.Kvantum",
+  "branch": "6.8",
+  "runtime": "org.kde.Platform",
+  "build-extension": true,
+  "sdk": "org.kde.Sdk",
+  "runtime-version": "6.8",
+  "separate-locales": false,
+  "build-options": {
+    "prefix": "/usr/share/runtime/lib/plugins/Kvantum"
+  },
+  "modules": [
+    {
+      "name": "kvantum",
+      "buildsystem": "cmake-ninja",
+      "build-commands": [
+        "install -Dm755 -t ${FLATPAK_DEST}/styles/ ./style/libkvantum.so"
+      ],
+      "config-opts": [
+        "-DCMAKE_INSTALL_PREFIX=/run/host/usr"
+      ],
+      "subdir": "Kvantum",
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/tsujan/Kvantum.git",
+          "tag": "V1.1.5",
+          "commit": "8acc24e13ffea00e7b4b50abc0fdf81b59757465",
+          "x-checker-data": {
+            "type": "json",
+            "url": "https://api.github.com/repos/tsujan/Kvantum/releases/latest",
+            "tag-query": ".tag_name",
+            "version-query": "$tag | sub(\"^[vV]\"; \"\")",
+            "timestamp-query": ".published_at"
+          }
+        },
+        {
+          "type": "shell",
+          "dest": "Kvantum/style",
+          "commands": [
+            "sed \"s|\\${_Qt6_PLUGIN_INSTALL_DIR}|${FLATPAK_DEST}|g\" -i CMakeLists.txt"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "appdata",
+      "buildsystem": "simple",
+      "build-commands": [
+        "install -Dm644 ${FLATPAK_ID}.appdata.xml -t ${FLATPAK_DEST}/share/appdata/"
+      ],
+      "sources": [
+        {
+          "type": "file",
+          "path": "org.kde.KStyle.Kvantum.appdata.xml"
+        }
+      ]
+    }
+  ]
+}
