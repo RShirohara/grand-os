@@ -17,7 +17,8 @@
         "install -Dm755 -t ${FLATPAK_DEST}/styles/ ./style/libkvantum.so"
       ],
       "config-opts": [
-        "-DENABLE_QT5=true"
+        "-DENABLE_QT5=true",
+        "-DCMAKE_INSTALL_PREFIX=/run/host/usr"
       ],
       "subdir": "Kvantum",
       "sources": [

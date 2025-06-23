@@ -16,6 +16,9 @@
       "build-commands": [
         "install -Dm755 -t ${FLATPAK_DEST}/styles/ ./style/libkvantum.so"
       ],
+      "config-opts": [
+        "-DCMAKE_INSTALL_PREFIX=/run/host/usr"
+      ],
       "subdir": "Kvantum",
       "sources": [
         {
