@@ -1,6 +1,6 @@
 ARG BUILDER_VERSION=42
 
 # step 1: copy bundles to distribution container.
-FROM scratch as dist
+FROM scratch AS dist
 
 COPY ./bundles /usr/share/flatpak/bundles
