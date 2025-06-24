@@ -12,11 +12,6 @@ modules:
     scripts:
       - "./add-image-info.sh"
 
-  # Add default kargs to bootc config.
-  - type: "script"
-    scripts:
-      - "./apply-default-kargs.sh"
-
   # Change rebase-image refs on securebluecleanup script.
   - type: "script"
     scripts:
