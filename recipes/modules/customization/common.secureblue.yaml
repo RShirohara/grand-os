@@ -26,11 +26,6 @@ modules:
           /usr/lib/systemd/user/secureblue-flatpak-setup.timer
         "
 
-  # Remove firstboot script.
-  - type: "script"
-    snippets:
-      - "rm -rf /etc/profile.d/ublue-firstboot.sh"
-
   # Remove motd console output.
   - type: "script"
     snippets:
