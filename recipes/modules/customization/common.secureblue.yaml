@@ -32,5 +32,4 @@ modules:
   # Remove motd console output.
   - type: "script"
     snippets:
-      - "
-        rm -rf /etc/profile.d/user-motd.sh"
+      - "rm -rf /etc/profile.d/user-motd.sh"
