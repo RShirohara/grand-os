@@ -61,5 +61,6 @@ modules:
         - "keyd.service"
     user:
       enabled:
+        - "flatpak-bundle-install.timer"
         - "flatpak-override-update.timer"
         - "gnupg-unit-update.timer"

@@ -95,6 +95,12 @@ modules:
     src: "/"
     dest: "/"
 
+  # Internal flatpak bundles.
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/org.kde.kstyle.kvantum:42"
+    src: "/"
+    dest: "/"
+
   # Homebrew.
   - type: "brew"
     brew-analytics: false
