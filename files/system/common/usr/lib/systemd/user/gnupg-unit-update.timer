@@ -2,7 +2,7 @@
 Description=Update GnuPG unit files Trigger
 
 [Timer]
-OnBootSec=2sec
+OnBootSec=30sec
 
 [Install]
 WantedBy=timers.target
