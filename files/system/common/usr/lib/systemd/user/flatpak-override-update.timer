@@ -2,7 +2,7 @@
 Description=Update Flatpak overrides Trigger
 
 [Timer]
-OnBootSec=2sec
+OnBootSec=30sec
 
 [Install]
 WantedBy=timers.target

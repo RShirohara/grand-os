@@ -1,0 +1,8 @@
+[Unit]
+Description=Install Flatpak bundles Trigger
+
+[Timer]
+OnBootSec=60sec
+
+[Install]
+WantedBy=timers.target
