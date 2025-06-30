@@ -210,7 +210,7 @@ jobs:
 
       - name: "Attest build provenance for image"
         if: ${{ github.event_name == 'release' }}
-        uses: "actions/attest-build-provenance@db473fddc028af60658334401dc6fa3ffd8669fd" # v2.3.0
+        uses: "actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be" # v2.4.0
         with:
           subject-name: "ghcr.io/${{ github.repository_owner }}/${{ steps.get_metadata.outputs.image_name }}"
           subject-digest: "${{ steps.build_image.outputs.digest }}"
