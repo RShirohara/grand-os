@@ -6,7 +6,7 @@ on:
       - "ready_for_review"
       - "review_requested"
     paths:
-      - ".github/workflows/build-image.yaml"
+      - ".github/workflows/build-os-image.yaml"
       - "files/**/*"
       - "recipes/**/*"
   release:
