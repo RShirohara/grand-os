@@ -6,7 +6,7 @@ on:
       - "ready_for_review"
       - "review_requested"
     paths:
-      - ".github/workflows/build-internal-image.yaml"
+      - ".github/workflows/build-flatpak-bundle.yaml"
       - "flatpaks/**/*"
   push:
     branches:
