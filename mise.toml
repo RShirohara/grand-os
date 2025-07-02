@@ -1,3 +1,4 @@
 [tools]
 "aqua:hadolint/hadolint" = "latest"
+"aqua:koalaman/shellcheck" = "latest"
 "aqua:rhysd/actionlint" = "latest"
