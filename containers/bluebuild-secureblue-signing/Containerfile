@@ -1,5 +1,5 @@
 ARG BUILDER_VERSION=42
-ARG REPOSITORY_VERSION=v4.5.1
+ARG REPOSITORY_VERSION=v4.6
 
 # stage 1: fetch module.
 FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS builder
