@@ -1,0 +1,48 @@
+{
+  "id": "org.kde.WaylandDecoration.QWhiteSurGtkDecorations",
+  "branch": "5.15-24.08",
+  "runtime": "org.kde.Platform",
+  "build-extension": true,
+  "sdk": "org.kde.Sdk",
+  "runtime-version": "5.15-24.08",
+  "separate-locales": false,
+  "modules": [
+    {
+      "name": "qwhitesurgtkdecorations",
+      "buildsystem": "cmake-ninja",
+      "config-opts": [
+        "-DCMAKE_INSTALL_PREFIX=/usr/share/runtime/lib/plugins/QWhiteSurGtkDecorations",
+        "-DQT_PLUGINS_DIR=/usr/share/runtime/lib/plugins/QWhiteSurGtkDecorations",
+        "-DUSE_QT6=false"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/FengZhongShaoNian/QWhiteSurGtkDecorations.git",
+          "tag": "0.1.0",
+          "commit": "2dcdb545fda085724abaea3fdfb4a687b6070916",
+          "x-checker-data": {
+            "type": "json",
+            "url": "https://api.github.com/repos/FengZhongShaoNian/QWhiteSurGtkDecorations/releases/latest",
+            "tag-query": ".tag_name",
+            "version-query": "$tag",
+            "timestamp-query": ".published_at"
+          }
+        }
+      ]
+    },
+    {
+      "name": "appdata",
+      "buildsystem": "simple",
+      "build-commands": [
+        "install -D --mode=644 ${FLATPAK_ID}.appdata.xml --target-directory=${FLATPAK_DEST}/share/appdata/"
+      ],
+      "sources": [
+        {
+          "type": "file",
+          "path": "org.kde.WaylandDecoration.QWhiteSurGtkDecorations.appdata.xml"
+        }
+      ]
+    }
+  ]
+}
