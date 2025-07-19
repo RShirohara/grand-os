@@ -2,6 +2,10 @@
 
 modules:
   # dnf packages.
+  - type: "files"
+    files:
+      - source: "./system/dnf"
+        destination: "/"
   - type: "dnf"
     repos:
       copr:
