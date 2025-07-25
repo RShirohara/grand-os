@@ -1,5 +1,5 @@
 ARG BUILDER_VERSION=42
-ARG REPOSITORY_VERSION=2025-06-14
+ARG REPOSITORY_VERSION=2025-07-24
 
 # stage 1: build theme.
 FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS builder
