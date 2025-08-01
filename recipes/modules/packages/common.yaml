@@ -53,17 +53,19 @@ modules:
 
   # Flatpak packages.
   - type: "default-flatpaks"
-    user:
-      repo-url: "https://dl.flathub.org/repo/flathub.flatpakrepo"
-      repo-name: "flathub"
-      repo-title: "Flathub"
-      install:
-        - "com.github.tchx84.Flatseal"
-        - "io.missioncenter.MissionCenter"
-        - "org.kde.gwenview"
-        - "org.kde.kwrite"
-        - "org.kde.okular"
-        - "org.videolan.VLC"
+    configurations:
+      - scope: "user"
+        repo:
+          title: "Flathub"
+          name: "flathub"
+          url: "https://dl.flathub.org/repo/flathub.flatpakrepo"
+        install:
+          - "com.github.tchx84.Flatseal"
+          - "io.missioncenter.MissionCenter"
+          - "org.kde.gwenview"
+          - "org.kde.kwrite"
+          - "org.kde.okular"
+          - "org.videolan.VLC"
 
   # Internal container images.
   - type: "copy"
