@@ -1,5 +1,5 @@
 ARG BUILDER_VERSION=42
-ARG REPOSITORY_VERSION=2025-07-29
+ARG REPOSITORY_VERSION=2025-08-02
 
 # stage 1: build icons.
 FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS builder
