@@ -1,13 +1,14 @@
 # yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
 
 modules:
-  # Re-enable bluetooth module.
+  # Re-enable kernel module.
   - type: "script"
     snippets:
       - "
         sed --regexp-extended
           --expression='s|^(install bluetooth /bin/false)$|# \\1|'
           --expression='s|^(install btusb /bin/false)$|# \\1|'
+          --expression='s|^(install udf /bin/false)$|# \\1|'
           --in-place /etc/modprobe.d/blacklist.conf
         "
 
