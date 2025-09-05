@@ -1,0 +1,9 @@
+{
+  "org.opencontainers.image.authors": "Ray Shirohara <RShirohara@proton.me>",
+  "org.opencontainers.image.url": "https://github.com/RShirohara/grand-os/blob/main/containers/whitesur-kde-kvantum",
+  "org.opencontainers.image.documentation": "https://github.com/RShirohara/grand-os/blob/main/containers/whitesur-kde-kvantum/README.md",
+  "org.opencontainers.image.source": "https://github.com/RShirohara/grand-os/blob/main/containers/whitesur-kde-kvantum/Containerfile",
+  "org.opencontainers.image.licenses": "GPL-3.0-only",
+  "org.opencontainers.image.title": "grand-os/internal/whitesur-kde-kvantum",
+  "org.opencontainers.image.description": "Internal container image to provide Kvantum theme from github.com/vinceliuice/WhiteSur-kde into GrandOS."
+}
