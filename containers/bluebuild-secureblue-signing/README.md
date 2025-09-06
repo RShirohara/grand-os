@@ -7,5 +7,5 @@ into GrandOS.
 ## Build
 
 ```shell
-podman build --tag="ghcr.io/rshirohara/grand-os/internal/bluebuild-secureblue-signing:edge ."
+podman build --tag="ghcr.io/rshirohara/grand-os/internal/bluebuild-secureblue-signing:edge" .
 ```
