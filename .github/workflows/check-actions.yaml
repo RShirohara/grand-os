@@ -25,22 +25,8 @@ jobs:
       - name: "Checkout repository"
         uses: "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8" # v5.0.0
 
-      - name: "Setup actionlint"
-        env:
-          ACTIONLINT_INSTALL_DIR: ${{ runner.temp }}/actionlint/bin
-          ACTIONLINT_INSTALL_SCRIPT: "https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash"
-          ACTIONLINT_INSTALL_VERSION: "latest"
-        run: |
-          set -o "errexit" -o "nounset"
-
-          mkdir --parents "${ACTIONLINT_INSTALL_DIR}"
-          echo "${ACTIONLINT_INSTALL_DIR}" | tee --append "${GITHUB_PATH}"
-
-          wget --output-document="-" \
-            "${ACTIONLINT_INSTALL_SCRIPT}" \
-          | bash -s -- \
-            "${ACTIONLINT_INSTALL_VERSION}" \
-            "${ACTIONLINT_INSTALL_DIR}"
+      - name: "Setup mise and devtools"
+        uses: "jdx/mise-action@5ac50f778e26fac95da98d50503682459e86d566" # v3.2.0
 
       - name: "Setup reviewdog"
         uses: "reviewdog/action-setup@e04ffabe3898a0af8d0fb1af00c188831c4b5893" # v1.3.2
@@ -51,7 +37,7 @@ jobs:
         run: |
           set -o "errexit" -o "nounset"
 
-          actionlint --oneline \
+          mise run lint:github-action --format="oneline" \
           | reviewdog \
             --efm="%f:%l:%c: %m" \
             --name="Lint result (actionlint)" \
