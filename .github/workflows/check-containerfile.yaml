@@ -26,23 +26,8 @@ jobs:
       - name: "Checkout repository"
         uses: "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8" # v5.0.0
 
-      - name: "Setup hadolint"
-        env:
-          HADOLINT_INSTALL_DIR: "${{ runner.temp }}/hadolint/bin"
-          HADOLINT_INSTALL_VERSION: "latest"
-        run: |
-          set -o "errexit" -o "nounset"
-
-          mkdir --parents "${HADOLINT_INSTALL_DIR}"
-          echo "${HADOLINT_INSTALL_DIR}" | tee --append "${GITHUB_PATH}"
-
-          docker create \
-            --name="hadolint-installer" \
-            "ghcr.io/hadolint/hadolint:${HADOLINT_INSTALL_VERSION}"
-          docker cp hadolint-installer:/bin/hadolint "${HADOLINT_INSTALL_DIR}/hadolint"
-          docker rm hadolint-installer
-
-          "${HADOLINT_INSTALL_DIR}/hadolint" --version
+      - name: "Setup mise and devtools"
+        uses: "jdx/mise-action@5ac50f778e26fac95da98d50503682459e86d566" # v3.2.0
 
       - name: "Setup reviewdog"
         uses: "reviewdog/action-setup@e04ffabe3898a0af8d0fb1af00c188831c4b5893" # v1.3.2
