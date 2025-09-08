@@ -39,7 +39,7 @@ jobs:
           set -o "errexit" -o "nounset"
 
           find . -type "f" -name "Containerfile" \
-            -exec hadolint --format="sarif" {} + \
+            -exec mise run lint:container --format="sarif" {} + \
           | reviewdog \
             -f="sarif" \
             --name="Lint result (hadolint)" \

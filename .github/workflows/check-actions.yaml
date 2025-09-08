@@ -37,7 +37,7 @@ jobs:
         run: |
           set -o "errexit" -o "nounset"
 
-          actionlint --oneline \
+          mise run lint:github-action --format="oneline" \
           | reviewdog \
             --efm="%f:%l:%c: %m" \
             --name="Lint result (actionlint)" \
