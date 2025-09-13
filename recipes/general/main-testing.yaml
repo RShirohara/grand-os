@@ -8,3 +8,4 @@ image-version: "42"
 
 modules:
   - from-file: "./modules/testing/customization/font.yaml"
+  - from-file: "./modules/testing/customization/desktop-appearance.yaml"
