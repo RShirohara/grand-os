@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
+set -o "errexit" -o "nounset" -o "pipefail"
+
 #MISE description="Lint github-action workflow."
 #USAGE arg "[file]" help="Target file(s)." var=#true
 #USAGE flag "-f --format <format>" help="Output format" default="full" choices "full" "oneline"
-
-set -o "errexit" -o "nounset" -o "pipefail"
 
 flags=()
 if [[ "${usage_format:-}" == "oneline" ]]; then
