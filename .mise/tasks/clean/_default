@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -o "errexit" -o "nounset" -o "pipefail"
+
+#MISE description="Remove artifacts that `build:*` script has generated in the past."
+#MISE depends=["clean:container", "clean:flatpak", "clean:os"]
+
+find "${MISE_PROJECT_ROOT:-${PWD}}" \
+  -type "d" \
+  -path "${MISE_PROJECT_ROOT:-${PWD}}/dist" \
+  -print \
+  -exec rm -r {} +
