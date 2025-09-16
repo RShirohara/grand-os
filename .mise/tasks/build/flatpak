@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+set -o "errexit" -o "nounset" -o "pipefail"
+
+#MISE description="Build internal flatpak package."
+#USAGE arg "<target>" help="Target package."
+#USAGE flag "-o --output" help="Output builded files to `/dist/flatpaks/<target>/container`."
+
+mkdir --parents "${MISE_PROJECT_ROOT:-${PWD}}/dist/flatpaks/${usage_target:-}/bundles"
+
+podman_flags=()
+if [[ "${usage_output:-false}" == "true" ]]; then
+  mkdir --parents "${MISE_PROJECT_ROOT:-${PWD}}/dist/flatpaks/${usage_target:-}/container"
+  podman_flags=("${podman_flags[@]}" "--output=${MISE_PROJECT_ROOT:-${PWD}}/dist/flatpaks/${usage_target:-}/container")
+fi
+
+find "${MISE_PROJECT_ROOT:-m${PWD}}/flatpaks/${usage_target:-}/branches" \
+  -mindepth 1 \
+  -maxdepth 1 \
+  -type "d" \
+  -print0 \
+| xargs --null --replace="@" \
+  basename "@" \
+| xargs --replace="@" \
+  bash -c "
+    flatpak run org.flatpak.Builder \
+      --force-clean \
+      --install \
+      --install-deps-from='flathub' \
+      --user \
+      '${MISE_PROJECT_ROOT:-${PWD}}/dist/flatpaks/${usage_target:-}/cache' \
+      '${MISE_PROJECT_ROOT:-${PWD}}/flatpaks/${usage_target:-}/branches/@/${usage_target:-}.json' \
+    && flatpak build-bundle \
+      --runtime \
+      '${XDG_DATA_HOME}/flatpak/repo' \
+      '${MISE_PROJECT_ROOT:-${PWD}}/dist/flatpaks/${usage_target:-}/bundles/${usage_target:-}_@.flathub' \
+      '${usage_target:-}' \
+      '@'
+  " \
+&& podman build \
+  --tag="ghcr.io/rshirohara/grand-os/internal/${usage_target,,}:edge" \
+  --file="${MISE_PROJECT_ROOT:-${PWD}}/flatpaks/${usage_target:-}/Containerfile" \
+  "${podman_flags[@]}" \
+  "${MISE_PROJECT_ROOT:-${PWD}}/dist/flatpaks/${usage_target:-}"

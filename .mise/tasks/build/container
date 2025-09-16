@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -o "errexit" -o "nounset" -o "pipefail"
+
+#MISE description="Build internal container image."
+#USAGE arg "<target>" help="Target container image."
+#USAGE flag "-o --output" help="Output builded files to `/dist/containers/<target>/`."
+
+flags=()
+if [[ "${usage_output:-false}" == "true" ]]; then
+  mkdir --parents "${MISE_PROJECT_ROOT:-${PWD}}/dist/containers/${usage_target:-}"
+  flags=("${flags[@]}" "--output=${MISE_PROJECT_ROOT:-${PWD}}/dist/containers/${usage_target:-}")
+fi
+
+podman build \
+  --tag="ghcr.io/rshirohara/grand-os/internal/${usage_target:-}:edge" \
+  --file="${MISE_PROJECT_ROOT:-${PWD}}/containers/${usage_target:-}/Containerfile" \
+  "${flags[@]}" \
+  "${MISE_PROJECT_ROOT:-${PWD}}/containers/${usage_target:-}"
