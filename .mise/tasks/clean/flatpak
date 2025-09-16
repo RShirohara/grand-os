@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -o "errexit" -o "nounset" -o "pipefail"
+
+#MISE description="Remove artifacts that `build:flatpak` script has generated in the past."
+
+find "${MISE_PROJECT_ROOT:-${PWD}}" \
+  -type "d" \
+  \( \
+    -path "${MISE_PROJECT_ROOT:-${PWD}}/.flatpak-builder" \
+    -or -path "${MISE_PROJECT_ROOT:-${PWD}}/dist/flatpaks" \
+  \) \
+  -print \
+  -exec rm -r {} +

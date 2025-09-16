@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -o "errexit" -o "nounset" -o "pipefail"
+
+#MISE description="Build os image."
+#USAGE arg "<target>" help="Target image."
+
+mkdir --parents "${MISE_PROJECT_ROOT:-${PWD}}/dist/os"
+
+bluebuild generate \
+  --output="${MISE_PROJECT_ROOT:-${PWD}}/dist/os/${usage_target:-}.Containerfile" \
+  "${MISE_PROJECT_ROOT:-${PWD}}/recipes/general/${usage_target:-}.yaml" \
+&& podman build \
+  --tag="ghcr.io/rshirohara/grand-os/${usage_target:-}:edge" \
+  --file="${MISE_PROJECT_ROOT:-${PWD}}/dist/os/${usage_target:-}.Containerfile" \
+  "${MISE_PROJECT_ROOT:-${PWD}}"
