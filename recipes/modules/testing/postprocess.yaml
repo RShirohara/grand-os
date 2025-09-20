@@ -7,3 +7,6 @@ modules:
   - type: "script"
     snippets:
       - "fc-cache --system-only --really-force /usr/share/fonts"
+
+  # Compile glib schema overrides.
+  - type: "gschema-overrides"

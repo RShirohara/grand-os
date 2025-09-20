@@ -1,0 +1,17 @@
+[org.gnome.desktop.wm.keybindings]
+activate-window-menu = []
+show-desktop = ['<Super>d']
+switch-applications = ['<Super>Tab']
+switch-applications-backward = ['<Shift><Super>Tab']
+switch-windows = ['<Alt>Tab']
+switch-windows-backward = ['<Shift><Alt>Tab']
+switch-input-source = ['Hangul']
+switch-input-source-backward = ['Hangul_Hanja']
+unmaximize = ['<Super>Down']
+
+[org.gnome.shell.extensions.customize-ibus]
+fix-ime-list = true
+
+[org.gnome.shell.keybindings]
+focus-active-notification = []
+toggle-message-tray = ['<Super>m']

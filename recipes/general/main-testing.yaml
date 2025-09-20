@@ -8,4 +8,5 @@ image-version: "42"
 
 modules:
   - from-file: "./modules/testing/customization/font.yaml"
+  - from-file: "./modules/testing/customization/keyboard.yaml"
   - from-file: "./modules/testing/postprocess.yaml"

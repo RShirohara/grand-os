@@ -1,0 +1,2 @@
+[org.gmone.shell]
+enabled-extensions = ['customize-ibus@hollowman.ml', 'quick-lang-switch@ankostis.gmail.com']
