@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/module-stage-list-v1.json
+
+stages: []
+
+modules:
+  # Install package from dnf.
+  - type: "dnf"
+    install:
+      packages:
+        - "last-resort-fonts"
+      install-weak-deps: false
+      skip-unavailable: false
+      skip-broken: false
+      allow-erasing: false
+
+  # Install package from internal container.
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/hackgen-fonts:42"
+    src: "/"
+    dest: "/"
+
+  # Apply file-based customization.
+  - type: "files"
+    files:
+      - source: "./testing/customization/font"
+        destination: "/"

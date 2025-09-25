@@ -1,0 +1,61 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/module-stage-list-v1.json
+
+stages: []
+
+modules:
+  # Install package from dnf.
+  - type: "dnf"
+    install:
+      packages:
+        - "gnome-shell-extension-appindicator"
+        - "gnome-shell-extension-blur-my-shell"
+        - "gnome-shell-extension-dash-to-dock"
+        - "gnome-shell-extension-just-perfection"
+        - "gnome-shell-extension-native-window-placement"
+        - "kvantum"
+      install-weak-deps: false
+      skip-unavailable: false
+      skip-broken: false
+      allow-erasing: false
+
+  # Install package from internal container.
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/qwhitesurgtkdecorations:42"
+    src: "/"
+    dest: "/"
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-cursor-theme:42"
+    src: "/"
+    dest: "/"
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-gtk-theme:42"
+    src: "/"
+    dest: "/"
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-icon-theme:42"
+    src: "/"
+    dest: "/"
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-kde-kvantum:42"
+    src: "/"
+    dest: "/"
+
+  # Install package from gnome extensions.
+  - type: "gnome-extensions"
+    install:
+      - "4451" # https://extensions.gnome.org/extension/4451/logo-menu
+      - "7048" # https://extensions.gnome.org/extension/7048/rounded-window-corners-reborn
+
+  # Apply file-based customization.
+  - type: "files"
+    files:
+      - source: "./testing/customization/appearance"
+        destination: "/"
+
+  # Apply script-based customization.
+  - type: "script"
+    snippets:
+      # Apply GDM Theme.
+      - "install -D --mode=644 /usr/share/themes/WhiteSur-Extension/gdm/gnome-shell-theme.gresource /usr/share/gnome-shell/gnome-shell-theme.gresource"
+      # Apply `dash-to-dock` extension theme.
+      - "install -D --mode=644 /usr/share/themes/WhiteSur-Extension/dash-to-dock/stylesheet.css /usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/stylesheet.css"

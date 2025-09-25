@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/module-stage-list-v1.json
+
+stages: []
+
+modules:
+  # Update font cache.
+  - type: "script"
+    snippets:
+      - "fc-cache --system-only --really-force /usr/share/fonts"
+
+  # Compile glib schema overrides.
+  - type: "gschema-overrides"
