@@ -3,8 +3,6 @@
 # TODO: Add flatpak integration
 # TODO: Can't apply rounded window to flatpak.
 
-# TODO: fix wallpaper
-
 stages: []
 
 modules:
