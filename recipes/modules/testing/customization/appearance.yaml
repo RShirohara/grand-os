@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=https://schema.blue-build.org/module-stage-list-v1.json
 
 # TODO: Add flatpak integration
+# TODO: Can't apply rounded window to flatpak.
 
 stages: []
 
@@ -61,3 +62,9 @@ modules:
       - "install -D --mode=644 /usr/share/themes/WhiteSur-Extension/gdm/gnome-shell-theme.gresource /usr/share/gnome-shell/gnome-shell-theme.gresource"
       # Apply `dash-to-dock` extension theme.
       - "install -D --mode=644 /usr/share/themes/WhiteSur-Extension/dash-to-dock/stylesheet.css /usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/stylesheet.css"
+      # Apply kvantum theme customizations.
+      - "sed
+          --expression='s|^transparent_dolphin_view=.*|transparent_dolphin_view=false|'
+          --expression='s|^scrollbar_in_view=.*|scrollbar_in_view=true|'
+          --in-place /usr/share/Kvantum/WhiteSur/WhiteSur*.kvconfig
+        "

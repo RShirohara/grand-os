@@ -1,3 +1,7 @@
+[org.gnome.desktop.background]
+picture-uri = 'file:///usr/share/backgrounds/fedora-workstation/glasscurtains_light.webp'
+picture-uri-dark = 'file:///usr/share/backgrounds/fedora-workstation/glasscurtains_dark.webp'
+
 [org.gnome.desktop.interface]
 color-scheme = 'prefer-dark'
 cursor-theme = 'WhiteSur-cursors'
