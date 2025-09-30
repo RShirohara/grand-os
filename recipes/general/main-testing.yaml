@@ -9,12 +9,12 @@ image-version: "42"
 modules:
   - from-file: "./modules/testing/customization/font.yaml"
   - from-file: "./modules/testing/customization/appearance.yaml"
+  - from-file: "./modules/testing/customization/clipboard.yaml"
   - from-file: "./modules/testing/customization/keyboard.yaml"
+  - from-file: "./modules/testing/customization/window-tiling.yaml"
   - from-file: "./modules/testing/postprocess.yaml"
 
 # TODO: Add default-application (flatpak, homebrew, etc) module.
-# TODO: Add desktop clipboard integrator module.
-# TODO: Add desktop-tiling module.
 # TODO: Add system updater module.
 # TODO: Add kernel security module.
 # TODO: Add additional security module.
