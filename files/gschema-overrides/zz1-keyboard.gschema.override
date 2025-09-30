@@ -12,6 +12,9 @@ unmaximize = ['<Super>Down']
 [org.gnome.shell.extensions.customize-ibus]
 fix-ime-list = true
 
+[org.gnome.shell.extensions.search-light]
+shortcut-search = ['<Super>Space']
+
 [org.gnome.shell.keybindings]
 focus-active-notification = []
 toggle-message-tray = ['<Super>m']

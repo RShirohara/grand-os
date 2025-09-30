@@ -50,3 +50,11 @@ show-activities-button = false
 show-lockscreen = false
 show-power-options = false
 symbolic-icon = true
+
+[org.gnome.shell.extensions.search-light]
+background-color = (0.0, 0.0, 0.0, 0.3)
+border-color = (0.23, 0.23, 0.23, 1.0)
+border-radius = 1.65
+border-thickness = 1
+scale-height = 0.15
+scale-width = 0.10
