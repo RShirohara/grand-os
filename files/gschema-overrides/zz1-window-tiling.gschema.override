@@ -1,0 +1,4 @@
+[org.gnome.shell.extensions.tilingshell]
+enable-span-multiple-tiles = false
+inner-gaps = 0
+outer-gaps = 0

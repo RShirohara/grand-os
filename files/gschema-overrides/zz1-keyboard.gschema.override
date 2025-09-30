@@ -24,6 +24,10 @@ fix-ime-list = true
 [org.gnome.shell.extensions.search-light]
 shortcut-search = ['<Super>Space']
 
+[org.gnome.shell.extensions.tilingshell]
+tiling-system-activation-key = ['2']
+tiling-system-deactivation-key = ['-1']
+
 [org.gnome.shell.keybindings]
 focus-active-notification = []
 toggle-message-tray = ['<Super>m']
