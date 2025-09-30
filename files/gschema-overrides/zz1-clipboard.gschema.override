@@ -1,0 +1,5 @@
+[org.gnome.GPaste]
+empty-history-confirmation = false
+images-support = true
+synchronize-clipboards = true
+track-extension-state = true

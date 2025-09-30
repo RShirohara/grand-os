@@ -9,6 +9,15 @@ switch-input-source = ['Hangul']
 switch-input-source-backward = ['Hangul_Hanja']
 unmaximize = ['<Super>Down']
 
+[org.gnome.GPaste]
+launch-ui = ''
+make-password = ''
+pop = ''
+show-history = '<Super>V'
+sync-clipboard-to-primary = ''
+sync-primary-to-clipboard = ''
+upload = ''
+
 [org.gnome.shell.extensions.customize-ibus]
 fix-ime-list = true
 
