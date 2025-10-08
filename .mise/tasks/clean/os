@@ -6,6 +6,9 @@ set -o "errexit" -o "nounset" -o "pipefail"
 
 find "${MISE_PROJECT_ROOT:-${PWD}}" \
   -type "d" \
-  -path "${MISE_PROJECT_ROOT:-${PWD}}/dist/os" \
+  \( \
+    -path "${MISE_PROJECT_ROOT:-${PWD}}/dist/os" \
+    -or -path "${MISE_PROJECT_ROOT:-${PWD}}/.bluebuild-scripts_*" \
+  \) \
   -print \
   -exec rm -r {} +
