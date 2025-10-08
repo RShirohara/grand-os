@@ -1,4 +1,5 @@
 .flatpak-builder/
+/.bluebuild-scripts_*
 /Containerfile
 bundles/
 cosign.key
