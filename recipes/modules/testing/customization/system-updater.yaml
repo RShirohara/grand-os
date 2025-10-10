@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/module-stage-list-v1.json
+
+stages: []
+
+modules:
+  # Install package from dnf.
+  - type: "dnf"
+    repos:
+      cleanup: true
+      copr:
+        - "ublue-os/packages"
+    install:
+      packages:
+        - "uupd"
+      install-weak-deps: false
+      skip-unavailable: false
+      skip-broken: false
+      allow-erasing: false
+
+  # Enable systemd units.
+  - type: "script"
+    snippets:
+      - "systemctl --force enable uupd.timer"

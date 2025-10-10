@@ -13,10 +13,10 @@ modules:
   - from-file: "./modules/testing/customization/clipboard.yaml"
   - from-file: "./modules/testing/customization/keyboard.yaml"
   - from-file: "./modules/testing/customization/window-tiling.yaml"
+  - from-file: "./modules/testing/customization/system-updater.yaml"
   - from-file: "./modules/testing/postprocess.yaml"
 
 # TODO: Add default-application (flatpak, homebrew, etc) module.
-# TODO: Add system updater module.
 # TODO: Add kernel security module.
 # TODO: Add additional security module.
 # TODO: Add system version module.
