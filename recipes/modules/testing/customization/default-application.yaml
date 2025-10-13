@@ -1,0 +1,134 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/module-stage-list-v1.json
+
+stages: []
+
+modules:
+  # Install package for internal container.
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/org.inqlude.waylanddecoration.qwhitesurgtkdecorations:42"
+    src: "/"
+    dest: "/"
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/org.kde.kstyle.kvantum:42"
+    src: "/"
+    dest: "/"
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/org.kde.waylanddecoration.qwhitesurgtkdecorations:42"
+    src: "/"
+    dest: "/"
+
+  # Apply file-based customization.
+  - type: "files"
+    files:
+      - source: "./testing/customization/default-application"
+        destination: "/"
+
+  # Install dnf package and remove unused dnf package.
+  - type: "dnf"
+    repos:
+      cleanup: true
+      files:
+        - "https://repo.secureblue.dev/secureblue.repo"
+    install:
+      packages:
+        - "firewall-config"
+        - "flatseal"
+        - "gnome-tweaks"
+        - "google-noto-fonts-all"
+        - "trivalent"
+      install-weak-deps: false
+      skip-unavailable: false
+      skip-broken: false
+      allow-erasing: false
+    remove:
+      packages:
+        - "fedora-chromium-config"
+        - "fedora-chromium-config-gnome"
+        - "fedora-flathub-remote"
+        - "fedora-third-party"
+        - "firefox"
+        - "fuse"
+        - "gnome-remote-desktop"
+        - "gnome-software-rpm-ostree"
+        - "gnome-system-monitor"
+        - "gnome-tour"
+        - "gnome-user-share"
+        - "httpd"
+        - "libvncserver"
+        - "passim"
+        - "toolbox"
+        - "yelp"
+      auto-remove: true
+
+  # Install proprietary libraries provided by dnf package.
+  - type: "dnf"
+    repos:
+      cleanup: true
+      nonfree: "negativo17"
+    install:
+      packages:
+        - "ffmpeg"
+        - "ffmpeg-libs"
+        - "ffmpegthumbnailer"
+        - "gstreamer1-plugin-libav"
+        - "gstreamer1-plugins-ugly"
+        - "heif-pixbuf-loader"
+        - "intel-gmmlib"
+        - "intel-mediasdk"
+        - "libfdk-aac"
+        - "libheif"
+        - "libva"
+        - "libva-intel-media-driver"
+        - "mesa-dri-drivers"
+        - "mesa-filesystem"
+        - "mesa-libEGL"
+        - "mesa-libgbm"
+        - "mesa-libGL"
+        - "mesa-libxatracker"
+        - "mesa-va-drivers"
+        - "mesa-vulkan-drivers"
+        - "pipewire-libs-extra"
+      install-weak-deps: false
+      skip-unavailable: false
+      skip-broken: false
+      allow-erasing: false
+    remove:
+      packages:
+        - "fdk-aac-free"
+        - "ffmpeg-free"
+        - "gstreamer1-plugins-ugly-free"
+        - "libavcodec-free"
+        - "libavdevice-free"
+        - "libavfilter-free"
+        - "libavformat-free"
+        - "libavutil-free"
+        - "libpostproc-free"
+        - "libswresample-free"
+        - "libswscale-free"
+        - "totem-video-thumbnailer"
+      auto-remove: true
+
+  # Enable flatpak user repository and disable flatpak default repository.
+  - type: "default-flatpaks@v2"
+    configurations:
+      - scope: "user"
+        repo:
+          url: "https://dl.flathub.org/repo/flathub.flatpakrepo"
+          name: "flathub"
+          title: "Flathub"
+        install:
+          - "io.missioncenter.MissionCenter"
+  - type: "script"
+    snippets:
+      - "rm -f /usr/lib/systemd/system/flatpak-add-fedora-repos.service"
+
+  # Enable flatpak bundle installation service.
+  - type: "script"
+    snippets:
+      - "systemctl enable --force --global flatpak-bundle-setup.timer"
+
+  # Install homebrew.
+  - type: "brew"
+    auto-update: false
+    auto-upgrade: false
+    brew-analytics: false

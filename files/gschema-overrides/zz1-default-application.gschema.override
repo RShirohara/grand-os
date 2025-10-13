@@ -1,0 +1,35 @@
+[org.gnome.nautilus.compression]
+default-compression-format = 'tar.xz'
+
+[org.gnome.nautilus.icon-view]
+default-zoom-level = 'small'
+
+[org.gnome.nautilus.list-view]
+default-visible-columns = ['name', 'type', 'size', 'date_modified']
+default-zoom-level = 'small'
+use-tree-view = true
+
+[org.gnome.nautilus.preferences]
+default-folder-viewer = 'list-view'
+migrated-gtk-settings = true
+
+[org.gnome.Ptyxis]
+cursor-shape = 'ibeam'
+font-name = 'HackGen Console NF 11'
+use-system-font = false
+
+[org.gnome.software]
+allow-updates = false
+download-updates = false
+download-updates-notify = false
+
+[org.gnome.tweaks]
+show-extensions-notice = false
+
+[org.gtk.gtk4.Settings.FileChooser]
+show-hidden = true
+sort-directories-first = true
+
+[org.gtk.Settings.FileChooser]
+show-hidden = true
+sort-directories-first = true
