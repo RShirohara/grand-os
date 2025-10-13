@@ -20,4 +20,5 @@ modules:
 # TODO: Add environment settings for XDG Base dir.
 # TODO: Add kernel security module.
 # TODO: Add additional security module.
+# TODO: Disable x window system.
 # TODO: Add system version module.
