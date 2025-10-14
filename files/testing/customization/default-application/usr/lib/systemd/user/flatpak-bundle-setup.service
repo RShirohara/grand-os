@@ -1,0 +1,8 @@
+[Unit]
+Description=Setup flatpak bundles for current user
+Wants=network-online.target
+After=user-flatpak-setup.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/grand-os/flatpak-bundle-setup
