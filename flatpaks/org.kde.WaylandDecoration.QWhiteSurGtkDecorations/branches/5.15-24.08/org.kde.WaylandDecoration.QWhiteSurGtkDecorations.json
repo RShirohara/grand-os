@@ -19,8 +19,8 @@
         {
           "type": "git",
           "url": "https://github.com/FengZhongShaoNian/QWhiteSurGtkDecorations.git",
-          "tag": "0.1.0",
-          "commit": "2dcdb545fda085724abaea3fdfb4a687b6070916",
+          "tag": "0.2.0",
+          "commit": "5f7fc7df30582974a1943bb445d0509f54510ea3",
           "x-checker-data": {
             "type": "json",
             "url": "https://api.github.com/repos/FengZhongShaoNian/QWhiteSurGtkDecorations/releases/latest",
