@@ -8,13 +8,13 @@ image-version: "42"
 
 modules:
   - from-file: "./modules/testing/preprocess.yaml"
-  - from-file: "./modules/testing/customization/font.yaml"
   - from-file: "./modules/testing/customization/appearance.yaml"
   - from-file: "./modules/testing/customization/clipboard.yaml"
-  - from-file: "./modules/testing/customization/keyboard.yaml"
-  - from-file: "./modules/testing/customization/window-tiling.yaml"
-  - from-file: "./modules/testing/customization/system-updater.yaml"
   - from-file: "./modules/testing/customization/default-application.yaml"
+  - from-file: "./modules/testing/customization/font.yaml"
+  - from-file: "./modules/testing/customization/keyboard.yaml"
+  - from-file: "./modules/testing/customization/system-updater.yaml"
+  - from-file: "./modules/testing/customization/window-tiling.yaml"
   - from-file: "./modules/testing/postprocess.yaml"
 
 # TODO: Add environment settings for XDG Base dir.
