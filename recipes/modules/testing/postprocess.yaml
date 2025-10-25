@@ -10,3 +10,6 @@ modules:
 
   # Compile glib schema overrides.
   - type: "gschema-overrides"
+
+  # Re-Generate initramfs.
+  - type: "initramfs"

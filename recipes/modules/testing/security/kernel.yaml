@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/module-stage-list-v1.json
+
+stages: []
+
+# TODO: use hardened_malloc.
+# TODO: add kernel modules blacklist.
+
+modules:
+  # Apply file-based customization.
+  - type: "files"
+    files:
+      - source: "./testing/security/kernel"
+        destination: "/"

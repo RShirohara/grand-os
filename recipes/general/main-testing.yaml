@@ -8,6 +8,7 @@ image-version: "42"
 
 modules:
   - from-file: "./modules/testing/preprocess.yaml"
+  - from-file: "./modules/testing/security/kernel.yaml"
   - from-file: "./modules/testing/customization/appearance.yaml"
   - from-file: "./modules/testing/customization/clipboard.yaml"
   - from-file: "./modules/testing/customization/default-application.yaml"
@@ -18,7 +19,6 @@ modules:
   - from-file: "./modules/testing/postprocess.yaml"
 
 # TODO: Add environment settings for XDG Base dir.
-# TODO: Add kernel security module.
 # TODO: Add additional security module.
 # TODO: Disable x window system.
 # TODO: Add system version module.
