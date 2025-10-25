@@ -64,17 +64,27 @@ modules:
     repos:
       cleanup: true
       nonfree: "negativo17"
+    replace:
+      - from-repo: "nonfree:negativo17"
+        packages:
+          - old: "fdk-aac-free"
+            new: "libfdk-aac"
+          - old: "ffmpeg-free"
+            new: "ffmpeg"
+          - old: "gstreamer1-plugins-ugly-free"
+            new: "gstreamer1-plugins-ugly"
+        install-weak-deps: true
+        skip-unavailable: false
+        skip-broken: false
+        allow-erasing: false
     install:
       packages:
-        - "ffmpeg"
         - "ffmpeg-libs"
         - "ffmpegthumbnailer"
         - "gstreamer1-plugin-libav"
-        - "gstreamer1-plugins-ugly"
         - "heif-pixbuf-loader"
         - "intel-gmmlib"
         - "intel-mediasdk"
-        - "libfdk-aac"
         - "libheif"
         - "libva"
         - "libva-intel-media-driver"
@@ -93,9 +103,6 @@ modules:
       allow-erasing: false
     remove:
       packages:
-        - "fdk-aac-free"
-        - "ffmpeg-free"
-        - "gstreamer1-plugins-ugly-free"
         - "libavcodec-free"
         - "libavdevice-free"
         - "libavfilter-free"
@@ -105,7 +112,7 @@ modules:
         - "libswresample-free"
         - "libswscale-free"
         - "totem-video-thumbnailer"
-      auto-remove: true
+      auto-remove: false
 
   # Enable flatpak user repository and disable flatpak default repository.
   - type: "default-flatpaks@v2"
