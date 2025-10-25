@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/module-stage-list-v1.json
+
+stages: []
+
+# TODO: Replace systemd-resolved to dnfconfd. (https://github.com/secureblue/secureblue/issues/1174, https://fedoramagazine.org/enabling-system-wide-dns-over-tls/)
+
+modules:
+  # Apply file-based customization.
+  - type: "files"
+    files:
+      - source: "./testing/security/network"
+        destination: "/"
