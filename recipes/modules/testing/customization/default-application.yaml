@@ -34,7 +34,6 @@ modules:
         - "firewall-config"
         - "flatseal"
         - "gnome-tweaks"
-        - "google-noto-fonts-all"
         - "trivalent"
       install-weak-deps: false
       skip-unavailable: false
