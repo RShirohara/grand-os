@@ -49,6 +49,7 @@ modules:
     install:
       - "4451" # https://extensions.gnome.org/extension/4451/logo-menu
       - "5489" # https://extensions.gnome.org/extension/5489/search-light/
+      - "6670" # https://extensions.gnome.org/extension/6670/bluetooth-battery-meter/
       - "7048" # https://extensions.gnome.org/extension/7048/rounded-window-corners-reborn
 
   # Apply file-based customization.

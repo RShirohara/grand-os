@@ -11,5 +11,8 @@ modules:
   # Compile glib schema overrides.
   - type: "gschema-overrides"
 
+  # Add image public-key to container policy.
+  - type: "signing"
+
   # Re-Generate initramfs.
   - type: "initramfs"

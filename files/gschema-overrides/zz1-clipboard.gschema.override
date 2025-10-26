@@ -1,5 +1,3 @@
-[org.gnome.GPaste]
-empty-history-confirmation = false
-images-support = true
-synchronize-clipboards = true
-track-extension-state = true
+[org.gnome.shell.extensions.clipboard-indicator]
+clear-on-boot = true
+history-size = 100
