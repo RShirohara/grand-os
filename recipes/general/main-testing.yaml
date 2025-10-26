@@ -14,6 +14,7 @@ modules:
   - from-file: "./modules/testing/customization/appearance.yaml"
   - from-file: "./modules/testing/customization/clipboard.yaml"
   - from-file: "./modules/testing/customization/default-application.yaml"
+  - from-file: "./modules/testing/customization/device-integration.yaml"
   - from-file: "./modules/testing/customization/font.yaml"
   - from-file: "./modules/testing/customization/keyboard.yaml"
   - from-file: "./modules/testing/customization/system-updater.yaml"
