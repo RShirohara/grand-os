@@ -34,6 +34,7 @@ modules:
         - "firewall-config"
         - "flatseal"
         - "gnome-tweaks"
+        - "sushi"
         - "trivalent"
       install-weak-deps: false
       skip-unavailable: false
