@@ -124,6 +124,7 @@ modules:
           title: "Flathub"
         install:
           - "io.missioncenter.MissionCenter"
+        notify: false
   - type: "script"
     snippets:
       - "rm -f /usr/lib/systemd/system/flatpak-add-fedora-repos.service"
