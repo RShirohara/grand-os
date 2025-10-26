@@ -62,29 +62,20 @@ modules:
   # Install proprietary libraries provided by dnf package.
   - type: "dnf"
     repos:
-      cleanup: true
-      nonfree: "negativo17"
-    replace:
-      - from-repo: "nonfree:negativo17"
-        packages:
-          - old: "fdk-aac-free"
-            new: "libfdk-aac"
-          - old: "ffmpeg-free"
-            new: "ffmpeg"
-          - old: "gstreamer1-plugins-ugly-free"
-            new: "gstreamer1-plugins-ugly"
-        install-weak-deps: true
-        skip-unavailable: false
-        skip-broken: false
-        allow-erasing: false
+      cleanup: false
+      files:
+        - "https://negativo17.org/repos/fedora-multimedia.repo"
     install:
       packages:
+        - "ffmpeg"
         - "ffmpeg-libs"
         - "ffmpegthumbnailer"
+        - "gstreamer1-plugins-ugly"
         - "gstreamer1-plugin-libav"
         - "heif-pixbuf-loader"
         - "intel-gmmlib"
         - "intel-mediasdk"
+        - "libfdk-aac"
         - "libheif"
         - "libva"
         - "libva-intel-media-driver"
@@ -103,14 +94,6 @@ modules:
       allow-erasing: false
     remove:
       packages:
-        - "libavcodec-free"
-        - "libavdevice-free"
-        - "libavfilter-free"
-        - "libavformat-free"
-        - "libavutil-free"
-        - "libpostproc-free"
-        - "libswresample-free"
-        - "libswscale-free"
         - "totem-video-thumbnailer"
       auto-remove: false
 
