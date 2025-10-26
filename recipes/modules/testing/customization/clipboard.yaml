@@ -3,12 +3,7 @@
 stages: []
 
 modules:
-  # Install package from dnf.
-  - type: "dnf"
+  # Install package from gnome extensions.
+  - type: "gnome-extensions"
     install:
-      packages:
-        - "gnome-shell-extension-gpaste"
-      install-weak-deps: false
-      skip-unavailable: false
-      skip-broken: false
-      allow-erasing: false
+      - "779" # https://extensions.gnome.org/extension/779/clipboard-indicator/
