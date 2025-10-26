@@ -123,3 +123,13 @@ modules:
     auto-update: false
     auto-upgrade: false
     brew-analytics: false
+
+  # Apply script-based customization.
+  - type: "script"
+    snippets:
+      # Force GTK3 to trivalent.
+      - "sed
+          --expression='s|Exec=/usr/bin/trivalent %U|Exec=/usr/bin/trivalent --gtk-version=3 %U|g'
+          --expression='s|Exec=/usr/bin/trivalent --incognito %U|Exec=/usr/bin/trivalent --gtk-version=3 --incognito %U|g'
+          --in-place /usr/share/applications/trivalent.desktop
+        "
