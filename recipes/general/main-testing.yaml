@@ -19,9 +19,9 @@ modules:
   - from-file: "./modules/testing/customization/keyboard.yaml"
   - from-file: "./modules/testing/customization/system-updater.yaml"
   - from-file: "./modules/testing/customization/window-tiling.yaml"
+  - from-file: "./modules/testing/customization/xdg-base-dir.yaml"
   - from-file: "./modules/testing/postprocess.yaml"
 
-# TODO: Add environment settings for XDG Base dir.
 # TODO: Add additional security module.
 # TODO: Disable x window system.
 # TODO: Add system version module.

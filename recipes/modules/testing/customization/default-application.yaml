@@ -133,3 +133,8 @@ modules:
           --expression='s|Exec=/usr/bin/trivalent --incognito %U|Exec=/usr/bin/trivalent --gtk-version=3 --incognito %U|g'
           --in-place /usr/share/applications/trivalent.desktop
         "
+
+  # Enable systemd units.
+  - type: "script"
+    snippets:
+      - "systemctl --force --global enable gpg-agent.service"

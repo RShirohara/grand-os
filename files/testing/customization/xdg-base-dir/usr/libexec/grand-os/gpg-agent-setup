@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -o "errexit" -o "nounset" -o "pipefail"
+
+GPG_SOCKET_DIR=$(gpgconf --list-dirs socketdir)
+
+find "${XDG_CONFIG_HOME:-${HOME}/.config}/systemd/user" -type "d" -print \
+| while read -r TARGET_PATH; do \
+    sed --expression="s|ListenStream=%t/gnupg|ListenStream=${GPG_SOCKET_DIR}|" --in-place "${TARGET_PATH}"
+  done
+
+systemctl daemon-reload

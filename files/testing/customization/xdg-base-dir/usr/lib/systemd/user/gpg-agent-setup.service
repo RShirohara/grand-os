@@ -1,0 +1,8 @@
+[Unit]
+Description=Setup GnuPG directory
+Wants=network-online.target
+Before=gpg-agent.socket
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/grand-os/gpg-agent-setup
