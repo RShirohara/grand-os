@@ -5,13 +5,13 @@ set -o "errexit" -o "nounset" -o "pipefail"
 FLATPAK_BUNDLE_DIR="/usr/share/flatpak/bundles"
 
 find "${FLATPAK_BUNDLE_DIR}" -type "f" -path "*.flatpak" -print \
-| while read -r TARGET_PATH; do
+| while read -r TARGET; do
     PACKAGE_NAME=$(
-      basename "${TARGET_PATH}" ".flatpak" \
+      basename "${TARGET}" ".flatpak" \
       | cut --delimiter="_" --fields=1
     )
     PACKAGE_BRANCH=$(
-      basename "${TARGET_PATH}" ".flatpak" \
+      basename "${TARGET}" ".flatpak" \
       | cut --delimiter="_" --fields=2 \
       | cut --delimiter="-" --fields=1
     )
@@ -26,6 +26,6 @@ find "${FLATPAK_BUNDLE_DIR}" -type "f" -path "*.flatpak" -print \
         --bundle \
         --noninteractive \
         --or-update \
-        "@"
+        "${TARGET}"
     fi
   done
