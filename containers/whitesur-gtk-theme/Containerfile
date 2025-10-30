@@ -54,38 +54,8 @@ COPY --from=builder \
     /usr/share/themes/WhiteSur-Dark \
     /usr/share/themes/WhiteSur-Dark
 COPY --from=builder \
-    /usr/share/themes/WhiteSur-Dark-hdpi \
-    /usr/share/themes/WhiteSur-Dark-hdpi
-COPY --from=builder \
-    /usr/share/themes/WhiteSur-Dark-solid \
-    /usr/share/themes/WhiteSur-Dark-solid
-COPY --from=builder \
-    /usr/share/themes/WhiteSur-Dark-solid-hdpi \
-    /usr/share/themes/WhiteSur-Dark-solid-hdpi
-COPY --from=builder \
-    /usr/share/themes/WhiteSur-Dark-solid-xhdpi \
-    /usr/share/themes/WhiteSur-Dark-solid-xhdpi
-COPY --from=builder \
-    /usr/share/themes/WhiteSur-Dark-xhdpi \
-    /usr/share/themes/WhiteSur-Dark-xhdpi
-COPY --from=builder \
     /usr/share/themes/WhiteSur-Light \
     /usr/share/themes/WhiteSur-Light
-COPY --from=builder \
-    /usr/share/themes/WhiteSur-Light-hdpi \
-    /usr/share/themes/WhiteSur-Light-hdpi
-COPY --from=builder \
-    /usr/share/themes/WhiteSur-Light-solid \
-    /usr/share/themes/WhiteSur-Light-solid
-COPY --from=builder \
-    /usr/share/themes/WhiteSur-Light-solid-hdpi \
-    /usr/share/themes/WhiteSur-Light-solid-hdpi
-COPY --from=builder \
-    /usr/share/themes/WhiteSur-Light-solid-xhdpi \
-    /usr/share/themes/WhiteSur-Light-solid-xhdpi
-COPY --from=builder \
-    /usr/share/themes/WhiteSur-Light-xhdpi \
-    /usr/share/themes/WhiteSur-Light-xhdpi
 COPY --from=builder \
     /usr/share/gnome-shell/gnome-shell-theme.gresource \
     /usr/share/themes/WhiteSur-Extension/gdm/gnome-shell-theme.gresource
