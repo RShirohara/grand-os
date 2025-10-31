@@ -32,11 +32,6 @@ modules:
           --expression='s|^background=.*|background=/usr/share/wallpapers/Mountain/contents/images_dark/5120x2880.png|'
           --in-place /usr/share/sddm/themes/WhiteSur-dark/theme.conf
         "
-      - "
-        sed
-          --expression='s|^background=.*|background=/usr/share/wallpapers/Mountain/contents/images/5120x2880.png|'
-          --in-place /usr/share/sddm/themes/WhiteSur-light/theme.conf
-        "
       # Apply customization to WhiteSur Kvantum theme.
       - "
         sed
