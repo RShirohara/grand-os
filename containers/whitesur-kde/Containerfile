@@ -16,30 +16,31 @@ RUN git clone https://github.com/vinceliuice/WhiteSur-kde \
 
 WORKDIR /WhiteSur-kde
 RUN mkdir --parents /usr/share/sddm/themes \
-    && ./install.sh --window "sharp" \
+    && ./install.sh --color "dark" --window "sharp" \
     && ./sddm/install.sh
 
 # stage 2: copy theme to distribution container.
 FROM scratch AS dist
 
 COPY --from=builder \
-    /usr/share/aurorae/themes \
-    /usr/share/aurorae/themes
+    /usr/share/aurorae/themes/WhiteSur-dark-sharp \
+    /usr/share/aurorae/themes/WhiteSur-dark-sharp
 COPY --from=builder \
-    /usr/share/color-schemes \
-    /usr/share/color-schemes
+    /usr/share/color-schemes/WhiteSurDark.colors \
+    /usr/share/color-schemes/WhiteSurDark.colors
 COPY --from=builder \
-    /usr/share/plasma/desktoptheme \
-    /usr/share/plasma/desktoptheme
+    /usr/share/plasma/desktoptheme/WhiteSur-dark \
+    /usr/share/plasma/desktoptheme/WhiteSur-dark
 COPY --from=builder \
-    /usr/share/plasma/look-and-feel \
-    /usr/share/plasma/look-and-feel
+    /usr/share/plasma/look-and-feel/com.github.vinceliuice.WhiteSur-dark \
+    /usr/share/plasma/look-and-feel/com.github.vinceliuice.WhiteSur-dark
 COPY --from=builder \
-    /usr/share/Kvantum \
-    /usr/share/Kvantum
+    /usr/share/Kvantum/WhiteSur/WhiteSurDark.kvconfig \
+    /usr/share/Kvantum/WhiteSur/WhiteSurDark.svg \
+    /usr/share/Kvantum/WhiteSur/
 COPY --from=builder \
-    /usr/share/wallpapers \
-    /usr/share/wallpapers
+    /usr/share/wallpapers/WhiteSur-dark \
+    /usr/share/wallpapers/WhiteSur-dark
 COPY --from=builder \
-    /usr/share/sddm/themes \
-    /usr/share/sddm/themes
+    /usr/share/sddm/themes/WhiteSur-dark \
+    /usr/share/sddm/themes/WhiteSur-dark

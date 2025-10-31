@@ -22,5 +22,5 @@ RUN /WhiteSur-cursors/install.sh
 FROM scratch AS dist
 
 COPY --from=builder \
-    /usr/share/icons \
-    /usr/share/icons
+    /usr/share/icons/WhiteSur-cursors \
+    /usr/share/icons/WhiteSur-cursors

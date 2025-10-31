@@ -27,6 +27,8 @@ COPY ./install-libadwaita.sh /WhiteSur-gtk-theme/install-libadwaita.sh
 # Install theme.
 RUN USER=root ./install.sh \
       --dest /usr/share/themes \
+      --color dark \
+      --opacity normal \
       --silent-mode \
 # Install libadwiata theme.
     && ./install-libadwaita.sh \
@@ -56,9 +58,6 @@ FROM scratch AS dist
 COPY --from=builder \
     /usr/share/themes/WhiteSur-Dark \
     /usr/share/themes/WhiteSur-Dark
-COPY --from=builder \
-    /usr/share/themes/WhiteSur-Light \
-    /usr/share/themes/WhiteSur-Light
 COPY --from=builder \
     /usr/share/gnome-shell/gnome-shell-theme.gresource \
     /usr/share/themes/WhiteSur-Extension/gdm/gnome-shell-theme.gresource
