@@ -12,4 +12,4 @@ find "${XDG_CONFIG_HOME:-${HOME}/.config}/systemd/user" \
     sed --expression="s|ListenStream=%t/gnupg|ListenStream=${GPG_SOCKET_DIR}|" --in-place "${TARGET}/override.conf"
   done
 
-systemctl daemon-reload
+systemctl --user daemon-reload
