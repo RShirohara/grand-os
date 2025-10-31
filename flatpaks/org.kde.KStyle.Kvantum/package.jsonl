@@ -1,3 +1,4 @@
 {"name": "org.kde.KStyle.Kvantum", "branch": "5.15-24.08", "manifest": "org.kde.KStyle.Kvantum.json", "github_action_image": "kde-5.15-24.08"}
 {"name": "org.kde.KStyle.Kvantum", "branch": "6.8", "manifest": "org.kde.KStyle.Kvantum.json", "github_action_image": "kde-6.8"}
 {"name": "org.kde.KStyle.Kvantum", "branch": "6.9", "manifest": "org.kde.KStyle.Kvantum.json", "github_action_image": "kde-6.9"}
+{"name": "org.kde.KStyle.Kvantum", "branch": "6.10", "manifest": "org.kde.KStyle.Kvantum.json", "github_action_image": "kde-6.10"}
