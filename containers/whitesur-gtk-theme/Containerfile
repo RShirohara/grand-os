@@ -27,16 +27,16 @@ COPY ./install-libadwaita.sh /WhiteSur-gtk-theme/install-libadwaita.sh
 # Install theme.
 RUN USER=root ./install.sh \
       --dest /usr/share/themes \
-      --color dark \
-      --opacity normal \
+      --color "dark" \
+      --opacity "normal" \
       --silent-mode \
 # Install libadwiata theme.
     && ./install-libadwaita.sh \
 # Install GDM theme.
     && USER=root ./tweaks.sh \
-      --color dark \
+      --color "dark" \
       --gdm \
-      -background "/usr/share/backgrounds/fedora-workstation/glasscurtains_dark.webp" \
+      -background /usr/share/backgrounds/fedora-workstation/glasscurtains_dark.webp \
       --silent-mode \
 # Install dash-to-dock theme.
     && mkdir --parents \

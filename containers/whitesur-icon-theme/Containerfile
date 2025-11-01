@@ -24,5 +24,8 @@ RUN ./install.sh \
 FROM scratch AS dist
 
 COPY --from=builder \
+    /usr/share/icons/WhiteSur \
+    /usr/share/icons/WhiteSur
+COPY --from=builder \
     /usr/share/icons/WhiteSur-dark \
     /usr/share/icons/WhiteSur-dark
