@@ -14,11 +14,14 @@ modules:
       skip-broken: false
       allow-erasing: false
 
-  # Install package from internal container.
-  - type: "copy"
-    from: "ghcr.io/rshirohara/grand-os/internal/hackgen-fonts:42"
-    src: "/"
-    dest: "/"
+  # Install fonts from github releases.
+  - type: "fonts"
+    fonts:
+      url-fonts:
+        - name: "HackGen"
+          url: "https://github.com/yuru7/Hackgen/releases/download/v2.10.0/HackGen_v2.10.0.zip"
+        - name: "HackGen_NF"
+          url: "https://github.com/yuru7/Hackgen/releases/download/v2.10.0/HackGen_NF_v2.10.0.zip"
 
   # Apply file-based customization.
   - type: "files"
