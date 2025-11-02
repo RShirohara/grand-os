@@ -39,6 +39,7 @@ modules:
       - "sed -i -e '$a\\LD_PRELOAD DEFAULT=libhardened_malloc.so' -e '/^LD_PRELOAD[[:space:]]/d' /etc/security/pam_env.conf"
 
   # Enable systemd units.
-  - type: "script"
-    snippets:
-      - "systemctl --force --global enable flatpak-harden.timer"
+  - type: "systemd"
+    user:
+      enabled:
+        - "flatpak-harden.timer"

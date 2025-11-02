@@ -18,6 +18,7 @@ modules:
       allow-erasing: false
 
   # Enable systemd units.
-  - type: "script"
-    snippets:
-      - "systemctl --force enable uupd.timer"
+  - type: "systemd"
+    system:
+      enabled:
+        - "uupd.timer"
