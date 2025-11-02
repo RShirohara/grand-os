@@ -2,8 +2,6 @@
 
 stages: []
 
-# TODO: add kernel modules blacklist.
-
 modules:
   # Install package from dnf.
   - type: "dnf"
