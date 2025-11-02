@@ -5,6 +5,10 @@ stages: []
 modules:
   # Install package for internal container.
   - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/trivalent-widevine:42"
+    src: "/"
+    dest: "/"
+  - type: "copy"
     from: "ghcr.io/rshirohara/grand-os/internal/org.inqlude.waylanddecoration.qwhitesurgtkdecorations:42"
     src: "/"
     dest: "/"
