@@ -14,5 +14,10 @@ modules:
   # Add image public-key to container policy.
   - type: "signing"
 
+  # Update os-release.
+  - type: "script"
+    scripts:
+      - "update-os-release.sh"
+
   # Re-Generate initramfs.
   - type: "initramfs"

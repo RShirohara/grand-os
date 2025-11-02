@@ -5,15 +5,7 @@ stages: []
 modules:
   # Install package for internal container.
   - type: "copy"
-    from: "ghcr.io/rshirohara/grand-os/internal/org.inqlude.waylanddecoration.qwhitesurgtkdecorations:42"
-    src: "/"
-    dest: "/"
-  - type: "copy"
-    from: "ghcr.io/rshirohara/grand-os/internal/org.kde.kstyle.kvantum:42"
-    src: "/"
-    dest: "/"
-  - type: "copy"
-    from: "ghcr.io/rshirohara/grand-os/internal/org.kde.waylanddecoration.qwhitesurgtkdecorations:42"
+    from: "ghcr.io/rshirohara/grand-os/internal/trivalent-widevine:42"
     src: "/"
     dest: "/"
 
@@ -121,9 +113,10 @@ modules:
       - "rm -f /usr/lib/systemd/system/flatpak-add-fedora-repos.service"
 
   # Enable flatpak bundle installation service.
-  - type: "script"
-    snippets:
-      - "systemctl enable --force --global flatpak-bundle-setup.timer"
+  - type: "systemd"
+    user:
+      enabled:
+        - "flatpak-bundle-setup.timer"
 
   # Install homebrew.
   - type: "brew"
@@ -142,6 +135,7 @@ modules:
         "
 
   # Enable systemd units.
-  - type: "script"
-    snippets:
-      - "systemctl --force --global enable gpg-agent.service"
+  - type: "systemd"
+    user:
+      enabled:
+        - "gpg-agent.service"

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# Copyright: 2025 The Secureblue Authors
+# License: Apache License 2.0
+# Upstream: https://github.com/secureblue/secureblue/blob/live/files/justfiles/desktop/flatpak.just#L25
+
+set -o "errexit" -o "nounset"
+
+best_uarch=$(
+  "/usr/lib64/ld-linux-$(uname --machine | sed --expression 's|_|-|').so.2" --help \
+  | grep --fixed-string '(supported, searched)' \
+  | grep --only-matching 'x86-64-v[[:digit:]]*' \
+  | sort --numeric-sort --reverse \
+  | head --lines=1 \
+  || echo ''
+)
+hmalloc_path="/var/run/host/usr/lib64/${best_uarch:+glibc_hwcaps/${best_uarch}/}libhardened_malloc.so"
+
+flatpak override --user --env=LD_PRELOAD="${hmalloc_path}"

@@ -1,0 +1,8 @@
+[Unit]
+Description=Timer for flatpak-harden
+
+[Timer]
+OnBootSec=30
+
+[Install]
+WantedBy=timers.target

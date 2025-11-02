@@ -65,7 +65,7 @@ jobs:
           _MINOR_VERSION=$(
             _PREFIX=$(
               grep "^RELEASE_VERSION=\"${_MAJOR_VERSION}" \
-                ./files/scripts/add-image-info.sh \
+                ./files/scripts/update-os-release.sh \
               | sed --expression="s|^.*=||g" --expression="s|\"||g" \
               | cut --delimiter="." --fields="2" \
               | xargs --replace="@" expr @ + 1
@@ -107,8 +107,8 @@ jobs:
           set -o "errexit" -o "nounset"
 
           sed --expression="s|^RELEASE_VERSION=\".*\"$|RELEASE_VERSION=\"${{ steps.increase_version.outputs.version }}\"|g" \
-            ./files/scripts/add-image-info.sh \
-            > ./add-image-info.sh
+            ./files/scripts/update-os-release.sh \
+            > ./update-os-release.sh
 
           git switch --create "${GIT_RELEASE_BRANCH}"
           git push --set-upstream origin "${GIT_RELEASE_BRANCH}"
@@ -118,8 +118,8 @@ jobs:
             -F expectedHeadOid="$(git rev-parse HEAD)" \
             -F commitMessage="$(cat ./message.md)" \
             -F commitDetail="$(cat ./detail.md)" \
-            -F files[][path]="files/scripts/add-image-info.sh" \
-            -F files[][contents]="$(base64 -w0 ./add-image-info.sh)" \
+            -F files[][path]="files/scripts/update-os-release.sh" \
+            -F files[][contents]="$(base64 -w0 ./update-os-release.sh)" \
             -F query=@.github/api/create-commit.graphql
 
           git pull --prune
