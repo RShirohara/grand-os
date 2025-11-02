@@ -2,12 +2,45 @@
 
 stages: []
 
-# TODO: use hardened_malloc.
 # TODO: add kernel modules blacklist.
 
 modules:
+  # Install package from dnf.
+  - type: "dnf"
+    repos:
+      cleanup: true
+      copr:
+        - "secureblue/hardened_malloc"
+    install:
+      packages:
+        - "hardened_malloc"
+      install-weak-deps: false
+      skip-unavailable: false
+      skip-broken: false
+      allow-erasing: false
+
   # Apply file-based customization.
   - type: "files"
     files:
       - source: "./testing/security/kernel"
         destination: "/"
+
+  # Apply script-based customization.
+  - type: "script"
+    snippets:
+      # Change hardened malloc file permission.
+      # Copyright: 2025 The Secureblue Authors
+      # License: Apache License 2.0
+      # Upstream: https://github.com/secureblue/secureblue/blob/live/files/scripts/setfilepermissions.sh
+      - "chmod 600 /etc/ld.so.preload"
+
+      # Apply hardened malloc to pam env.
+      # Copyright: 2025 The Secureblue Authors
+      # License: Apache License 2.0
+      # Upstream: https://github.com/secureblue/secureblue/blob/live/files/scripts/hardened_malloc-pam.sh
+      - "sed -i -e '$a\\LD_PRELOAD DEFAULT=libhardened_malloc.so' -e '/^LD_PRELOAD[[:space:]]/d' /etc/security/pam_env.conf"
+
+  # Enable systemd units.
+  - type: "script"
+    snippets:
+      - "systemctl --force --global enable flatpak-harden.timer"
