@@ -2,11 +2,29 @@
 
 stages: []
 
-# TODO: Replace systemd-resolved to dnfconfd. (https://github.com/secureblue/secureblue/issues/1174, https://fedoramagazine.org/enabling-system-wide-dns-over-tls/)
-
 modules:
+  # Install package from dnf.
+  - type: "dnf"
+    install:
+      packages:
+        - "dnsconfd"
+      install-weak-deps: false
+      skip-unavailable: false
+      skip-broken: false
+      allow-erasing: false
+
   # Apply file-based customization.
   - type: "files"
     files:
       - source: "./testing/security/network"
         destination: "/"
+
+  # Disable and enable systemd units.
+  - type: "systemd"
+    system:
+      disabled:
+        - "systemd-resolved.service"
+      masked:
+        - "systemd-resolved.service"
+      enabled:
+        - "dnsconfd.service"
