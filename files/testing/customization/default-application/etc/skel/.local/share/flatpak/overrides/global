@@ -1,5 +1,4 @@
 [Context]
-devices=dri
 filesystems=host-etc:ro;host-os:ro
 
 [Environment]
