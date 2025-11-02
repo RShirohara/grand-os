@@ -9,6 +9,7 @@ image-version: "42"
 modules:
   - from-file: "./modules/testing/preprocess.yaml"
   - from-file: "./modules/testing/security/desktop.yaml"
+  - from-file: "./modules/testing/security/files.yaml"
   - from-file: "./modules/testing/security/kernel.yaml"
   - from-file: "./modules/testing/security/network.yaml"
   - from-file: "./modules/testing/customization/appearance.yaml"
