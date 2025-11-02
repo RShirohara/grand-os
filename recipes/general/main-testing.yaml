@@ -21,5 +21,3 @@ modules:
   - from-file: "./modules/testing/customization/window-tiling.yaml"
   - from-file: "./modules/testing/customization/xdg-base-dir.yaml"
   - from-file: "./modules/testing/postprocess.yaml"
-
-# TODO: Add system version module.

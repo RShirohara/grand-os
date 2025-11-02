@@ -10,7 +10,7 @@ modules:
   # Add grand-os image info.
   - type: "script"
     scripts:
-      - "./add-image-info.sh"
+      - "./update-os-release.sh"
 
   # Change rebase-image refs on securebluecleanup script.
   - type: "script"
