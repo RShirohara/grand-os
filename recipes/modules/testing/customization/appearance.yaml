@@ -43,6 +43,18 @@ modules:
     from: "ghcr.io/rshirohara/grand-os/internal/whitesur-kde-kvantum:42"
     src: "/"
     dest: "/"
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/org.inqlude.waylanddecoration.qwhitesurgtkdecorations:42"
+    src: "/"
+    dest: "/"
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/org.kde.kstyle.kvantum:42"
+    src: "/"
+    dest: "/"
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/org.kde.waylanddecoration.qwhitesurgtkdecorations:42"
+    src: "/"
+    dest: "/"
 
   # Install package from gnome extensions.
   - type: "gnome-extensions"

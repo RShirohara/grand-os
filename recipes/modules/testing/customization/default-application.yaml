@@ -8,18 +8,6 @@ modules:
     from: "ghcr.io/rshirohara/grand-os/internal/trivalent-widevine:42"
     src: "/"
     dest: "/"
-  - type: "copy"
-    from: "ghcr.io/rshirohara/grand-os/internal/org.inqlude.waylanddecoration.qwhitesurgtkdecorations:42"
-    src: "/"
-    dest: "/"
-  - type: "copy"
-    from: "ghcr.io/rshirohara/grand-os/internal/org.kde.kstyle.kvantum:42"
-    src: "/"
-    dest: "/"
-  - type: "copy"
-    from: "ghcr.io/rshirohara/grand-os/internal/org.kde.waylanddecoration.qwhitesurgtkdecorations:42"
-    src: "/"
-    dest: "/"
 
   # Apply file-based customization.
   - type: "files"
