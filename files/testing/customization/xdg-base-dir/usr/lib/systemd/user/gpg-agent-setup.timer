@@ -2,7 +2,7 @@
 Description=Timer for gpg-agent-setup
 
 [Timer]
-OnBootSec=10
+OnStartupSec=10
 
 [Install]
 WantedBy=timers.target

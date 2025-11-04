@@ -1,0 +1,8 @@
+[Unit]
+Description=Setup flatpak overrides for current user
+Wants=network-online.target
+After=flatpak-bundle-setup.timer
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/grand-os/flatpak-override-setup

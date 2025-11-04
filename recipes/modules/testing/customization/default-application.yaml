@@ -112,12 +112,6 @@ modules:
     snippets:
       - "rm -f /usr/lib/systemd/system/flatpak-add-fedora-repos.service"
 
-  # Enable flatpak bundle installation service.
-  - type: "systemd"
-    user:
-      enabled:
-        - "flatpak-bundle-setup.timer"
-
   # Install homebrew.
   - type: "brew"
     auto-update: false
@@ -138,4 +132,6 @@ modules:
   - type: "systemd"
     user:
       enabled:
+        - "flatpak-bundle-setup.timer"
+        - "flatpak-override-setup.timer"
         - "gpg-agent.service"
