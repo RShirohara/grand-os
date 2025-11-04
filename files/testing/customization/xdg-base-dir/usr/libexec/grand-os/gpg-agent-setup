@@ -2,14 +2,25 @@
 
 set -o "errexit" -o "nounset" -o "pipefail"
 
+SYSTEMD_CONFIG_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/systemd/user"
+INITIAL_TEMPLATE_DIR="/usr/share/grand-os/initial-setup/gpg-agent"
 GPG_SOCKET_DIR=$(gpgconf --list-dirs socketdir)
 
-find "${XDG_CONFIG_HOME:-${HOME}/.config}/systemd/user" \
-  -type "d" \
-  -name "gpg-agent*.socket.d" \
-  -print \
+if [[ ! -d "${SYSTEMD_CONFIG_DIR}" ]]; then
+  /usr/bin/mkdir --parents "${SYSTEMD_CONFIG_DIR}"
+fi
+
+find "${INITIAL_TEMPLATE_DIR}" -maxdepth 1 -type "d" -print \
 | while read -r TARGET; do \
-    sed --expression="s|ListenStream=%t/gnupg|ListenStream=${GPG_SOCKET_DIR}|" --in-place "${TARGET}/override.conf"
+    TARGET_NAME="${TARGET##*/}"
+    TARGET_DIR="${SYSTEMD_CONFIG_DIR}/${TARGET_NAME}"
+    if [[ ! -d "${TARGET_DIR}" ]]; then
+      /usr/bin/mkdir --parents "${TARGET_DIR}"
+      sed \
+        --expression="s|ListenStream=%t/gnupg|ListenStream=${GPG_SOCKET_DIR}|" \
+        "${TARGET}/override.conf" \
+        > "${TARGET_DIR}/override.conf"
+    fi
   done
 
 systemctl --user daemon-reload

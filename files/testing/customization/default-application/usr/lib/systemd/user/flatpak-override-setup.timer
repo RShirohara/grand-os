@@ -1,5 +1,5 @@
 [Unit]
-Description=Timer for flatpak-bundle-setup
+Description=Timer for flatpak-override-setup
 
 [Timer]
 OnStartupSec=30

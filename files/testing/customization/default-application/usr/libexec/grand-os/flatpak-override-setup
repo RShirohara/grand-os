@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -o "errexit" -o "nounset" -o "pipefail"
+
+FLATPAK_OVERRIDE_DIR="${XDG_DATA_HOME:-${HOME}/.local/share}/flatpak/overrides"
+INITIAL_TEMPLATE_DIR="/usr/share/grand-os/initial-setup/flatpak-override"
+
+if [[ ! -d "${FLATPAK_OVERRIDE_DIR}" ]]; then
+  /usr/bin/mkdir --parents "${FLATPAK_OVERRIDE_DIR}"
+fi
+
+find "${INITIAL_TEMPLATE_DIR}" -type "f" -print \
+| while read -r TARGET; do \
+    TARGET_NAME="${TARGET##*/}"
+    if [[ ! -f "${FLATPAK_OVERRIDE_DIR}/${TARGET_NAME}" ]]; then
+      /usr/bin/cp "${TARGET}" "${FLATPAK_OVERRIDE_DIR}"
+    fi
+  done

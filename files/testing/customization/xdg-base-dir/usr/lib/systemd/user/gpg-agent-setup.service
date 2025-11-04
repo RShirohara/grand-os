@@ -1,7 +1,7 @@
 [Unit]
 Description=Setup GnuPG directory
 Wants=network-online.target
-Before=gpg-agent.socket
+Before=gpg-agent.service gpg-agent.socket
 
 [Service]
 Type=oneshot
