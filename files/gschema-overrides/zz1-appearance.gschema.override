@@ -1,6 +1,6 @@
 [org.gnome.desktop.background]
-picture-uri = 'file:///usr/share/backgrounds/fedora-workstation/glasscurtains_light.webp'
-picture-uri-dark = 'file:///usr/share/backgrounds/fedora-workstation/glasscurtains_dark.webp'
+picture-uri = 'file:///usr/share/backgrounds/gnome/blobs-l.svg'
+picture-uri-dark = 'file:///usr/share/backgrounds/gnome/blobs-d.svg'
 
 [org.gnome.desktop.interface]
 color-scheme = 'prefer-dark'
