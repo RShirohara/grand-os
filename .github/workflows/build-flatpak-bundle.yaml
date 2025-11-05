@@ -273,6 +273,7 @@ jobs:
           IMAGE_DIGEST="${{ steps.build_image.outputs.digest }}"
 
           cosign sign \
+            --new-bundle-format=false \
             --key="env://COSIGN_PRIVATE_KEY" \
             --recursive \
             "${IMAGE_NAME}@${IMAGE_DIGEST}"
