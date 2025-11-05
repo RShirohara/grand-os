@@ -10,7 +10,7 @@ if [[ ! -d "${SYSTEMD_CONFIG_DIR}" ]]; then
   /usr/bin/mkdir --parents "${SYSTEMD_CONFIG_DIR}"
 fi
 
-find "${INITIAL_TEMPLATE_DIR}" -maxdepth 1 -type "d" -print \
+find "${INITIAL_TEMPLATE_DIR}" -mindepth 1 -maxdepth 1 -type "d" -print \
 | while read -r TARGET; do \
     TARGET_NAME="${TARGET##*/}"
     TARGET_DIR="${SYSTEMD_CONFIG_DIR}/${TARGET_NAME}"
