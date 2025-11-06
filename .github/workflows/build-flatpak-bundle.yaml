@@ -274,6 +274,7 @@ jobs:
 
           cosign sign \
             --new-bundle-format=false \
+            --use-signing-config=false \
             --key="env://COSIGN_PRIVATE_KEY" \
             --recursive \
             "${IMAGE_NAME}@${IMAGE_DIGEST}"
