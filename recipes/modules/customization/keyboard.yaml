@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
+
+modules:
+  # Install package from dnf.
+  - type: "dnf"
+    repos:
+      cleanup: true
+      copr:
+        - "alternateved/keyd"
+    install:
+      packages:
+        - "ibus-mozc"
+        - "keyd"
+      install-weak-deps: false
+      skip-unavailable: false
+      skip-broken: false
+      allow-erasing: false
+    remove:
+      packages:
+        - "ibus-anthy"
+        - "ibus-anthy-python"
+        - "ibus-typing-booster"
+        - "kasumi-common"
+        - "kasumi-unicode"
+      auto-remove: true
+
+  # Install package from gnome extensions.
+  - type: "gnome-extensions"
+    install:
+      - "4112" # https://extensions.gnome.org/extension/4112/customize-ibus/
+      - "4559" # https://extensions.gnome.org/extension/4559/quick-lang-switch/
+
+  # Apply file-based customization.
+  - type: "files"
+    files:
+      - source: "./customization/keyboard"
+        destination: "/"

@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
+
+modules:
+  # Update font cache.
+  - type: "script"
+    snippets:
+      - "fc-cache --system-only --really-force /usr/share/fonts"
+
+  # Compile glib schema overrides.
+  - type: "gschema-overrides"
+
+  # Add image public-key to container policy.
+  - type: "signing"
+
+  # Update os-release.
+  - type: "script"
+    scripts:
+      - "update-os-release.sh"
+
+  # Re-Generate initramfs.
+  - type: "initramfs"

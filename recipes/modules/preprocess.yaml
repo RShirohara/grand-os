@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
+
+modules:
+  # Remove unused dnf repositories.
+  - type: "dnf"
+    remove:
+      packages:
+        - "fedora-workstation-repositories"
+      auto-remove: true
+  - type: "script"
+    snippets:
+      - "rm -f /etc/yum.repos.d/fedora-cisco-openh264.repo"

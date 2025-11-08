@@ -1,0 +1,7 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
+
+modules:
+  # Install package from gnome extensions.
+  - type: "gnome-extensions"
+    install:
+      - "7065" # https://extensions.gnome.org/extension/7065/tiling-shell/

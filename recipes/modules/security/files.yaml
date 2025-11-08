@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
+
+modules:
+  # Apply script-based customization.
+  - type: "script"
+    snippets:
+      # Change default file permission.
+      # Copyright: 2025 The Secureblue Authors
+      # License: Apache License 2.0
+      # Upstream: https://github.com/secureblue/secureblue/blob/live/files/scripts/hardenlogindefs.patch
+      - "sed
+          --expression='117 s|^UMASK\t\t022$|UMASK\t\t027|'
+          --in-place /etc/login.defs
+        "

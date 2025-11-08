@@ -1,9 +1,0 @@
-# yaml-language-server: $schema=https://schema.blue-build.org/module-stage-list-v1.json
-
-stages: []
-
-modules:
-  # Install package from gnome extensions.
-  - type: "gnome-extensions"
-    install:
-      - "779" # https://extensions.gnome.org/extension/779/clipboard-indicator/

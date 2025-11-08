@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
+
+modules:
+  # Apply file-based customization.
+  - type: "files"
+    files:
+      - source: "./customization/xdg-base-dir"
+        destination: "/"
+
+  # Enable systemd units.
+  - type: "systemd"
+    user:
+      enabled:
+        - "gpg-agent-setup.timer"

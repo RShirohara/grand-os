@@ -1,0 +1,83 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
+
+modules:
+  # Install package from dnf.
+  - type: "dnf"
+    install:
+      packages:
+        - "gnome-shell-extension-appindicator"
+        - "gnome-shell-extension-blur-my-shell"
+        - "gnome-shell-extension-dash-to-dock"
+        - "gnome-shell-extension-just-perfection"
+        - "gnome-shell-extension-native-window-placement"
+        - "kvantum"
+      install-weak-deps: false
+      skip-unavailable: false
+      skip-broken: false
+      allow-erasing: false
+    remove:
+      packages:
+        - "gnome-shell-extension-background-logo"
+      auto-remove: true
+
+  # Install package from internal container.
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/qwhitesurgtkdecorations:42"
+    src: "/"
+    dest: "/"
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-cursor-theme:42"
+    src: "/"
+    dest: "/"
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-gtk-theme:42"
+    src: "/"
+    dest: "/"
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-icon-theme:42"
+    src: "/"
+    dest: "/"
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/whitesur-kde-kvantum:42"
+    src: "/"
+    dest: "/"
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/org.inqlude.waylanddecoration.qwhitesurgtkdecorations:42"
+    src: "/"
+    dest: "/"
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/org.kde.kstyle.kvantum:42"
+    src: "/"
+    dest: "/"
+  - type: "copy"
+    from: "ghcr.io/rshirohara/grand-os/internal/org.kde.waylanddecoration.qwhitesurgtkdecorations:42"
+    src: "/"
+    dest: "/"
+
+  # Install package from gnome extensions.
+  - type: "gnome-extensions"
+    install:
+      - "4451" # https://extensions.gnome.org/extension/4451/logo-menu
+      - "5489" # https://extensions.gnome.org/extension/5489/search-light/
+      - "6670" # https://extensions.gnome.org/extension/6670/bluetooth-battery-meter/
+      - "7048" # https://extensions.gnome.org/extension/7048/rounded-window-corners-reborn
+
+  # Apply file-based customization.
+  - type: "files"
+    files:
+      - source: "./customization/appearance"
+        destination: "/"
+
+  # Apply script-based customization.
+  - type: "script"
+    snippets:
+      # Apply GDM Theme.
+      - "install -D --mode=644 /usr/share/themes/WhiteSur-Extension/gdm/gnome-shell-theme.gresource /usr/share/gnome-shell/gnome-shell-theme.gresource"
+      # Apply `dash-to-dock` extension theme.
+      - "install -D --mode=644 /usr/share/themes/WhiteSur-Extension/dash-to-dock/stylesheet.css /usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/stylesheet.css"
+      # Apply kvantum theme customizations.
+      - "sed
+        --expression='s|^transparent_dolphin_view=.*|transparent_dolphin_view=false|'
+        --expression='s|^scrollbar_in_view=.*|scrollbar_in_view=true|'
+        --in-place /usr/share/Kvantum/WhiteSur/WhiteSur*.kvconfig
+        "
