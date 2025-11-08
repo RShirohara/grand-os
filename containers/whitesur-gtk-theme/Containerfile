@@ -7,11 +7,11 @@ ARG REPOSITORY_VERSION
 
 # hadolint ignore=DL3041
 RUN dnf --setopt="install_weak_deps=False" install --assumeyes \
-      fedora-workstation-backgrounds \
       file \
       gdm \
       git \
       glib2-devel \
+      gnome-backgrounds \
       ImageMagick \
       sassc \
       sudo \
@@ -29,14 +29,19 @@ RUN USER=root ./install.sh \
       --dest /usr/share/themes \
       --color "dark" \
       --opacity "normal" \
+      --shell \
+      -i "fedora" \
       --silent-mode \
 # Install libadwiata theme.
     && ./install-libadwaita.sh \
 # Install GDM theme.
+    && magick \
+      /usr/share/backgrounds/gnome/curvy-d.jxl \
+      ./curvy-d.webp \
     && USER=root ./tweaks.sh \
       --color "dark" \
       --gdm \
-      -background /usr/share/backgrounds/fedora-workstation/glasscurtains_dark.webp \
+      -background ./curvy-d.webp \
       --silent-mode \
 # Install dash-to-dock theme.
     && mkdir --parents \
