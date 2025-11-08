@@ -4,7 +4,7 @@ modules:
   # Apply file-based customization.
   - type: "files"
     files:
-      - source: "./testing/customization/default-application"
+      - source: "./customization/default-application"
         destination: "/"
 
   # Install dnf package and remove unused dnf package.
@@ -115,9 +115,9 @@ modules:
     snippets:
       # Force GTK3 to trivalent.
       - "sed
-          --expression='s|Exec=/usr/bin/trivalent %U|Exec=/usr/bin/trivalent --gtk-version=3 %U|g'
-          --expression='s|Exec=/usr/bin/trivalent --incognito %U|Exec=/usr/bin/trivalent --gtk-version=3 --incognito %U|g'
-          --in-place /usr/share/applications/trivalent.desktop
+        --expression='s|Exec=/usr/bin/trivalent %U|Exec=/usr/bin/trivalent --gtk-version=3 %U|g'
+        --expression='s|Exec=/usr/bin/trivalent --incognito %U|Exec=/usr/bin/trivalent --gtk-version=3 --incognito %U|g'
+        --in-place /usr/share/applications/trivalent.desktop
         "
 
   # Enable systemd units.

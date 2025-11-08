@@ -4,5 +4,5 @@ modules:
   # Apply file-based customization.
   - type: "files"
     files:
-      - source: "./testing/security/network"
+      - source: "./security/desktop"
         destination: "/"

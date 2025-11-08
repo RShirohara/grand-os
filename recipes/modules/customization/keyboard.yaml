@@ -33,5 +33,5 @@ modules:
   # Apply file-based customization.
   - type: "files"
     files:
-      - source: "./testing/customization/keyboard"
+      - source: "./customization/keyboard"
         destination: "/"

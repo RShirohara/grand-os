@@ -1,12 +1,24 @@
 # yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
 
 name: "grand-os/main"
-description: "A desktop Linux image based for Fedora Kinoite and customized for personal use."
+description: "A desktop Linux image based for Fedora Silverblue and customized for personal use."
 
-base-image: "ghcr.io/secureblue/kinoite-main-hardened"
+base-image: "quay.io/fedora-ostree-desktops/silverblue"
 image-version: "42"
 
 modules:
-  - from-file: "./modules/packages/common.yaml"
-  - from-file: "./modules/customization/common.yaml"
-  - from-file: "./modules/postprocess/common.yaml"
+  - from-file: "./modules/preprocess.yaml"
+  - from-file: "./modules/security/desktop.yaml"
+  - from-file: "./modules/security/files.yaml"
+  - from-file: "./modules/security/kernel.yaml"
+  - from-file: "./modules/security/network.yaml"
+  - from-file: "./modules/customization/appearance.yaml"
+  - from-file: "./modules/customization/clipboard.yaml"
+  - from-file: "./modules/customization/default-application.yaml"
+  - from-file: "./modules/customization/device-integration.yaml"
+  - from-file: "./modules/customization/font.yaml"
+  - from-file: "./modules/customization/keyboard.yaml"
+  - from-file: "./modules/customization/system-updater.yaml"
+  - from-file: "./modules/customization/window-tiling.yaml"
+  - from-file: "./modules/customization/xdg-base-dir.yaml"
+  - from-file: "./modules/postprocess.yaml"

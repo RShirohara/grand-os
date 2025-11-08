@@ -65,7 +65,7 @@ modules:
   # Apply file-based customization.
   - type: "files"
     files:
-      - source: "./testing/customization/appearance"
+      - source: "./customization/appearance"
         destination: "/"
 
   # Apply script-based customization.
@@ -77,7 +77,7 @@ modules:
       - "install -D --mode=644 /usr/share/themes/WhiteSur-Extension/dash-to-dock/stylesheet.css /usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/stylesheet.css"
       # Apply kvantum theme customizations.
       - "sed
-          --expression='s|^transparent_dolphin_view=.*|transparent_dolphin_view=false|'
-          --expression='s|^scrollbar_in_view=.*|scrollbar_in_view=true|'
-          --in-place /usr/share/Kvantum/WhiteSur/WhiteSur*.kvconfig
+        --expression='s|^transparent_dolphin_view=.*|transparent_dolphin_view=false|'
+        --expression='s|^scrollbar_in_view=.*|scrollbar_in_view=true|'
+        --in-place /usr/share/Kvantum/WhiteSur/WhiteSur*.kvconfig
         "

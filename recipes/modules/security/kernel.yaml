@@ -18,7 +18,7 @@ modules:
   # Apply file-based customization.
   - type: "files"
     files:
-      - source: "./testing/security/kernel"
+      - source: "./security/kernel"
         destination: "/"
 
   # Apply script-based customization.
