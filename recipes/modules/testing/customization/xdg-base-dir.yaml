@@ -1,6 +1,4 @@
-# yaml-language-server: $schema=https://schema.blue-build.org/module-stage-list-v1.json
-
-stages: []
+# yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
 
 modules:
   # Apply file-based customization.
