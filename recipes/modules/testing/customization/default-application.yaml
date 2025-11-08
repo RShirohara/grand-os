@@ -3,12 +3,6 @@
 stages: []
 
 modules:
-  # Install package for internal container.
-  - type: "copy"
-    from: "ghcr.io/rshirohara/grand-os/internal/trivalent-widevine:42"
-    src: "/"
-    dest: "/"
-
   # Apply file-based customization.
   - type: "files"
     files:
