@@ -1,4 +1,4 @@
-ARG BUILDER_VERSION=42
+ARG BUILDER_VERSION=43
 
 # step 1: copy bundles to distribution container.
 FROM scratch AS dist

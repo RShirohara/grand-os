@@ -46,6 +46,9 @@ modules:
       auto-remove: true
 
   # Install proprietary libraries provided by dnf package.
+  # Copyright: 2025 The Secureblue Authors
+  # License: Apache License 2.0
+  # Upstream: https://github.com/secureblue/secureblue/blob/live/recipes/common/proprietary-modules.yml
   - type: "dnf"
     repos:
       cleanup: false
@@ -53,35 +56,57 @@ modules:
         - "https://negativo17.org/repos/fedora-multimedia.repo"
     install:
       packages:
-        - "ffmpeg"
-        - "ffmpeg-libs"
         - "ffmpegthumbnailer"
-        - "gstreamer1-plugins-ugly"
-        - "gstreamer1-plugin-libav"
         - "heif-pixbuf-loader"
-        - "intel-gmmlib"
-        - "intel-mediasdk"
-        - "libfdk-aac"
-        - "libheif"
-        - "libva"
-        - "libva-intel-media-driver"
-        - "mesa-dri-drivers"
-        - "mesa-filesystem"
-        - "mesa-libEGL"
-        - "mesa-libgbm"
-        - "mesa-libGL"
-        - "mesa-libxatracker"
-        - "mesa-va-drivers"
-        - "mesa-vulkan-drivers"
+        - "libopenjph"
         - "pipewire-libs-extra"
-      install-weak-deps: false
-      skip-unavailable: false
-      skip-broken: false
-      allow-erasing: false
+        - "rar"
     remove:
       packages:
         - "totem-video-thumbnailer"
       auto-remove: false
+    replace:
+      - from-repo: "fedora-multimedia"
+        packages:
+          - "gstreamer1-plugin-libav"
+          - "intel-gmmlib"
+          - "intel-mediasdk"
+          - "libheif"
+          - "libva-intel-media-driver"
+          - "libva"
+          - "mesa-dri-drivers"
+          - "mesa-filesystem"
+          - "mesa-libEGL"
+          - "mesa-libgbm"
+          - "mesa-libGL"
+          - "mesa-va-drivers"
+          - "mesa-vulkan-drivers"
+          - old: "ffmpeg-free"
+            new: "ffmpeg"
+          - old: "fdk-aac-free"
+            new: "libfdk-aac"
+          - old: "gstreamer1-plugins-ugly-free"
+            new: "gstreamer1-plugins-ugly"
+          - old: "libavcodec-free"
+            new: "libavcodec"
+          - old: "libavdevice-free"
+            new: "libavdevice"
+          - old: "libavfilter-free"
+            new: "libavfilter"
+          - old: "libavformat-free"
+            new: "libavformat"
+          - old: "libavutil-free"
+            new: "libavutil"
+          - old: "libpostproc-free"
+            new: "libpostproc"
+          - old: "libswresample-free"
+            new: "libswresample"
+          - old: "libswscale-free"
+            new: "libswscale"
+        install-weak-deps: false
+        skip-unavailable: false
+        skip-broken: false
+        allow-erasing: false
 
   # Enable flatpak user repository and disable flatpak default repository.
   - type: "default-flatpaks@v2"
