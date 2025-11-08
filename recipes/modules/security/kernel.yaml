@@ -7,9 +7,11 @@ modules:
       cleanup: true
       copr:
         - "secureblue/hardened_malloc"
+        - "secureblue/no_rlimit_as"
     install:
       packages:
         - "hardened_malloc"
+        - "no_rlimit_as"
       install-weak-deps: false
       skip-unavailable: false
       skip-broken: false
