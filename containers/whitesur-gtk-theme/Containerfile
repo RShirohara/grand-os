@@ -29,6 +29,8 @@ RUN USER=root ./install.sh \
       --dest /usr/share/themes \
       --color "dark" \
       --opacity "normal" \
+      --shell \
+      -i "fedora" \
       --silent-mode \
 # Install libadwiata theme.
     && ./install-libadwaita.sh \
