@@ -11,7 +11,6 @@ RUN dnf --setopt="install_weak_deps=False" install --assumeyes \
       gdm \
       git \
       glib2-devel \
-      gnome-backgrounds \
       ImageMagick \
       sassc \
       sudo \
@@ -35,13 +34,9 @@ RUN USER=root ./install.sh \
 # Install libadwiata theme.
     && ./install-libadwaita.sh \
 # Install GDM theme.
-    && magick \
-      /usr/share/backgrounds/gnome/curvy-d.jxl \
-      ./curvy-d.webp \
     && USER=root ./tweaks.sh \
       --color "dark" \
       --gdm \
-      -background ./curvy-d.webp \
       --silent-mode \
 # Install dash-to-dock theme.
     && mkdir --parents \
