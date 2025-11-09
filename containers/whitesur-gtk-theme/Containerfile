@@ -37,6 +37,7 @@ RUN USER=root ./install.sh \
     && USER=root ./tweaks.sh \
       --color "dark" \
       --gdm \
+      -background "blank" \
       --silent-mode \
 # Install dash-to-dock theme.
     && mkdir --parents \
