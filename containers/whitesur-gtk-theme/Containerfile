@@ -1,9 +1,9 @@
 ARG BUILDER_VERSION=43
-ARG REPOSITORY_VERSION=2025-07-24
+ARG REPOSITORY_COMMIT_HASH=60e7f1b4c26cde034049d0da89d415218f479314
 
 # stage 1: build theme.
 FROM registry.fedoraproject.org/fedora-minimal:${BUILDER_VERSION} AS builder
-ARG REPOSITORY_VERSION
+ARG REPOSITORY_COMMIT_HASH
 
 # hadolint ignore=DL3041
 RUN dnf --setopt="install_weak_deps=False" install --assumeyes \
@@ -17,14 +17,16 @@ RUN dnf --setopt="install_weak_deps=False" install --assumeyes \
       which \
     && dnf clean all
 
-RUN git clone https://github.com/vinceliuice/WhiteSur-gtk-theme \
-      --branch="${REPOSITORY_VERSION}" \
-      --depth=1
+WORKDIR /WhiteSur-gtk-theme
+RUN git init \
+    && git remote add origin https://github.com/vinceliuice/WhiteSur-gtk-theme \
+    && git fetch origin "${REPOSITORY_COMMIT_HASH}" --depth=1 \
+    && git checkout FETCH_HEAD
 
 WORKDIR /WhiteSur-gtk-theme
-COPY ./install-libadwaita.sh /WhiteSur-gtk-theme/install-libadwaita.sh
 # Install theme.
-RUN USER=root ./install.sh \
+RUN --mount=type=bind,source=./scripts,target=/WhiteSur-gtk-theme/scripts,rw \
+    USER=root ./install.sh \
       --dest /usr/share/themes \
       --color "dark" \
       --opacity "normal" \
@@ -32,26 +34,13 @@ RUN USER=root ./install.sh \
       -i "fedora" \
       --silent-mode \
 # Install libadwiata theme.
-    && ./install-libadwaita.sh \
+    && ./scripts/install-libadwaita.sh \
 # Install GDM theme.
     && USER=root ./tweaks.sh \
       --color "dark" \
       --gdm \
       -i "fedora" \
       -background "blank" \
-      --silent-mode \
-# Install dash-to-dock theme.
-    && mkdir --parents \
-      /usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com \
-    && sed \
-      --expression="336 s|fix_dash_to_dock|install_dash_to_dock_theme|" \
-      --in-place ./tweaks.sh \
-    && sed \
-      --expression="810 s|\"sudo\"$||" \
-      --expression="812 s|sudo ||" \
-      --in-place ./libs/lib-install.sh \
-    && USER=root ./tweaks.sh \
-      --dash-to-dock \
       --silent-mode
 
 # stage 2: copy theme to distribution container.
@@ -63,6 +52,3 @@ COPY --from=builder \
 COPY --from=builder \
     /usr/share/gnome-shell/gnome-shell-theme.gresource \
     /usr/share/themes/WhiteSur-Extension/gdm/gnome-shell-theme.gresource
-COPY --from=builder \
-    /usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/stylesheet.css \
-    /usr/share/themes/WhiteSur-Extension/dash-to-dock/stylesheet.css
