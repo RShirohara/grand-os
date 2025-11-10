@@ -73,8 +73,6 @@ modules:
     snippets:
       # Apply GDM Theme.
       - "install -D --mode=644 /usr/share/themes/WhiteSur-Extension/gdm/gnome-shell-theme.gresource /usr/share/gnome-shell/gnome-shell-theme.gresource"
-      # Apply `dash-to-dock` extension theme.
-      - "install -D --mode=644 /usr/share/themes/WhiteSur-Extension/dash-to-dock/stylesheet.css /usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/stylesheet.css"
       # Apply kvantum theme customizations.
       - "sed
         --expression='s|^transparent_dolphin_view=.*|transparent_dolphin_view=false|'
