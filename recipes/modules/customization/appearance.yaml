@@ -72,7 +72,8 @@ modules:
   - type: "script"
     snippets:
       # Apply GDM Theme.
-      - "install -D --mode=644 /usr/share/themes/WhiteSur-Extension/gdm/gnome-shell-theme.gresource /usr/share/gnome-shell/gnome-shell-theme.gresource"
+      # FIXME: Disabled because gdm can't load background.png file included in gresource file.
+      # - "install -D --mode=644 /usr/share/themes/WhiteSur-Extension/gdm/gnome-shell-theme.gresource /usr/share/gnome-shell/gnome-shell-theme.gresource"
       # Apply kvantum theme customizations.
       - "sed
         --expression='s|^transparent_dolphin_view=.*|transparent_dolphin_view=false|'
