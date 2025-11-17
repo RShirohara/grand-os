@@ -5,7 +5,8 @@ modules:
   - type: "dnf"
     install:
       packages:
-        - "google-noto-fonts-all"
+        - "google-noto-color-emoji-fonts"
+        - "google-noto-fonts-all-vf"
         - "last-resort-fonts"
       install-weak-deps: false
       skip-unavailable: false
