@@ -7,7 +7,6 @@ modules:
       packages:
         - "google-noto-color-emoji-fonts"
         - "google-noto-fonts-all-vf"
-        - "last-resort-fonts"
       install-weak-deps: false
       skip-unavailable: false
       skip-broken: false
