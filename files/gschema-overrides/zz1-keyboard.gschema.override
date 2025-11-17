@@ -21,6 +21,8 @@ toggle-menu = ["<Super>v"]
 
 [org.gnome.shell.extensions.customize-ibus]
 fix-ime-list = true
+input-indicator-animation = 0
+input-indicator-hide-time = 1
 
 [org.gnome.shell.extensions.search-light]
 shortcut-search = ['<Super>Space']
