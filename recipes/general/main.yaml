@@ -18,6 +18,7 @@ modules:
   - from-file: "./modules/customization/device-integration.yaml"
   - from-file: "./modules/customization/font.yaml"
   - from-file: "./modules/customization/keyboard.yaml"
+  - from-file: "./modules/customization/smartcard.yaml"
   - from-file: "./modules/customization/system-updater.yaml"
   - from-file: "./modules/customization/window-tiling.yaml"
   - from-file: "./modules/customization/xdg-base-dir.yaml"

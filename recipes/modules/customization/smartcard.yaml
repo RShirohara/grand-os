@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
+
+modules:
+  # Install package from dnf.
+  - type: "dnf"
+    install:
+      packages:
+        - "gnupg2-scdaemon"
+        - "pam_yubico"
+        - "pam-u2f"
+        - "pamu2fcfg"
+        - "yubikey-manager"
+      install-weak-deps: false
+      skip-unavailable: false
+      skip-broken: false
+      allow-erasing: false
+
+  # Apply file-based customization.
+  - type: "files"
+    files:
+      - source: "./customization/smartcard"
+        destination: "/"

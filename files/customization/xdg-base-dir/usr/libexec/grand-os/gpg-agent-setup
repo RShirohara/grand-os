@@ -4,10 +4,15 @@ set -o "errexit" -o "nounset" -o "pipefail"
 
 SYSTEMD_CONFIG_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/systemd/user"
 INITIAL_TEMPLATE_DIR="/usr/share/grand-os/initial-setup/gpg-agent"
+GPG_CONFIG_DIR="${XDG_DATA_HOME:-${HOME}/.local/share}"
 GPG_SOCKET_DIR=$(gpgconf --list-dirs socketdir)
 
 if [[ ! -d "${SYSTEMD_CONFIG_DIR}" ]]; then
   /usr/bin/mkdir --parents "${SYSTEMD_CONFIG_DIR}"
+fi
+
+if [[ ! -d "${GPG_CONFIG_DIR}" ]]; then
+  /usr/bin/mkdir --parents --mode=700 "${GPG_CONFIG_DIR}"
 fi
 
 find "${INITIAL_TEMPLATE_DIR}" -mindepth 1 -maxdepth 1 -type "d" -print \

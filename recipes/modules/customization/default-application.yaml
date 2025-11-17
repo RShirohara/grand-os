@@ -151,4 +151,4 @@ modules:
       enabled:
         - "flatpak-bundle-setup.timer"
         - "flatpak-override-setup.timer"
-        - "gpg-agent.service"
+        - "gpg-agent.socket"
