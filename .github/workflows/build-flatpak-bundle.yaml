@@ -34,7 +34,7 @@ jobs:
 
     steps:
       - name: "Checkout repository"
-        uses: "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8" # v5.0.0
+        uses: "actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3" # v6.0.0
         with:
           fetch-depth: 0
 
@@ -95,7 +95,7 @@ jobs:
 
     steps:
       - name: "Checkout repository"
-        uses: "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8" # v5.0.0
+        uses: "actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3" # v6.0.0
 
       - name: "Build flatpak package"
         uses: "flatpak/flatpak-github-actions/flatpak-builder@92ae9851ad316786193b1fd3f40c4b51eb5cb101" # v6.6
@@ -129,7 +129,7 @@ jobs:
 
     steps:
       - name: "Checkout repository"
-        uses: "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8" # v5.0.0
+        uses: "actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3" # v6.0.0
 
       - name: "Setup Docker Buildx"
         uses: "docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435" # v3.11.1
