@@ -7,7 +7,7 @@ source /usr/lib/os-release
 
 NAME="GrandOS"
 ID="grand-os"
-RELEASE_VERSION="20251128.0"
+RELEASE_VERSION="20251205.0"
 VERSION="${VERSION_ID}.${RELEASE_VERSION}"
 REPO_URL="https://github.com/RShirohara/grand-os"
 REPO_ISSUE_URL="https://github.com/RShirohara/grand-os/issues"
